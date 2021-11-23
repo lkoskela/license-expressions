@@ -1,0 +1,27 @@
+expression := value={compound_expression | simple_expression} $
+
+wrapped_expression := '\(' value=compound_expression '\)'
+compound_expression := 
+    left=compound_expression whitespace conjuction=AND whitespace right=compound_expression |
+    left=compound_expression whitespace conjuction=OR whitespace right=compound_expression |
+	wrapped_expression |
+	license_exception |
+	simple_expression
+
+license_exception :=
+	license={idstring '\+' | idstring} whitespace conjuction=WITH whitespace exception=idstring
+
+license_ref :=
+	'DocumentRef-' document_ref=idstring ':' 'LicenseRef-' license_ref=idstring |
+	'LicenseRef-' license_ref=idstring
+
+WITH := '[Ww][Ii][Tt][Hh]'
+AND := '[Aa][Nn][Dd]'
+OR := '[Oo][Rr]'
+whitespace := '[\s\n]+'
+idstring := '[a-zA-Z0-9][a-zA-Z0-9\.\-]*[a-zA-Z0-9]+\+?'
+
+license_id := license=idstring
+
+license_expression := license_id | license_id '\+'
+simple_expression := license_ref | license_expression
