@@ -1,0 +1,52 @@
+{
+  "name": "license-expressions",
+  "version": "0.1.0",
+  "description": "Pure-JavaScript (TypeScript) parser for SPDX expressions",
+  "devDependencies": {
+    "@babel/preset-typescript": "^7.16.0",
+    "@types/node": "^16.11.9",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.4.0",
+    "tspeg": "^3.2.0",
+    "typescript": "^4.5.2"
+  },
+  "compilerOptions": {
+    "module": "commonJs",
+    "target": "es6",
+    "outDir": "build/",
+    "lib": [
+      "es6"
+    ]
+  },
+  "files": [
+    "./src/cli.ts",
+    "./src/index.ts"
+  ],
+  "jest": {
+    "preset": "ts-jest"
+  },
+  "scripts": {
+    "build": "npm run codegen && tsc",
+    "codegen": "npx tspeg src/codegen/parser.peg src/codegen/parser.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "eval": "npm run build && node build/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lkoskela/license-expressions.git"
+  },
+  "keywords": [
+    "spdx",
+    "license",
+    "licence",
+    "parser",
+    "parsing",
+    "ast"
+  ],
+  "author": "Lasse Koskela",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lkoskela/license-expressions/issues"
+  },
+  "homepage": "https://github.com/lkoskela/license-expressions#readme"
+}
