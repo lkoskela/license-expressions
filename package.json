@@ -4,7 +4,7 @@
   "description": "Pure-JavaScript (TypeScript) parser for SPDX expressions",
   "devDependencies": {
     "@babel/preset-typescript": "^7.16.0",
-    "@types/node": "^16.11.9",
+    "@types/node": "^17.0.39",
     "rimraf": "^3.0.2",
     "ts-node": "^10.4.0",
     "tspeg": "^3.2.0",
