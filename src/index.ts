@@ -1,2 +1,4 @@
-import { parse } from './parser'
-export default parse
+import { parseSpdxExpression, parseSpdxExpressionWithDetails } from './parser'
+
+export { parseSpdxExpression, parseSpdxExpressionWithDetails }
+export default parseSpdxExpression

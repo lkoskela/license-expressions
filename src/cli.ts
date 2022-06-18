@@ -1,7 +1,7 @@
 const process = require('process')
-import { parse } from './parser'
+import { parseSpdxExpression } from './parser'
 
 process.argv.slice(2).forEach((arg:string) => {
-    const ast = parse(arg)
-    console.log(`${JSON.stringify(arg)} =>\n${JSON.stringify(ast, null, 2)}`)
+    const ast = parseSpdxExpression(arg)
+    console.log(JSON.stringify(ast, null, 2))
 })
