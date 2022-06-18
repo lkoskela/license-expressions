@@ -27,10 +27,16 @@
   ],
   "jest": {
     "preset": "ts-jest",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+        "src/**/*.ts",
+        "!src/codegen/**/*.ts"
+    ],
+    "coveragePathIgnorePatterns": ["src/cli.ts"]
   },
   "scripts": {
-    "test": "npx jest",
+    "test": "npm run build && npx jest --all --coverage --verbose",
     "build": "npm run codegen && tsc",
     "codegen": "npx tspeg src/codegen/parser.peg src/codegen/parser.ts",
     "eval": "npm run build && node build/cli.js"
