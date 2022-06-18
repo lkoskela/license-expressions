@@ -30,9 +30,9 @@ license_ref :=
 	document_ref={prefix='DocumentRef-' value=idstring} ':' license_ref={prefix='LicenseRef-' value=idstring} |
 	license_ref={prefix='LicenseRef-' value=idstring}
 
-WITH := whitespace '[Ww][Ii][Tt][Hh]' whitespace
-AND := whitespace '[Aa][Nn][Dd]' whitespace
-OR := whitespace '[Oo][Rr]' whitespace
+WITH := whitespace 'WITH' whitespace
+AND := whitespace 'AND' whitespace
+OR := whitespace 'OR' whitespace
 whitespace := '[\s\t\n]+'
 idstring := '[a-zA-Z0-9][a-zA-Z0-9\.\-]*[a-zA-Z0-9]+\+?'
 license_ref_id := prefix='LicenseRef-' value=idstring

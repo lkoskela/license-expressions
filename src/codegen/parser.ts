@@ -22,9 +22,9 @@
 * license_ref :=
 * 	document_ref={prefix='DocumentRef-' value=idstring} ':' license_ref={prefix='LicenseRef-' value=idstring} |
 * 	license_ref={prefix='LicenseRef-' value=idstring}
-* WITH := whitespace '[Ww][Ii][Tt][Hh]' whitespace
-* AND := whitespace '[Aa][Nn][Dd]' whitespace
-* OR := whitespace '[Oo][Rr]' whitespace
+* WITH := whitespace 'WITH' whitespace
+* AND := whitespace 'AND' whitespace
+* OR := whitespace 'OR' whitespace
 * whitespace := '[\s\t\n]+'
 * idstring := '[a-zA-Z0-9][a-zA-Z0-9\.\-]*[a-zA-Z0-9]+\+?'
 * license_ref_id := prefix='LicenseRef-' value=idstring
@@ -587,7 +587,7 @@ export class Parser {
                 let $$res: Nullable<WITH> = null;
                 if (true
                     && this.matchwhitespace($$dpth + 1, $$cr) !== null
-                    && this.regexAccept(String.raw`(?:[Ww][Ii][Tt][Hh])`, $$dpth + 1, $$cr) !== null
+                    && this.regexAccept(String.raw`(?:WITH)`, $$dpth + 1, $$cr) !== null
                     && this.matchwhitespace($$dpth + 1, $$cr) !== null
                 ) {
                     $$res = {kind: ASTKinds.WITH, };
@@ -601,7 +601,7 @@ export class Parser {
                 let $$res: Nullable<AND> = null;
                 if (true
                     && this.matchwhitespace($$dpth + 1, $$cr) !== null
-                    && this.regexAccept(String.raw`(?:[Aa][Nn][Dd])`, $$dpth + 1, $$cr) !== null
+                    && this.regexAccept(String.raw`(?:AND)`, $$dpth + 1, $$cr) !== null
                     && this.matchwhitespace($$dpth + 1, $$cr) !== null
                 ) {
                     $$res = {kind: ASTKinds.AND, };
@@ -615,7 +615,7 @@ export class Parser {
                 let $$res: Nullable<OR> = null;
                 if (true
                     && this.matchwhitespace($$dpth + 1, $$cr) !== null
-                    && this.regexAccept(String.raw`(?:[Oo][Rr])`, $$dpth + 1, $$cr) !== null
+                    && this.regexAccept(String.raw`(?:OR)`, $$dpth + 1, $$cr) !== null
                     && this.matchwhitespace($$dpth + 1, $$cr) !== null
                 ) {
                     $$res = {kind: ASTKinds.OR, };
