@@ -18,7 +18,7 @@ license_ref :=
 WITH := '[Ww][Ii][Tt][Hh]'
 AND := '[Aa][Nn][Dd]'
 OR := '[Oo][Rr]'
-whitespace := '[\s\n]+'
+whitespace := '[\s\t\n]+'
 idstring := '[a-zA-Z0-9][a-zA-Z0-9\.\-]*[a-zA-Z0-9]+\+?'
 
 license_id := license=idstring
