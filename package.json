@@ -25,6 +25,9 @@
     "./src/cli.ts",
     "./src/index.ts"
   ],
+  "bin": {
+    "spdx": "build/cli.js"
+  },
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
