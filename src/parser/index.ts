@@ -54,7 +54,7 @@ function evaluateAST(ast: Parser.expression) : Result | undefined {
 }
 
 export function parse(input : string) : Result | undefined {
-    const p = new Parser.Parser(input)
+    const p = new Parser.Parser(input.trim())
     const tree = p.parse()
     if ((tree.errs === null || tree.errs.length === 0) && tree.ast) {
         return evaluateAST(tree.ast)

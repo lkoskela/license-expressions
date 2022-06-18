@@ -16,7 +16,7 @@
 * WITH := '[Ww][Ii][Tt][Hh]'
 * AND := '[Aa][Nn][Dd]'
 * OR := '[Oo][Rr]'
-* whitespace := '[\s\n]+'
+* whitespace := '[\s\t\n]+'
 * idstring := '[a-zA-Z0-9][a-zA-Z0-9\.\-]*[a-zA-Z0-9]+\+?'
 * license_id := license=idstring
 * license_expression := license_id | license_id '\+'
@@ -350,7 +350,7 @@ export class Parser {
         return this.regexAccept(String.raw`(?:[Oo][Rr])`, $$dpth + 1, $$cr);
     }
     public matchwhitespace($$dpth: number, $$cr?: ErrorTracker): Nullable<whitespace> {
-        return this.regexAccept(String.raw`(?:[\s\n]+)`, $$dpth + 1, $$cr);
+        return this.regexAccept(String.raw`(?:[\s\t\n]+)`, $$dpth + 1, $$cr);
     }
     public matchidstring($$dpth: number, $$cr?: ErrorTracker): Nullable<idstring> {
         return this.regexAccept(String.raw`(?:[a-zA-Z0-9][a-zA-Z0-9\.\-]*[a-zA-Z0-9]+\+?)`, $$dpth + 1, $$cr);
