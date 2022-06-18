@@ -22,12 +22,13 @@
     ]
   },
   "files": [
-    "./src/cli.ts",
-    "./src/index.ts"
+    "build/**/*.js", "build/**/*.ts", "src/**/*.ts"
   ],
   "bin": {
-    "spdx": "build/cli.js"
+    "spdx": "./build/cli.js"
   },
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
@@ -42,7 +43,8 @@
     "test": "npm run build && npx jest --all --coverage --verbose",
     "build": "npm run codegen && tsc",
     "codegen": "npx tspeg src/codegen/parser.peg src/codegen/parser.ts",
-    "eval": "npm run build && node build/cli.js"
+    "eval": "npm run build && node build/cli.js",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
