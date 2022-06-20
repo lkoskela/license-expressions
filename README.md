@@ -132,14 +132,14 @@ After installing for command-line use, run the `spdx` command and pass an SPDX e
    $ spdx "GPL-3.0+"
    # => { license: 'GPL-3.0+' }
 
-   $ spdx "MIT OR (Apache-2.0 AND BSD0)"
+   $ spdx "MIT OR (Apache-2.0 AND 0BSD)"
    # => {
    #        conjunction: 'or',
    #        left: { license: 'MIT' },
    #        right: {
    #            conjunction: 'and',
    #            left: { license: 'Apache-2.0' },
-   #            right: { license: 'BSD0' }
+   #            right: { license: '0BSD' }
    #        }
    #    }
    ```
@@ -152,14 +152,14 @@ After installing for command-line use, run the `spdx` command and pass an SPDX e
    const simple = parse("GPL-3.0+")
    // => { license: 'GPL-3.0+' }
 
-   const compound = parse("MIT OR (Apache-2.0 AND BSD0)")
+   const compound = parse("MIT OR (Apache-2.0 AND 0BSD)")
    // => {
    //        conjunction: 'or',
    //        left: { license: 'MIT' },
    //        right: {
    //            conjunction: 'and',
    //            left: { license: 'Apache-2.0' },
-   //            right: { license: 'BSD0' }
+   //            right: { license: '0BSD' }
    //        }
    //    }
    ```
@@ -173,9 +173,9 @@ After installing for command-line use, run the `spdx` command and pass an SPDX e
 
 There is currently not much of a roadmap.
 
-The rough idea is to first reach a sufficient level of correctness and robustness within the realm of valid SPDX expressions with valid license identifiers.
+The rough idea is to first reach a sufficient level of correctness and robustness within the realm of valid SPDX expressions with valid license identifiers. This is mostly in place already, although the treatment of the "+" syntax versus "-or-later", for example, or the similar relationship between "GPL-2.0" and "GPL-2.0-only" may need to change.
 
-The subsequent evolutionary step would be to add the ability to correct slightly mistyped or liberal references to valid licenses, i.e. parse an input such as parsing `"Apache 2"` into `{ license: Apache-2.0 }`, or parsing `"Apache2 or MIT"` into `{ conjunction: 'or', left: { license: 'Apache-2.0' }, right: { license: 'MIT } }`.
+The subsequent evolutionary step would be to add the ability to correct slightly mistyped or liberal references to valid licenses, i.e. parse an input such as parsing `"Apache 2"` into `{ license: Apache-2.0 }`, or parsing `"Apache2 or MIT"` into `{ conjunction: 'or', left: { license: 'Apache-2.0' }, right: { license: 'MIT } }`. The basics for such corrections are in place with the help of a secondary, looser parser grammar and the `spdx-correct` third-party library but the implementation could easily be improved with a better grammar and the corrections made by `spdx-correct` may not be exactly what we want...
 
 <!--
 - [ ] Feature 1
@@ -229,11 +229,7 @@ Lasse Koskela - [@lassekoskela](https://twitter.com/lassekoskela) on Twitter or 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* [Othneil Drew](https://github.com/othneildrew) for the [Best-README-Template](https://github.com/othneildrew/Best-README-Template))
-<!--
-* []()
-* []()
--->
+* [Othneil Drew](https://github.com/othneildrew) for the [Best-README-Template](https://github.com/othneildrew/Best-README-Template)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
