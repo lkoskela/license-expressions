@@ -26,7 +26,7 @@
 * AND := whitespace 'AND' whitespace
 * OR := whitespace 'OR' whitespace
 * whitespace := '[\s\t\n]+'
-* idstring := '[a-zA-Z0-9][a-zA-Z0-9\.\-]*[a-zA-Z0-9]+\+?'
+* idstring := '[a-zA-Z0-9 ][a-zA-Z0-9\.\-]*[a-zA-Z0-9]+\+?'
 * license_ref_id := prefix='LicenseRef-' value=idstring
 * document_ref_id := prefix='DocumentRef-' value=idstring
 * license_id := license=idstring '\+'?
@@ -627,7 +627,7 @@ export class Parser {
         return this.regexAccept(String.raw`(?:[\s\t\n]+)`, $$dpth + 1, $$cr);
     }
     public matchidstring($$dpth: number, $$cr?: ErrorTracker): Nullable<idstring> {
-        return this.regexAccept(String.raw`(?:[a-zA-Z0-9][a-zA-Z0-9\.\-]*[a-zA-Z0-9]+\+?)`, $$dpth + 1, $$cr);
+        return this.regexAccept(String.raw`(?:[a-zA-Z0-9 ][a-zA-Z0-9\.\-]*[a-zA-Z0-9]+\+?)`, $$dpth + 1, $$cr);
     }
     public matchlicense_ref_id($$dpth: number, $$cr?: ErrorTracker): Nullable<license_ref_id> {
         return this.run<license_ref_id>($$dpth,

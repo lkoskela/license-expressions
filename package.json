@@ -6,8 +6,10 @@
     "@babel/preset-typescript": "^7.16.0",
     "@types/jest": "^28.1.2",
     "@types/node": "^16.11.9",
+    "@types/spdx-correct": "^2.0.0",
     "jest": "^28.1.1",
     "rimraf": "^3.0.2",
+    "spdx-correct": "^3.1.1",
     "ts-jest": "^28.0.5",
     "ts-node": "^10.4.0",
     "tspeg": "^3.2.0",
@@ -16,13 +18,15 @@
   "compilerOptions": {
     "module": "commonJs",
     "target": "es6",
-    "outDir": "build/",
+    "outDir": "build",
     "lib": [
       "es6"
     ]
   },
   "files": [
-    "build/**/*.js", "build/**/*.ts", "src/**/*.ts"
+    "build/**/*.js",
+    "build/**/*.ts",
+    "src/**/*.ts"
   ],
   "bin": {
     "spdx": "./build/cli.js"
@@ -34,17 +38,19 @@
     "testEnvironment": "node",
     "collectCoverage": true,
     "collectCoverageFrom": [
-        "src/**/*.ts",
-        "!src/codegen/**/*.ts"
+      "src/**/*.ts",
+      "!src/codegen/**/*.ts"
     ],
-    "coveragePathIgnorePatterns": ["src/cli.ts"]
+    "coveragePathIgnorePatterns": [
+      "src/cli.ts"
+    ]
   },
   "scripts": {
-    "test": "npm run build && npx jest --all --coverage --verbose",
+    "test": "npm run build && npx jest --verbose",
     "build": "npm run codegen && tsc",
-    "codegen": "npx tspeg src/codegen/parser.peg src/codegen/parser.ts",
     "eval": "npm run build && node build/cli.js",
-    "prepublish": "npm run build"
+    "prepublish": "scripts/prepublish.sh",
+    "codegen": "scripts/codegen.sh"
   },
   "repository": {
     "type": "git",

@@ -1,0 +1,40 @@
+complete_expression :=
+	value={compound_expression | wrapped_expression | simple_expression} $
+
+compound_expression :=
+	and_expression | or_expression
+
+and_expression :=
+	whitespace? left={compound_expression | wrapped_expression | simple_expression} AND right={compound_expression | wrapped_expression | simple_expression} whitespace?
+
+or_expression :=
+	whitespace? left={compound_expression | wrapped_expression | simple_expression} OR right={compound_expression | wrapped_expression | simple_expression} whitespace?
+
+simple_expression :=
+	license_ref_expression | license_id_expression
+
+license_ref_expression :=
+	document_ref=document_ref_id ':' license_ref=license_ref_id exception=license_exception? |
+	license_ref=license_ref_id exception=license_exception?
+
+license_id_expression :=
+	license=license_id exception=license_exception?
+
+wrapped_expression :=
+	'\(' whitespace? value={compound_expression | wrapped_expression | simple_expression} whitespace? '\)'
+
+license_exception :=
+	WITH exception=idstring
+
+license_ref :=
+	document_ref={prefix='DocumentRef-' value=idstring} ':' license_ref={prefix='LicenseRef-' value=idstring} |
+	license_ref={prefix='LicenseRef-' value=idstring}
+
+WITH := whitespace 'WITH' whitespace
+AND := whitespace 'AND' whitespace
+OR := whitespace 'OR' whitespace
+whitespace := '[\s\t\n]+'
+idstring := '[a-zA-Z0-9 ][a-zA-Z0-9\.\-]*[a-zA-Z0-9]+\+?'
+license_ref_id := prefix='LicenseRef-' value=idstring
+document_ref_id := prefix='DocumentRef-' value=idstring
+license_id := license=idstring '\+'?

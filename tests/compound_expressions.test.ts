@@ -23,7 +23,7 @@ describe('Compound expressions (e.g. dual licensing scenarios)', () => {
     describe('with two elements', () => {
 
         describe('yields an "OR" conjunction with correct left and right expressions', () => {
-            [['GPL-3.0', 'MIT'], ['BSD0', 'Apache-2.0']].forEach(pairing => {
+            [['GPL-3.0', 'MIT'], ['BSD-2-Clause', 'Apache-2.0']].forEach(pairing => {
                 const left = pairing[0]
                 const right = pairing[1]
                 const expression = `${left} OR ${right}`
@@ -38,7 +38,7 @@ describe('Compound expressions (e.g. dual licensing scenarios)', () => {
         })
 
         describe('yields an "AND" conjunction with correct left and right expressions', () => {
-            [['GPL-3.0', 'MIT'], ['BSD0', 'Apache-2.0']].forEach(pairing => {
+            [['GPL-3.0', 'MIT'], ['BSD-3-Clause', 'Apache-2.0']].forEach(pairing => {
                 const left = pairing[0]
                 const right = pairing[1]
                 const expression = `${left} AND ${right}`
@@ -53,35 +53,35 @@ describe('Compound expressions (e.g. dual licensing scenarios)', () => {
         })
 
         describe('can have parenthesis around', () => {
-            it('(MIT OR BSD0) equals "MIT OR BSD0"', () => {
-                expect(parse('MIT OR BSD0')).toStrictEqual(parse('(MIT OR BSD0)'))
+            it('(MIT OR BSD-2-Clause) equals "MIT OR BSD-2-Clause"', () => {
+                expect(parse('MIT OR BSD-2-Clause')).toStrictEqual(parse('(MIT OR BSD-2-Clause)'))
             })
         })
     })
 
     describe('with multiple elements joined without explicit grouping or implicit precedence', () => {
 
-        it('"MIT OR BSD0 OR Apache-2.0" is treated as "MIT OR (BSD0 OR Apache-2.0)"', () => {
-            const actualResult = parse('MIT OR BSD0 OR Apache-2.0')
-            const expectedResult = parse('MIT OR (BSD0 OR Apache-2.0)')
+        it('"MIT OR MPL-2.0 OR Apache-2.0" is treated as "MIT OR (MPL-2.0 OR Apache-2.0)"', () => {
+            const actualResult = parse('MIT OR MPL-2.0 OR Apache-2.0')
+            const expectedResult = parse('MIT OR (MPL-2.0 OR Apache-2.0)')
             expect(actualResult).toStrictEqual(expectedResult)
         })
 
-        it('"MIT OR BSD0 OR MPL OR GPL" is treated as "MIT OR (BSD0 OR (MPL OR GPL))"', () => {
-            const actualResult = parse('MIT OR BSD0 OR MPL OR GPL')
-            const expectedResult = parse('MIT OR (BSD0 OR (MPL OR GPL))')
+        it('"MIT OR MPL-2.0 OR MPL OR GPL" is treated as "MIT OR (MPL-2.0 OR (MPL OR GPL))"', () => {
+            const actualResult = parse('MIT OR MPL-2.0 OR MPL OR GPL')
+            const expectedResult = parse('MIT OR (MPL-2.0 OR (MPL OR GPL))')
             expect(actualResult).toStrictEqual(expectedResult)
         })
 
-        it('"MIT AND BSD0 AND MPL" is treated as "MIT AND (BSD0 AND MPL)"', () => {
-            const actualResult = parse('MIT AND BSD0 AND MPL')
-            const expectedResult = parse('MIT AND (BSD0 AND MPL)')
+        it('"MIT AND MPL-2.0 AND MPL" is treated as "MIT AND (MPL-2.0 AND MPL)"', () => {
+            const actualResult = parse('MIT AND MPL-2.0 AND MPL')
+            const expectedResult = parse('MIT AND (MPL-2.0 AND MPL)')
             expect(actualResult).toStrictEqual(expectedResult)
         })
 
-        it('"MIT AND BSD0 AND MPL AND GPL" is treated as "MIT AND (BSD0 AND (MPL AND GPL))"', () => {
-            const actualResult = parse('MIT AND BSD0 AND MPL AND GPL')
-            const expectedResult = parse('MIT AND (BSD0 AND (MPL AND GPL))')
+        it('"MIT AND MPL-2.0 AND MPL AND GPL" is treated as "MIT AND (MPL-2.0 AND (MPL AND GPL))"', () => {
+            const actualResult = parse('MIT AND MPL-2.0 AND MPL AND GPL')
+            const expectedResult = parse('MIT AND (MPL-2.0 AND (MPL AND GPL))')
             expect(actualResult).toStrictEqual(expectedResult)
         })
     })

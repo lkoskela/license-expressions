@@ -14,7 +14,7 @@ describe('Simple expressions', () => {
         })
 
         describe('examples', () => {
-            ['GPL-2.1', 'GPL-3.0', 'GPL-3.0+', 'LGPL-3.1-only', 'LGPL', 'BSD', 'MIT', 'Apache-2.0'].forEach(licenseString => {
+            ['GPL-1.0', 'GPL-2.0', 'GPL-3.0', 'GPL-3.0+', 'LGPL-3.0-only', 'BSD-3-Clause', 'MIT', 'Apache-2.0'].forEach(licenseString => {
                 it(JSON.stringify(licenseString), () => {
                     expect(parse(licenseString)).toStrictEqual({ license: licenseString })
                 })

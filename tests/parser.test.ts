@@ -5,7 +5,8 @@ import { FullSpdxParseResult } from '../src/parser'
 describe('Parsing API', () => {
 
     const VALID_SPDX_EXPRESSION = 'XYZ-1.2'
-    const INVALID_SPDX_EXPRESSION = 'INVALID SPDX SYNTAX'
+    const WHITESPACE_IN_LICENSE_ID = 'INVALID SPDX SYNTAX'
+    const INVALID_EXPRESSION = 'MIT (OR Apache-2.0)'
 
     describe('default export', () => {
         it('behaves exactly like parseSpdxExpression()', () => {
@@ -21,8 +22,17 @@ describe('Parsing API', () => {
             expect(parseSpdxExpression(VALID_SPDX_EXPRESSION)).toStrictEqual({ license: VALID_SPDX_EXPRESSION })
         })
 
-        it('invalid expression throws an error', () => {
-            expect(() => parseSpdxExpression(INVALID_SPDX_EXPRESSION)).toThrow();
+        it('invalid expression throws an error if `strictSyntax` is true', () => {
+            expect(() => parseSpdxExpression(WHITESPACE_IN_LICENSE_ID, true)).toThrow()
+        })
+
+        it('`strictSyntax` is `false` by default', () => {
+            expect(() => parseSpdxExpression(WHITESPACE_IN_LICENSE_ID)).not.toThrow()
+        })
+
+        it('invalid expressions with whitespace in license name is tolerated if `strictSyntax` is false', () => {
+            expect(() => parseSpdxExpression(WHITESPACE_IN_LICENSE_ID, false)).not.toThrow()
+            expect(parseSpdxExpression(WHITESPACE_IN_LICENSE_ID, false)).toStrictEqual({ license: WHITESPACE_IN_LICENSE_ID })
         })
     })
 
@@ -38,9 +48,24 @@ describe('Parsing API', () => {
             })
         })
 
-        it('invalid expression returns an object describing the error', () => {
-            expect(parseSpdxExpressionWithDetails(INVALID_SPDX_EXPRESSION)).toMatchObject({
-                input: INVALID_SPDX_EXPRESSION,
+        it('license name with whitespace yields an object describing the error', () => {
+            expect(parseSpdxExpressionWithDetails(WHITESPACE_IN_LICENSE_ID, true)).toMatchObject({
+                input: WHITESPACE_IN_LICENSE_ID,
+                error: expect.stringMatching(/^Syntax Error at.*/),
+                ast: expect.any(Object),
+                expression: null,
+            })
+        })
+
+        it('structurally invalid expression fails even if `strictSyntax` is `false`', () => {
+            expect(parseSpdxExpressionWithDetails(INVALID_EXPRESSION, true)).toMatchObject({
+                input: INVALID_EXPRESSION,
+                error: expect.stringMatching(/^Syntax Error at.*/),
+                ast: expect.any(Object),
+                expression: null,
+            })
+            expect(parseSpdxExpressionWithDetails(INVALID_EXPRESSION, false)).toMatchObject({
+                input: INVALID_EXPRESSION,
                 error: expect.stringMatching(/^Syntax Error at.*/),
                 ast: expect.any(Object),
                 expression: null,
