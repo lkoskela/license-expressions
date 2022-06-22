@@ -44,7 +44,6 @@ describe('Parsing API', () => {
                 input: VALID_SPDX_EXPRESSION,
                 ast: expect.any(Object),
                 expression: parseSpdxExpression(VALID_SPDX_EXPRESSION),
-                error: null,
             })
         })
 
@@ -53,7 +52,6 @@ describe('Parsing API', () => {
                 input: WHITESPACE_IN_LICENSE_ID,
                 error: expect.stringMatching(/^Syntax Error at.*/),
                 ast: expect.any(Object),
-                expression: null,
             })
         })
 
@@ -62,13 +60,11 @@ describe('Parsing API', () => {
                 input: INVALID_EXPRESSION,
                 error: expect.stringMatching(/^Syntax Error at.*/),
                 ast: expect.any(Object),
-                expression: null,
             })
             expect(parseSpdxExpressionWithDetails(INVALID_EXPRESSION, false)).toMatchObject({
                 input: INVALID_EXPRESSION,
                 error: expect.stringMatching(/^Syntax Error at.*/),
                 ast: expect.any(Object),
-                expression: null,
             })
         })
     })
