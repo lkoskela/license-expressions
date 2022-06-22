@@ -268,7 +268,6 @@ describe('Expressions with slight errors', () => {
 
         describe('of license exceptions', () => {
             it('"autoconf exception 2.0" or "autoconf exception version 2" is corrected to Autoconf-exception-2.0', () => {
-                console.error(JSON.stringify(parseSpdxExpressionWithDetails('GPL-3.0-only WITH autoconf exception 2.0'), null, 4))
                 expect(parse('GPL-3.0-only WITH autoconf exception 2.0'))
                     .toStrictEqual({ license: 'GPL-3.0-only', exception: 'Autoconf-exception-2.0' })
                 expect(parse('GPL-3.0-only WITH autoconf exception 2'))
