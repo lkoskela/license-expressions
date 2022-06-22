@@ -26,5 +26,5 @@ WITH := whitespace 'WITH' whitespace
 AND := whitespace 'AND' whitespace
 OR := whitespace 'OR' whitespace
 whitespace := '[\s\t\n]+'
-words := head=word tail={whitespace rest=words}?
+words := head=word tail={ {whitespace | ',' whitespace?} rest=words}?
 word := !'WITH' !'AND' !'OR' !'\(' !'\)' value='[a-zA-Z0-9\.\-:]+'

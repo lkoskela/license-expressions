@@ -1,4 +1,10 @@
-import {parseSpdxExpression as parse, parseSpdxExpressionWithDetails} from '../src'
+import {parseSpdxExpression as parse} from '../src'
+import licenses from '../src/codegen/licenses.json'
+import { LicenseInfo } from '../src/parser'
+import 'jest-extended'
+
+const nonDeprecatedLicenseIds = licenses.licenses.filter(l => !l.isDeprecatedLicenseId).map(l => l.licenseId).sort()
+const deprecatedLicenseIds = licenses.licenses.filter(l => l.isDeprecatedLicenseId).map(l => l.licenseId).sort()
 
 describe('Simple expressions', () => {
 
@@ -9,14 +15,36 @@ describe('Simple expressions', () => {
         })
     
         it('are trimmed of leading/trailing whitespace', () => {
-            expect(parse(' \t \n GPL-3.0')).toStrictEqual({ license: 'GPL-3.0' })
-            expect(parse('GPL-3.0 \t \n ')).toStrictEqual({ license: 'GPL-3.0' })
+            expect(parse(' \t \n MIT')).toStrictEqual({ license: 'MIT' })
+            expect(parse('MIT \t \n ')).toStrictEqual({ license: 'MIT' })
+        })
+
+        it('all non-deprecated licenses should be parsed as-is', () => {
+            nonDeprecatedLicenseIds.forEach(id => expect(parse(id)).toStrictEqual({ license: id }))
+        })
+
+        it('deprecated licenses might be somewhat altered around the end', () => {
+            deprecatedLicenseIds.forEach(id => {
+                const expectedPrefix = id.replace(/\+$/, '')
+                expect((parse(id) as LicenseInfo).license).toStartWith(expectedPrefix)
+            })
         })
 
         describe('examples', () => {
-            ['GPL-1.0', 'GPL-2.0', 'GPL-3.0', 'GPL-3.0+', 'LGPL-3.0-only', 'BSD-3-Clause', 'MIT', 'Apache-2.0'].forEach(licenseString => {
-                it(JSON.stringify(licenseString), () => {
-                    expect(parse(licenseString)).toStrictEqual({ license: licenseString })
+            describe('non-deprecated licenses', () => {
+                const randomIds = [...nonDeprecatedLicenseIds].sort(() => .5 - Math.random()).slice(0, 5)
+                randomIds.forEach(id => {
+                    it(`${id}  =>  ${id}`, () => expect(parse(id)).toStrictEqual({ license: id }))
+                })
+            })
+
+            describe('deprecated licenses might be somewhat altered', () => {
+                const randomIds = [...deprecatedLicenseIds].sort(() => .5 - Math.random()).slice(0, 5)
+                randomIds.forEach(id => {
+                    const expectedPrefix = id.replace(/\+$/, '')
+                    it(`${id}  ~  ${expectedPrefix}`, () => {
+                        expect((parse(id) as LicenseInfo).license).toStartWith(expectedPrefix)
+                    })
                 })
             })
         })
@@ -45,13 +73,13 @@ describe('Simple expressions', () => {
 
     describe('with license exception', () => {
         it('identifies the exception along with the license it belongs to', () => {
-            expect(parse('GPL-3.0 WITH AutoConf-exception-2.0')).toStrictEqual({
-                license: 'GPL-3.0', exception: 'AutoConf-exception-2.0'
+            expect(parse('GPL-3.0-only WITH Autoconf-exception-2.0')).toStrictEqual({
+                license: 'GPL-3.0-only', exception: 'Autoconf-exception-2.0'
             })
         })
 
         describe('examples', () => {
-            const licenseName = 'GPL-3.0'
+            const licenseName = 'GPL-3.0-only'
             const exceptions = ['Bison-exception-2.2', 'Autoconf-exception-3.0']
             exceptions.forEach(exceptionName => {
                 it(`${licenseName} WITH ${exceptionName}`, () => {

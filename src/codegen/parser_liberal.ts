@@ -20,7 +20,7 @@
 * AND := whitespace 'AND' whitespace
 * OR := whitespace 'OR' whitespace
 * whitespace := '[\s\t\n]+'
-* words := head=word tail={whitespace rest=words}?
+* words := head=word tail={ {whitespace | ',' whitespace?} rest=words}?
 * word := !'WITH' !'AND' !'OR' !'\(' !'\)' value='[a-zA-Z0-9\.\-:]+'
 */
 type Nullable<T> = T | null;
@@ -62,6 +62,8 @@ export enum ASTKinds {
     whitespace = "whitespace",
     words = "words",
     words_$0 = "words_$0",
+    words_$0_$0_1 = "words_$0_$0_1",
+    words_$0_$0_2 = "words_$0_$0_2",
     word = "word",
     $EOF = "$EOF",
 }
@@ -150,6 +152,11 @@ export interface words {
 export interface words_$0 {
     kind: ASTKinds.words_$0;
     rest: words;
+}
+export type words_$0_$0 = words_$0_$0_1 | words_$0_$0_2;
+export type words_$0_$0_1 = whitespace;
+export interface words_$0_$0_2 {
+    kind: ASTKinds.words_$0_$0_2;
 }
 export interface word {
     kind: ASTKinds.word;
@@ -485,10 +492,32 @@ export class Parser {
                 let $scope$rest: Nullable<words>;
                 let $$res: Nullable<words_$0> = null;
                 if (true
-                    && this.matchwhitespace($$dpth + 1, $$cr) !== null
+                    && this.matchwords_$0_$0($$dpth + 1, $$cr) !== null
                     && ($scope$rest = this.matchwords($$dpth + 1, $$cr)) !== null
                 ) {
                     $$res = {kind: ASTKinds.words_$0, rest: $scope$rest};
+                }
+                return $$res;
+            });
+    }
+    public matchwords_$0_$0($$dpth: number, $$cr?: ErrorTracker): Nullable<words_$0_$0> {
+        return this.choice<words_$0_$0>([
+            () => this.matchwords_$0_$0_1($$dpth + 1, $$cr),
+            () => this.matchwords_$0_$0_2($$dpth + 1, $$cr),
+        ]);
+    }
+    public matchwords_$0_$0_1($$dpth: number, $$cr?: ErrorTracker): Nullable<words_$0_$0_1> {
+        return this.matchwhitespace($$dpth + 1, $$cr);
+    }
+    public matchwords_$0_$0_2($$dpth: number, $$cr?: ErrorTracker): Nullable<words_$0_$0_2> {
+        return this.run<words_$0_$0_2>($$dpth,
+            () => {
+                let $$res: Nullable<words_$0_$0_2> = null;
+                if (true
+                    && this.regexAccept(String.raw`(?:,)`, $$dpth + 1, $$cr) !== null
+                    && ((this.matchwhitespace($$dpth + 1, $$cr)) || true)
+                ) {
+                    $$res = {kind: ASTKinds.words_$0_$0_2, };
                 }
                 return $$res;
             });

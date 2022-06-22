@@ -18,53 +18,114 @@ describe('GPL family of expressions with a "+" suffix', () => {
     })
 })
 
-describe('Common shorthands or forms for Apache-2.0', () => {
-    describe('"Apache2" or "Apache-2" is interpreted as "Apache-2.0"', () => {
-
-        it('in a simple expression', () => {
-            expect(parse('Apache2')).toStrictEqual({ license: 'Apache-2.0' })
-            expect(parse('Apache-2')).toStrictEqual({ license: 'Apache-2.0' })
+describe('Deprecated "default" GPL versions are coerced into their non-deprecated, explicit alias', () => {
+    describe('LGPL', () => {
+        describe('LGPL-2.0', () => {
+            expect(parse('LGPL-2.0-only')).toStrictEqual({ license: 'LGPL-2.0-only' })
+            expect(parse('LGPL-2.0')).toStrictEqual({ license: 'LGPL-2.0-only' })
+            expect(parse('LGPL-2.0-or-later')).toStrictEqual({ license: 'LGPL-2.0-or-later' })
+            expect(parse('LGPL-2.0+')).toStrictEqual({ license: 'LGPL-2.0-or-later' })
         })
 
-        it('in a compound expression', () => {
-            const expected = {
-                conjunction: 'or',
-                left: { license: 'Apache-2.0' },
-                right: { license:'MIT' }
-            }
-            expect(parse('Apache2 OR MIT')).toStrictEqual(expected)
-            expect(parse('Apache-2 OR MIT')).toStrictEqual(expected)
+        describe('LGPL-2.1', () => {
+            expect(parse('LGPL-2.1-only')).toStrictEqual({ license: 'LGPL-2.1-only' })
+            expect(parse('LGPL-2.1')).toStrictEqual({ license: 'LGPL-2.1-only' })
+            expect(parse('LGPL-2.1-or-later')).toStrictEqual({ license: 'LGPL-2.1-or-later' })
+            expect(parse('LGPL-2.1+')).toStrictEqual({ license: 'LGPL-2.1-or-later' })
+        })
+
+        describe('LGPL-3.0', () => {
+            expect(parse('LGPL-3.0-only')).toStrictEqual({ license: 'LGPL-3.0-only' })
+            expect(parse('LGPL-3.0')).toStrictEqual({ license: 'LGPL-3.0-only' })
+            expect(parse('LGPL-3.0-or-later')).toStrictEqual({ license: 'LGPL-3.0-or-later' })
+            expect(parse('LGPL-3.0+')).toStrictEqual({ license: 'LGPL-3.0-or-later' })
         })
     })
 
-    describe('"Apache version 2" is interpreted as "Apache-2.0"', () => {
-
-        it('AV2 alone', () => {
-            expect(parse('Apache version 2')).toStrictEqual({ license: 'Apache-2.0' })
+    describe('AGPL', () => {
+        it('AGPL-1.0', () => {
+            expect(parse('AGPL-1.0-only')).toStrictEqual({ license: 'AGPL-1.0-only' })
+            expect(parse('AGPL-1.0')).toStrictEqual({ license: 'AGPL-1.0-only' })
+            expect(parse('AGPL-1.0-or-later')).toStrictEqual({ license: 'AGPL-1.0-or-later' })
         })
 
-        it('AV2 with WITH', () => {
-            expect(parse('Apache version 2 WITH Autoconf-exception-2.2')).toStrictEqual({
-                license: 'Apache-2.0',
-                exception: 'Autoconf-exception-2.2'
-            })
+        it('AGPL-3.0', () => {
+            expect(parse('AGPL-3.0-only')).toStrictEqual({ license: 'AGPL-3.0-only' })
+            expect(parse('AGPL-3.0')).toStrictEqual({ license: 'AGPL-3.0-only' })
+            expect(parse('AGPL-3.0-or-later')).toStrictEqual({ license: 'AGPL-3.0-or-later' })
+        })
+    })
+
+    describe('GPL', () => {
+        it('GPL-1.0', () => {
+            expect(parse('GPL-1.0-only')).toStrictEqual({ license: 'GPL-1.0-only' })
+            expect(parse('GPL-1.0')).toStrictEqual({ license: 'GPL-1.0-only' })
+            expect(parse('GPL-1.0-or-later')).toStrictEqual({ license: 'GPL-1.0-or-later' })
+            expect(parse('GPL-1.0+')).toStrictEqual({ license: 'GPL-1.0-or-later' })
         })
 
-        it('AV2 with OR', () => {
-            expect(parse('Apache version 2 OR MIT')).toStrictEqual({
+        it('GPL-2.0', () => {
+            expect(parse('GPL-2.0-only')).toStrictEqual({ license: 'GPL-2.0-only' })
+            expect(parse('GPL-2.0')).toStrictEqual({ license: 'GPL-2.0-only' })
+            expect(parse('GPL-2.0-or-later')).toStrictEqual({ license: 'GPL-2.0-or-later' })
+            expect(parse('GPL-2.0+')).toStrictEqual({ license: 'GPL-2.0-or-later' })
+        })
+
+        it('GPL-3.0', () => {
+            expect(parse('GPL-3.0-only')).toStrictEqual({ license: 'GPL-3.0-only' })
+            expect(parse('GPL-3.0')).toStrictEqual({ license: 'GPL-3.0-only' })
+            expect(parse('GPL-3.0-or-later')).toStrictEqual({ license: 'GPL-3.0-or-later' })
+            expect(parse('GPL-3.0+')).toStrictEqual({ license: 'GPL-3.0-or-later' })
+        })
+    })
+
+    describe('"LGPL-2.0" is interpreted as "LGPL-2.0-only"', () => {
+
+        it('in a simple expression', () => {
+            expect(parse('LGPL-2.0')).toStrictEqual({ license: 'LGPL-2.0-only' })
+        })
+
+        it('in a compound expression', () => {
+            expect(parse('LGPL-2.0 OR MIT')).toStrictEqual({
                 conjunction: 'or',
-                left: {license: 'Apache-2.0'},
-                right: {license: 'MIT'}
+                left: { license: 'LGPL-2.0-only' },
+                right: { license:'MIT' }
             })
         })
+    })
+})
 
-        it('AV2 with AND', () => {
-            expect(parse('Apache version 2 AND MIT')).toStrictEqual({
-                conjunction: 'and',
-                left: {license: 'Apache-2.0'},
-                right: {license: 'MIT'}
-            })
-        })
+describe('Common shorthands or forms for Apache-1.1', () => {
+
+    [
+        'apache1.1',
+        'apache 1.1',
+        'apache-1.1',
+        'apache software license',
+        'apache software license 1.1',
+        'apache software license version 1.1',
+        'apache software license, version 1.1'
+    ].forEach(spelling => {
+        it(spelling, () => expect(parse(spelling)).toStrictEqual({ license: 'Apache-1.1' }))
+    })
+})
+
+describe('Common shorthands or forms for Apache-2.0', () => {
+
+    [
+        'Apache2',
+        'Apache 2',
+        'Apache-2',
+        'Apache version 2',
+        'Apache version 2.0',
+        'Apache license 2',
+        'Apache license 2.0',
+        'Apache license version 2',
+        'Apache License version 2.0',
+        'Apache License, version 2',
+        'Apache License, version 2.0'
+    ].forEach(spelling => {
+        it(spelling, () => expect(parse(spelling)).toStrictEqual({ license: 'Apache-2.0' }))
     })
 
     describe('"Apache 2" is interpreted as "Apache-2.0"', () => {
@@ -74,8 +135,8 @@ describe('Common shorthands or forms for Apache-2.0', () => {
         })
 
         it('(first) in a compound expression', () => {
-            expect(parse('Apache 2 OR MIT')).toStrictEqual({
-                conjunction: 'or',
+            expect(parse('Apache 2 AND MIT')).toStrictEqual({
+                conjunction: 'and',
                 left: { license: 'Apache-2.0' },
                 right: { license:'MIT' }
             })
@@ -98,8 +159,8 @@ describe('Common shorthands or forms for Apache-2.0', () => {
         })
 
         it('(last) in a wrapped compound expression', () => {
-            expect(parse('(MIT OR Apache 2)')).toStrictEqual({
-                conjunction: 'or',
+            expect(parse('(MIT AND Apache 2)')).toStrictEqual({
+                conjunction: 'and',
                 left: { license:'MIT' },
                 right: { license: 'Apache-2.0' }
             })
@@ -147,126 +208,125 @@ describe('Common shorthands or forms for Apache-2.0', () => {
 })
 
 describe('Common shorthands for GPL versions', () => {
-    describe('"GPL" is interpreted as "GPL-3.0-or-later"', () => {
 
-        it('in a simple expression', () => {
-            expect(parse('GPL')).toStrictEqual({ license: 'GPL-3.0-or-later' })
-        })
-
-        it('in a compound expression', () => {
-            expect(parse('GPL OR MIT')).toStrictEqual({
-                conjunction: 'or',
-                left: { license: 'GPL-3.0-or-later' },
-                right: { license:'MIT' }
-            })
-        })
+    it('"GPL" is interpreted as "GPL-3.0-or-later"', () => {
+        expect(parse('GPL')).toStrictEqual({ license: 'GPL-3.0-or-later' })
     })
 
-    describe('"GPLv3" is interpreted as "GPL-3.0-or-later"', () => {
-
-        it('in a simple expression', () => {
-            expect(parse('GPLv3')).toStrictEqual({ license: 'GPL-3.0-or-later' })
-        })
-
-        it('in a compound expression', () => {
-            expect(parse('GPLv3 OR MIT')).toStrictEqual({
-                conjunction: 'or',
-                left: { license: 'GPL-3.0-or-later' },
-                right: { license:'MIT' }
-            })
-        })
+    it('"GPLv3" is interpreted as "GPL-3.0-or-later"', () => {
+        expect(parse('GPLv3')).toStrictEqual({ license: 'GPL-3.0-or-later' })
     })
 
-    describe('"GPLv2" is interpreted as "GPL-2.0-or-later"', () => {
-
-        it('in a simple expression', () => {
-            expect(parse('GPLv2')).toStrictEqual({ license: 'GPL-2.0-only' })
-        })
-
-        it('in a compound expression', () => {
-            expect(parse('GPLv2 OR MIT')).toStrictEqual({
-                conjunction: 'or',
-                left: { license: 'GPL-2.0-only' },
-                right: { license:'MIT' }
-            })
-        })
+    it('"GPLv2" is interpreted as "GPL-2.0-or-later"', () => {
+        expect(parse('GPLv2')).toStrictEqual({ license: 'GPL-2.0-only' })
     })
 })
 
 describe('Expressions with nonexistent version numbers', () => {
 
-    describe('"GPL-2.1" is interpreted as "GPL-2.0-only"', () => {
-
-        it('in a simple expression', () => {
-            expect(parse('GPL-2.1')).toStrictEqual({ license: 'GPL-2.0-only' })
-        })
-
-        it('in a compound expression', () => {
-            expect(parse('GPL-2.1 OR MIT')).toStrictEqual({
-                conjunction: 'or',
-                left: { license: 'GPL-2.0-only' },
-                right: { license:'MIT' }
-            })
-        })
+    it('"GPL-2.1" is interpreted as "GPL-2.0-only"', () => {
+        expect(parse('GPL-2.1')).toStrictEqual({ license: 'GPL-2.0-only' })
     })
 })
 
 describe('Expressions with slight errors', () => {
 
-    describe('lowercase "mit" is interpreted as "MIT"', () => {
+    /**
+     * @see https://spdx.github.io/spdx-spec/SPDX-license-expressions/#d2-case-sensitivity
+     */
+    describe('license identifiers are corrected to the official case', () => {
 
         it('in a simple expression', () => {
             expect(parse('mit')).toStrictEqual({ license: 'MIT' })
-        })
-
-        it('in a compound expression', () => {
-            expect(parse('BSD-2-Clause OR mit')).toStrictEqual({
-                conjunction: 'or',
-                left: { license: 'BSD-2-Clause' },
-                right: { license:'MIT' }
-            })
-        })
-    })
-
-    describe('lowercase "apache-2.0" is interpreted as "Apache-2.0"', () => {
-
-        it('in a simple expression', () => {
+            expect(parse('mIt')).toStrictEqual({ license: 'MIT' })
+            expect(parse('Mit')).toStrictEqual({ license: 'MIT' })
             expect(parse('apache-2.0')).toStrictEqual({ license: 'Apache-2.0' })
         })
 
         it('in a compound expression', () => {
-            expect(parse('BSD-2-Clause OR apache-2.0')).toStrictEqual({
+            expect(parse('BSD-2-clause OR mit')).toStrictEqual({
                 conjunction: 'or',
                 left: { license: 'BSD-2-Clause' },
-                right: { license:'Apache-2.0' }
+                right: { license:'MIT' }
+            })
+        })
+
+        it('in a complex compound expression', () => {
+            expect(parse('bsd-2-CLAUSE AND (apache-2.0 OR GPL-3.0-OR-LATER)')).toStrictEqual({
+                conjunction: 'and',
+                left: { license: 'BSD-2-Clause' },
+                right: {
+                    conjunction: 'or',
+                    left: { license:'Apache-2.0' },
+                    right: { license:'GPL-3.0-or-later' }
+                }
             })
         })
     })
 
-    describe('"BSD0" is interpreted as "0BSD"', () => {
+    describe('common misspellings', () => {
 
-        it('in a simple expression', () => {
-            expect(parse('BSD0')).toStrictEqual({ license: '0BSD' })
+        describe('of license exceptions', () => {
+            it('"autoconf exception 2.0" or "autoconf exception version 2" is corrected to Autoconf-exception-2.0', () => {
+                console.error(JSON.stringify(parseSpdxExpressionWithDetails('GPL-3.0-only WITH autoconf exception 2.0'), null, 4))
+                expect(parse('GPL-3.0-only WITH autoconf exception 2.0'))
+                    .toStrictEqual({ license: 'GPL-3.0-only', exception: 'Autoconf-exception-2.0' })
+                expect(parse('GPL-3.0-only WITH autoconf exception 2'))
+                    .toStrictEqual({ license: 'GPL-3.0-only', exception: 'Autoconf-exception-2.0' })
+            })
         })
 
-        it('(first) in a compound expression', () => {
-            const expected = {
-                conjunction: 'or',
-                left: { license: '0BSD' },
-                right: { license:'MIT' }
-            }
-            expect(parse('BSD0 OR MIT')).toStrictEqual(expected)
-            expect(parse('bsd0 OR MIT')).toStrictEqual(expected)
-        })
+        describe('of licenses', () => {
 
-        it('(last) in a compound expression', () => {
-            const expected = {
-                conjunction: 'or',
-                left: { license:'MIT' },
-                right: { license: '0BSD' }
-            }
-            expect(parse('MIT OR BSD0')).toStrictEqual(expected)
-            expect(parse('MIT OR bsd0')).toStrictEqual(expected)
+            it('"BSD" or "BSD license" is corrected to BSD-2-Clause', () => {
+                expect(parse('BSD')).toStrictEqual({ license: 'BSD-2-Clause' })
+                expect(parse('BSD License')).toStrictEqual({ license: 'BSD-2-Clause' })
+            })
+
+            it('"FreeBSD" or "FreeBSD License" is corrected to "BSD-2-Clause"', () => {
+                expect(parse('FreeBSD License')).toStrictEqual({ license: 'BSD-2-Clause' })
+                expect(parse('freebsd license')).toStrictEqual({ license: 'BSD-2-Clause' })
+                expect(parse('frEeBsD')).toStrictEqual({ license: 'BSD-2-Clause' })
+            })
+
+            it('"simplified bsd license" or "the simplified bsd license" is corrected to "BSD-2-Clause"', () => {
+                expect(parse('Simplified BSD License')).toStrictEqual({ license: 'BSD-2-Clause' })
+                expect(parse('the simplified bsd license')).toStrictEqual({ license: 'BSD-2-Clause' })
+            })
+
+            it('"simplified bsd license" or "the simplified bsd license" is corrected to "BSD-2-Clause"', () => {
+                expect(parse('Simplified BSD License')).toStrictEqual({ license: 'BSD-2-Clause' })
+                expect(parse('the simplified bsd license')).toStrictEqual({ license: 'BSD-2-Clause' })
+            })
+
+            it('"new bsd license" or "modified bsd license" is corrected to "BSD-3-Clause"', () => {
+                expect(parse('New BSD License')).toStrictEqual({ license: 'BSD-3-Clause' })
+                expect(parse('the new bsd license')).toStrictEqual({ license: 'BSD-3-Clause' })
+                expect(parse('Modified BSD License')).toStrictEqual({ license: 'BSD-3-Clause' })
+                expect(parse('the modified bsd license')).toStrictEqual({ license: 'BSD-3-Clause' })
+            })
+
+            it('"BSD0" is corrected to 0BSD', () => {
+                expect(parse('BSD0')).toStrictEqual({ license: '0BSD' })
+            })
+
+            it('"Zero-Clause BSD" is corrected to 0BSD', () => {
+                expect(parse('Zero-Clause BSD')).toStrictEqual({ license: '0BSD' })
+            })
+
+            it('"Free Public License 1.0.0" or "Free Public License" is corrected to 0BSD', () => {
+                expect(parse('Free Public License 1.0.0')).toStrictEqual({ license: '0BSD' })
+                expect(parse('Free Public License 1.0')).toStrictEqual({ license: '0BSD' })
+                expect(parse('Free Public License')).toStrictEqual({ license: '0BSD' })
+            })
+
+            it('"BSD2" is corrected to BSD-2-Clause', () => {
+                expect(parse('BSD2')).toStrictEqual({ license: 'BSD-2-Clause' })
+            })
+
+            it('"BSD3" is corrected to BSD-3-Clause', () => {
+                expect(parse('BSD3')).toStrictEqual({ license: 'BSD-3-Clause' })
+            })
         })
     })
 })
