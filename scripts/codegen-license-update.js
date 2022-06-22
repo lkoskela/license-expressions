@@ -76,9 +76,36 @@ const updateExceptionsFileAt = async (destinationFilePath) => {
     }
 }
 
+const fileIsOlderThan = (oldestAcceptableTimestamp, filePath) => {
+    return fs.statSync(filePath).mtime < oldestAcceptableTimestamp
+}
+
+const updateLicenseFileIfOlderThan = async (oldestAcceptableTimestamp, filePath) => {
+    if (!fs.existsSync(filePath) || fileIsOlderThan(oldestAcceptableTimestamp, filePath)) {
+        return await updateLicenseFileAt(filePath)
+    } else {
+        console.log(`Not updating ${filePath} (it's recent enough)`)
+    }
+}
+
+const updateExceptionsFileIfOlderThan = async (oldestAcceptableTimestamp, filePath) => {
+    if (!fs.existsSync(filePath) || fileIsOlderThan(oldestAcceptableTimestamp, filePath)) {
+        return await updateExceptionsFileAt(filePath)
+    } else {
+        console.log(`Not updating ${filePath} (it's recent enough)`)
+    }
+}
+
+const dateHoursBeforeNow = (hours) => {
+    const d = new Date()
+    const nowInMillis = d.getTime()
+    return new Date(nowInMillis - hours * 60 * 60 * 1000)
+}
+
 const main = async (licenseFilePath, exceptionsFilePath) => {
-    await updateLicenseFileAt(licenseFilePath)
-    await updateExceptionsFileAt(exceptionsFilePath)
+    const oldestAcceptableTimestamp = dateHoursBeforeNow(24)
+    await updateLicenseFileIfOlderThan(oldestAcceptableTimestamp, licenseFilePath)
+    await updateExceptionsFileIfOlderThan(oldestAcceptableTimestamp, exceptionsFilePath)
 }
 
 (async () => {
