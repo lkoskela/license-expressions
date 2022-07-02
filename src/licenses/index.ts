@@ -69,6 +69,7 @@ const aliasesForLicenseIds: Map<string, string> = ((): Map<string, string> => {
 
 const aliasesForExceptions: Map<string, string> = ((): Map<string, string> => {
     const mapOfAliases = new Map<string, string>()
+    mapOfAliases.set('qwt license 1.0', 'Qwt-exception-1.0')
     return mapOfAliases
 })()
 
@@ -110,12 +111,50 @@ export function correctLicenseId(id: string): string {
         || precorrectedId
 }
 
+const spdxCorrectException = (id: string): string | undefined => {
+    const variationsToTest: string[] = [
+        id.replace(/\s+/, '-'),
+        id.replace(/\s+version\s+/i, ' '),
+        id.replace(/(\d+)$/, '$1.0')
+    ]
+    const matchedIds = variationsToTest.map(variation => mapOfKnownExceptions.get(variation))
+    return matchedIds.filter(matchedId => !!matchedId)[0]
+}
+
 export function correctExceptionId(id: string): string {
-    const applyAliases = (id: string): string => {
-        const lowercaseId = id.toLowerCase().replace(/^the /, '')
-        return aliasesForExceptions.get(lowercaseId) || id
+
+    const debug = id === 'autoconf exception version 2'
+    const debugPrefix = `correctLicenseId(${JSON.stringify(id)})`
+
+    if (debug) {
+        console.log(debugPrefix)
     }
 
-    const precorrectedId = applyAliases(id)
-    return mapOfKnownExceptions.get(precorrectedId) || precorrectedId
+    const removeExtras = (id: string): string => {
+        return id.replace(/^the\s+/i, '').replace(/\s+/, ' ')
+    }
+
+    const applyAliases = (id: string): string => {
+        const lowercaseId = id.toLowerCase()
+        const lowercaseIdWithoutWordVersion = lowercaseId.replace(/\s+version\s+(\d+)/, ' $1')
+        return aliasesForExceptions.get(lowercaseId) || aliasesForExceptions.get(lowercaseIdWithoutWordVersion) || id
+    }
+
+    id = removeExtras(id)
+    if (debug) {
+        console.log(`${debugPrefix} - removed extras => ${JSON.stringify(id)}`)
+    }
+
+    id = applyAliases(id)
+    if (debug) {
+        console.log(`${debugPrefix} - applied aliases => ${JSON.stringify(id)}`)
+    }
+
+    const correctedId = mapOfKnownExceptions.get(id)
+    if (debug) {
+        console.log(`${debugPrefix} - mapped to known identifier => ${JSON.stringify(correctedId)}`)
+    }
+
+    // `id` can be either "Apache-2.0" or "Apache license version 2" (for example)
+    return correctedId || spdxCorrectException(id) || id
 }

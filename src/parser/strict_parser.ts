@@ -24,7 +24,8 @@ export function parse(input: string): StrictParserResult {
         const convertLicenseIdExpression = (node: StrictParser.license_id_expression): LicenseInfo => {
             const correctedLicenseId = correctLicenseId(node.license.license)
             if (!!node.exception) {
-                return { license: correctedLicenseId, exception: node.exception.exception } as LicenseInfo
+                const correctedExceptionId = correctExceptionId(node.exception.exception)
+                return { license: correctedLicenseId, exception: correctedExceptionId } as LicenseInfo
             } else {
                 return { license: correctedLicenseId } as LicenseInfo
             }
