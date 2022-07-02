@@ -1,4 +1,4 @@
-import {parseSpdxExpression as parse, parseSpdxExpressionWithDetails} from '../src'
+import { parseSpdxExpression as parse } from '../src'
 
 
 describe('GPL family of expressions with a "+" suffix', () => {

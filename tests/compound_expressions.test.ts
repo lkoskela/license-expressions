@@ -1,5 +1,6 @@
 import {parseSpdxExpression as parse} from '../src'
 
+
 describe('Compound expressions (e.g. dual licensing scenarios)', () => {
 
     describe('with leading/trailing whitespace', () => {

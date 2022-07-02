@@ -1,6 +1,6 @@
 import {parseSpdxExpression, parseSpdxExpressionWithDetails} from '../src'
 import defaultParseFunction from '../src'
-import { FullSpdxParseResult } from '../src/parser'
+
 
 describe('Parsing API', () => {
 

@@ -1,7 +1,9 @@
+import 'jest-extended'
+
 import {parseSpdxExpression as parse} from '../src'
 import licenses from '../src/codegen/licenses.json'
 import { LicenseInfo } from '../src/parser/types'
-import 'jest-extended'
+
 
 const nonDeprecatedLicenseIds = licenses.licenses.filter(l => !l.isDeprecatedLicenseId).map(l => l.licenseId).sort()
 const deprecatedLicenseIds = licenses.licenses.filter(l => l.isDeprecatedLicenseId).map(l => l.licenseId).sort()
