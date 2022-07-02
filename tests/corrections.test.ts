@@ -272,6 +272,12 @@ describe('Expressions with slight errors', () => {
         })
     })
 
+    describe('misspelling that has no fix', () => {
+        it('renders the exception in its original form', () => {
+            expect(parse('MIT WITH No Such Exception')).toStrictEqual({ license: 'MIT', exception: 'No Such Exception' })
+        })
+    })
+
     describe('common misspellings', () => {
 
         describe('of license exceptions', () => {

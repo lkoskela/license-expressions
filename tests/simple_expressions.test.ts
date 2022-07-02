@@ -90,4 +90,16 @@ describe('Simple expressions', () => {
             })
         })
     })
+
+    describe('with a syntactically correct but unknown exception', () => {
+        it('render the identifier in its original form', () => {
+            expect(parse('MIT WITH Fake-1.1')).toStrictEqual({ license: 'MIT', exception: 'Fake-1.1' })
+        })
+    })
+
+    describe('with a syntactically correct but unknown license', () => {
+        it('render the identifier in its original form', () => {
+            expect(parse('Fake')).toStrictEqual({ license: 'Fake' })
+        })
+    })
 })

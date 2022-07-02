@@ -5,7 +5,6 @@ import exceptions from '../codegen/exceptions.json'
 
 type MapOfIds = {
     get: (id: string) => string | undefined,
-    knownAliases: () => string[]
 }
 
 const createMapOfIds = (ids: string[]): MapOfIds => {
@@ -30,8 +29,7 @@ const createMapOfIds = (ids: string[]): MapOfIds => {
     const get = (id: string): string | undefined => {
         return getExactMatch(id) || getCaseInsensitiveMatch(id) || getFuzzyMatch(id)
     }
-    const knownAliases = (): string[] => [ ...mapOfLowercaseIds.keys(), ...mapOfMutilatedIds.keys() ].sort()
-    return { get, knownAliases } as MapOfIds
+    return { get } as MapOfIds
 }
 
 const mapOfKnownLicenses: MapOfIds = createMapOfIds(licenses.licenses.map(lic => lic.licenseId))
@@ -73,21 +71,60 @@ const aliasesForExceptions: Map<string, string> = ((): Map<string, string> => {
     return mapOfAliases
 })()
 
-export function correctLicenseId(id: string): string {
+const mapLicenseAlias = (alias: string): string | undefined => {
+    return aliasesForLicenseIds.get(alias.toLowerCase())
+}
+
+const mapLicenseId = (id: string): string | undefined => {
+    return mapOfKnownLicenses.get(id.toLowerCase())
+}
+
+const fixLicenseId = (id: string): string | null => {
+    // Use `spdx-correct` to try and correct identifiers that we haven't fixed already:
+    return spdxCorrect(id, { upgrade: true })
+}
+
+const mapExceptionAlias = (alias: string): string | undefined => {
+    return aliasesForExceptions.get(alias.toLowerCase())
+}
+
+const mapExceptionId = (id: string): string | undefined => {
+    return mapOfKnownExceptions.get(id.toLowerCase())
+}
+
+const fixExceptionid = (id: string): string | undefined => {
+    const variations: string[] = [
+        id.replace(/\s+/, '-'),
+        id.replace(/\s+version\s+/i, ' '),
+        id.replace(/(\d+)$/, '$1.0')
+    ]
+    const matchedIds = variations.map(mapExceptionId)
+    return matchedIds.filter(matchedId => !!matchedId)[0]
+}
+
+/**
+ * Fix the given license identifier, if possible, or return it unchanged.
+ *
+ * @param identifier SPDX license identifier to "fix" if possible
+ * @returns A corrected SPDX license identifier or the original, if no suitable "fix" was found
+ */
+export function correctLicenseId(identifier: string): string {
+
+    const mapLicense = (id: string): string|undefined => mapLicenseId(id) || mapLicenseAlias(id)
 
     // The `spdx-correct` package does not have fixes for everything (e.g. a common misspelling for the
     // zero-clause variant of the BSD license or for names such as "The Simplified BSD license") so we'll
     // check for a list of known aliases ourselves:
     const applyAliases = (id: string): string => {
-        const lowercaseId = id.toLowerCase().replace(/^the /, '')
-        return aliasesForLicenseIds.get(lowercaseId) || aliasesForLicenseIds.get(`the ${lowercaseId}`) || id
+        const lowercaseId = id.replace(/^the /i, '')
+        return mapLicense(lowercaseId) || mapLicense(`the ${lowercaseId}`) || id
     }
 
     // The `spdx-correct` package will coerce "GPL-3.0" into "GPL-3.0-or-later", although
     // "GPL-3.0-only" would be more true to the original intent:
     const applyGPLFixes = (id: string): string => {
-        if (mapOfKnownLicenses.get(id)) {
-            return mapOfKnownLicenses.get(`${id}-only`) || id
+        if (mapLicense(id)) {
+            return mapLicense(`${id}-only`) || id
         }
         return id
     }
@@ -96,39 +133,25 @@ export function correctLicenseId(id: string): string {
     const expandPlus = (id: string): string => {
         if (id.endsWith('+')) {
             const orLaterId = id.replace(/\+$/, '-or-later')
-            if (mapOfKnownLicenses.get(orLaterId)) {
+            if (mapLicense(orLaterId)) {
                 return orLaterId
             }
         }
         return id
     }
 
-    const precorrectedId = expandPlus(applyGPLFixes(applyAliases(id)))
+    const id = expandPlus(applyGPLFixes(applyAliases(identifier)))
 
-    // Use `spdx-correct` to try and correct identifiers that we haven't fixed already:
-    return mapOfKnownLicenses.get(precorrectedId)
-        || spdxCorrect(precorrectedId, { upgrade: true })
-        || precorrectedId
+    return mapLicense(id) || fixLicenseId(id) || id
 }
 
-const spdxCorrectException = (id: string): string | undefined => {
-    const variationsToTest: string[] = [
-        id.replace(/\s+/, '-'),
-        id.replace(/\s+version\s+/i, ' '),
-        id.replace(/(\d+)$/, '$1.0')
-    ]
-    const matchedIds = variationsToTest.map(variation => mapOfKnownExceptions.get(variation))
-    return matchedIds.filter(matchedId => !!matchedId)[0]
-}
-
-export function correctExceptionId(id: string): string {
-
-    const debug = id === 'autoconf exception version 2'
-    const debugPrefix = `correctLicenseId(${JSON.stringify(id)})`
-
-    if (debug) {
-        console.log(debugPrefix)
-    }
+/**
+ * Fix the given exception identifier, if possible, or return it unchanged.
+ *
+ * @param identifier SPDX exception identifier to "fix" if possible
+ * @returns A corrected SPDX exception identifier or the original, if no suitable "fix" was found
+ */
+export function correctExceptionId(identifier: string): string {
 
     const removeExtras = (id: string): string => {
         return id.replace(/^the\s+/i, '').replace(/\s+/, ' ')
@@ -137,24 +160,9 @@ export function correctExceptionId(id: string): string {
     const applyAliases = (id: string): string => {
         const lowercaseId = id.toLowerCase()
         const lowercaseIdWithoutWordVersion = lowercaseId.replace(/\s+version\s+(\d+)/, ' $1')
-        return aliasesForExceptions.get(lowercaseId) || aliasesForExceptions.get(lowercaseIdWithoutWordVersion) || id
+        return mapExceptionAlias(lowercaseId) || mapExceptionAlias(lowercaseIdWithoutWordVersion) || id
     }
 
-    id = removeExtras(id)
-    if (debug) {
-        console.log(`${debugPrefix} - removed extras => ${JSON.stringify(id)}`)
-    }
-
-    id = applyAliases(id)
-    if (debug) {
-        console.log(`${debugPrefix} - applied aliases => ${JSON.stringify(id)}`)
-    }
-
-    const correctedId = mapOfKnownExceptions.get(id)
-    if (debug) {
-        console.log(`${debugPrefix} - mapped to known identifier => ${JSON.stringify(correctedId)}`)
-    }
-
-    // `id` can be either "Apache-2.0" or "Apache license version 2" (for example)
-    return correctedId || spdxCorrectException(id) || id
+    const id = applyAliases(removeExtras(identifier))
+    return mapExceptionId(id) || fixExceptionid(id) || id
 }
