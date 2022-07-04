@@ -34,7 +34,7 @@ WITH := whitespace 'WITH' whitespace
 AND := whitespace 'AND' whitespace
 OR := whitespace 'OR' whitespace
 whitespace := '[\s\t\n]+'
+license_ref_id := prefix='LicenseRef-' value='[a-zA-Z0-9\-\.]+'
+document_ref_id := prefix='DocumentRef-' value='[a-zA-Z0-9\-\.]+'
 idstring := '[a-zA-Z0-9 ][a-zA-Z0-9\.\-]*[a-zA-Z0-9]+\+?'
-license_ref_id := prefix='LicenseRef-' value=idstring
-document_ref_id := prefix='DocumentRef-' value=idstring
 license_id := license=idstring '\+'?

@@ -146,6 +146,8 @@ After installing for command-line use, run the `spdx` command and pass an SPDX e
 
 ### Programmatic usage
 
+Parsing SPDX expressions into a structured object:
+
    ```js
    const parse = require('license-expressions')
 
@@ -163,6 +165,16 @@ After installing for command-line use, run the `spdx` command and pass an SPDX e
    //        }
    //    }
    ```
+
+Rendering a normalized string representation of an SPDX expression:
+
+  ```ts
+  import { normalize } from 'license-expressions'
+
+  normalize('  \t  (  MIT   OR Apache-2.0 )\n')
+  // => "Apache-2.0 OR MIT"
+  ```
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

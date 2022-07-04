@@ -26,9 +26,9 @@
 * AND := whitespace 'AND' whitespace
 * OR := whitespace 'OR' whitespace
 * whitespace := '[\s\t\n]+'
+* license_ref_id := prefix='LicenseRef-' value='[a-zA-Z0-9\-\.]+'
+* document_ref_id := prefix='DocumentRef-' value='[a-zA-Z0-9\-\.]+'
 * idstring := '[a-zA-Z0-9 ][a-zA-Z0-9\.\-]*[a-zA-Z0-9]+\+?'
-* license_ref_id := prefix='LicenseRef-' value=idstring
-* document_ref_id := prefix='DocumentRef-' value=idstring
 * license_id := license=idstring '\+'?
 */
 type Nullable<T> = T | null;
@@ -76,9 +76,9 @@ export enum ASTKinds {
     AND = "AND",
     OR = "OR",
     whitespace = "whitespace",
-    idstring = "idstring",
     license_ref_id = "license_ref_id",
     document_ref_id = "document_ref_id",
+    idstring = "idstring",
     license_id = "license_id",
     $EOF = "$EOF",
 }
@@ -186,17 +186,17 @@ export interface OR {
     kind: ASTKinds.OR;
 }
 export type whitespace = string;
-export type idstring = string;
 export interface license_ref_id {
     kind: ASTKinds.license_ref_id;
     prefix: string;
-    value: idstring;
+    value: string;
 }
 export interface document_ref_id {
     kind: ASTKinds.document_ref_id;
     prefix: string;
-    value: idstring;
+    value: string;
 }
+export type idstring = string;
 export interface license_id {
     kind: ASTKinds.license_id;
     license: idstring;
@@ -626,18 +626,15 @@ export class Parser {
     public matchwhitespace($$dpth: number, $$cr?: ErrorTracker): Nullable<whitespace> {
         return this.regexAccept(String.raw`(?:[\s\t\n]+)`, $$dpth + 1, $$cr);
     }
-    public matchidstring($$dpth: number, $$cr?: ErrorTracker): Nullable<idstring> {
-        return this.regexAccept(String.raw`(?:[a-zA-Z0-9 ][a-zA-Z0-9\.\-]*[a-zA-Z0-9]+\+?)`, $$dpth + 1, $$cr);
-    }
     public matchlicense_ref_id($$dpth: number, $$cr?: ErrorTracker): Nullable<license_ref_id> {
         return this.run<license_ref_id>($$dpth,
             () => {
                 let $scope$prefix: Nullable<string>;
-                let $scope$value: Nullable<idstring>;
+                let $scope$value: Nullable<string>;
                 let $$res: Nullable<license_ref_id> = null;
                 if (true
                     && ($scope$prefix = this.regexAccept(String.raw`(?:LicenseRef-)`, $$dpth + 1, $$cr)) !== null
-                    && ($scope$value = this.matchidstring($$dpth + 1, $$cr)) !== null
+                    && ($scope$value = this.regexAccept(String.raw`(?:[a-zA-Z0-9\-\.]+)`, $$dpth + 1, $$cr)) !== null
                 ) {
                     $$res = {kind: ASTKinds.license_ref_id, prefix: $scope$prefix, value: $scope$value};
                 }
@@ -648,16 +645,19 @@ export class Parser {
         return this.run<document_ref_id>($$dpth,
             () => {
                 let $scope$prefix: Nullable<string>;
-                let $scope$value: Nullable<idstring>;
+                let $scope$value: Nullable<string>;
                 let $$res: Nullable<document_ref_id> = null;
                 if (true
                     && ($scope$prefix = this.regexAccept(String.raw`(?:DocumentRef-)`, $$dpth + 1, $$cr)) !== null
-                    && ($scope$value = this.matchidstring($$dpth + 1, $$cr)) !== null
+                    && ($scope$value = this.regexAccept(String.raw`(?:[a-zA-Z0-9\-\.]+)`, $$dpth + 1, $$cr)) !== null
                 ) {
                     $$res = {kind: ASTKinds.document_ref_id, prefix: $scope$prefix, value: $scope$value};
                 }
                 return $$res;
             });
+    }
+    public matchidstring($$dpth: number, $$cr?: ErrorTracker): Nullable<idstring> {
+        return this.regexAccept(String.raw`(?:[a-zA-Z0-9 ][a-zA-Z0-9\.\-]*[a-zA-Z0-9]+\+?)`, $$dpth + 1, $$cr);
     }
     public matchlicense_id($$dpth: number, $$cr?: ErrorTracker): Nullable<license_id> {
         return this.run<license_id>($$dpth,

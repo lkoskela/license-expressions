@@ -3,6 +3,7 @@
     "src/**/*.ts",
     "src/**/*.json"
   ],
+  "files": ["src/local-types/global.d.ts"],
   "compilerOptions": {
     "declaration": true,
     "downlevelIteration": true,

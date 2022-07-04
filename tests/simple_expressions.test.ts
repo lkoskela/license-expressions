@@ -11,11 +11,11 @@ const deprecatedLicenseIds = licenses.licenses.filter(l => l.isDeprecatedLicense
 describe('Simple expressions', () => {
 
     describe('without license exception', () => {
-    
+
         it('do not have to be actual known license identifiers', () => {
             expect(parse('XYZ-1.2')).toStrictEqual({ license: 'XYZ-1.2' })
         })
-    
+
         it('are trimmed of leading/trailing whitespace', () => {
             expect(parse(' \t \n MIT')).toStrictEqual({ license: 'MIT' })
             expect(parse('MIT \t \n ')).toStrictEqual({ license: 'MIT' })
@@ -61,6 +61,10 @@ describe('Simple expressions', () => {
             expect(parse('LicenseRef-23')).toStrictEqual({
                 documentRef: undefined,
                 licenseRef: 'LicenseRef-23'
+            })
+            expect(parse('DocumentRef-X:LicenseRef-Y')).toStrictEqual({
+                documentRef: 'DocumentRef-X',
+                licenseRef: 'LicenseRef-Y'
             })
         })
 

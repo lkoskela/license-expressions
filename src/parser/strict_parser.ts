@@ -30,7 +30,7 @@ export function parse(input: string): StrictParserResult {
                 return { license: correctedLicenseId } as LicenseInfo
             }
         }
-    
+
         const converLicenseRefExpression = (node: StrictParser.license_ref_expression | StrictParser.license_ref_expression_1): LicenseRef => {
             const extractDocumentRef = (node: StrictParser.license_ref_expression_1): string|undefined => {
                 if (node.document_ref && node.document_ref.prefix) {
@@ -46,7 +46,7 @@ export function parse(input: string): StrictParserResult {
                 licenseRef: extractLicenseRef(node),
             } as LicenseRef
         }
-        
+
         if (node.kind === 'license_id_expression') {
             return convertLicenseIdExpression(node)
         } else if (node.kind === 'wrapped_expression') {
@@ -70,7 +70,7 @@ export function parse(input: string): StrictParserResult {
         }
         /* istanbul ignore next */ assert.fail(`reduceNode() did not recognize input: ${JSON.stringify(node)}`)
     }
-    
+
     const p = new StrictParser.Parser(input)
     const tree = p.parse()
     const expression = reduceNode(tree.ast?.value)
