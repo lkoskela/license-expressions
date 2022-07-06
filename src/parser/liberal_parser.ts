@@ -34,11 +34,7 @@ export function parse(input: string): LiberalParserResult {
                 right: reduceNode(node.right)
             } as ConjunctionInfo
         } else if (node.kind === LiberalParser.ASTKinds.license_exception) {
-            if (node.value) {
-                return correctExceptionId(reduceNode(node.value))
-            } else {
-                /* istanbul ignore next */ assert.fail(`convertNodeWithCorrections() did not recognize input: ${JSON.stringify(node, null, 2)}`)
-            }
+            return correctExceptionId(reduceNode(node.value))
         } else if (node.kind === LiberalParser.ASTKinds.simple_expression) {
             const license = correctLicenseId(reduceNode(node.value))
             const exception = reduceNode(node.exception)

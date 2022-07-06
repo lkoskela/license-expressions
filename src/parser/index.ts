@@ -34,7 +34,7 @@ const compileFullSpdxParseResult = (input: string, parserResult: StrictParserRes
 }
 
 const buildErrorMessage = (input: string, strictSyntax: boolean): string => {
-    return `Parsing with ${strictSyntax ? 'strict':'liberal'} syntax failed for ${JSON.stringify(input)}`
+    return `${strictSyntax ? 'Strict':'Liberal'} parsing for ${JSON.stringify(input)} failed`
 }
 
 /**
@@ -49,7 +49,7 @@ export function parseSpdxExpression(input: string, strictSyntax: boolean = false
     if (data.error) {
         throw new Error([buildErrorMessage(input, strictSyntax), data.error].join(': '))
     } else if (data.expression === undefined) {
-        throw new Error(buildErrorMessage(input, strictSyntax))
+        /* istanbul ignore next */ throw new Error(buildErrorMessage(input, strictSyntax))
     }
     return data.expression
 }
