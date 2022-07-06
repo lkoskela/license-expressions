@@ -1,7 +1,8 @@
 import spdxCorrect from 'spdx-correct'
 
-import licenses from '../codegen/licenses.json'
-import exceptions from '../codegen/exceptions.json'
+import { licenses, Licenses, License, exceptions, Exceptions, Exception } from './data'
+export { licenses, Licenses, License, exceptions, Exceptions, Exception }
+
 
 type MapOfIds = {
     get: (id: string) => string | undefined,
@@ -80,6 +81,12 @@ const mapLicenseId = (id: string): string | undefined => {
 }
 
 const fixLicenseId = (id: string): string | null => {
+    // Don't try to correct license identifiers that are syntactically legit on the
+    // surface and have an explicit version number such as "3.0" or "2.1":
+    if (id.match(/([a-zA-Z_0-9]+(\-[a-zA-Z_0-9]+)*)\-\d+(\.\d+)+(\-[a-zA-Z_0-9]+)*/)) {
+        return id
+    }
+
     // Use `spdx-correct` to try and correct identifiers that we haven't fixed already:
     return spdxCorrect(id, { upgrade: true })
 }

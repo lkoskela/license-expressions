@@ -175,6 +175,18 @@ Rendering a normalized string representation of an SPDX expression:
   // => "Apache-2.0 OR MIT"
   ```
 
+Validating an SPDX expression:
+
+  ```ts
+  import { validate } from 'license-expressions'
+
+  validate('GPL-2.0 OR BSD-3-Clause')
+  // => { valid: true, errors: [] }
+
+  validate('MIT OR Apache-2.0 WITH Autoconf-exception-2.0')
+  // => { valid: false, errors: [ "Exception associated with unrelated license: \"Apache-2.0 WITH Autoconf-exception-2.0\"" ] }
+  ```
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -187,7 +199,7 @@ There is currently not much of a roadmap.
 
 The rough idea is to first reach a sufficient level of correctness and robustness within the realm of valid SPDX expressions with valid license identifiers. This is mostly in place already, although the treatment of the "+" syntax versus "-or-later", for example, or the similar relationship between "GPL-2.0" and "GPL-2.0-only" may need to change.
 
-The subsequent evolutionary step would be to add the ability to correct slightly mistyped or liberal references to valid licenses, i.e. parse an input such as parsing `"Apache 2"` into `{ license: Apache-2.0 }`, or parsing `"Apache2 or MIT"` into `{ conjunction: 'or', left: { license: 'Apache-2.0' }, right: { license: 'MIT } }`. The basics for such corrections are in place with the help of a secondary, looser parser grammar and the `spdx-correct` third-party library but the implementation could easily be improved with a better grammar and the corrections made by `spdx-correct` may not be exactly what we want...
+The subsequent evolutionary step is to add the ability to correct slightly mistyped or liberal references to valid licenses, i.e. parse an input such as parsing `"Apache 2"` into `{ license: Apache-2.0 }`, or parsing `"Apache2 or MIT"` into `{ conjunction: 'or', left: { license: 'Apache-2.0' }, right: { license: 'MIT } }`. The basics for such corrections are in place with the help of a secondary, looser parser grammar and the `spdx-correct` third-party library but the implementation could easily be improved with a better grammar and the corrections made by `spdx-correct` may not be exactly what we want...
 
 <!--
 - [ ] Feature 1

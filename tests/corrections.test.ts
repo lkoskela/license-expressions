@@ -110,6 +110,13 @@ describe('Common shorthands or forms for Apache-1.1', () => {
     })
 })
 
+describe('Imaginary versions of Apache aren\'t accepted', () => {
+
+    it('Apache-2.6', () => {
+        expect(parse('Apache-2.6')).toStrictEqual({ license: 'Apache-2.6' })
+    })
+})
+
 describe('Common shorthands or forms for Apache-2.0', () => {
 
     [
@@ -224,8 +231,8 @@ describe('Common shorthands for GPL versions', () => {
 
 describe('Expressions with nonexistent version numbers', () => {
 
-    it('"GPL-2.1" is interpreted as "GPL-2.0-only"', () => {
-        expect(parse('GPL-2.1')).toStrictEqual({ license: 'GPL-2.0-only' })
+    describe('Are not corrected', () => {
+        it('GPL-2.1', () => expect(parse('GPL-2.1')).toStrictEqual({ license: 'GPL-2.1' }))
     })
 })
 

@@ -7,8 +7,12 @@ const path = require('path')
 var crypto = require('crypto')
 const { pipeline } = require('stream')
 
+
 const LICENSE_FILE_URL = "https://raw.githubusercontent.com/spdx/license-list-data/master/json/licenses.json"
 const EXCEPTIONS_FILE_URL = "https://raw.githubusercontent.com/spdx/license-list-data/master/json/exceptions.json"
+const EXCEPTION_DETAILS_FILE_BASEURL = "https://raw.githubusercontent.com/spdx/license-list-data/master/json/exceptions/"
+const DETAILS_DOWNLOAD_BATCH_SIZE = 10
+
 
 const hash = (str) => {
     var shasum = crypto.createHash('sha1')
@@ -35,8 +39,38 @@ const downloadJSON = async (url) => {
     }
 }
 
+const sliceIntoChunks = (arr, chunkSize) => {
+    const res = []
+    for (let i = 0; i < arr.length; i += chunkSize) {
+        const chunk = arr.slice(i, i + chunkSize)
+        res.push(chunk)
+    }
+    return res
+}
+
+const downloadManyJSONFiles = async (arrayOfURLs) => {
+    const batches = sliceIntoChunks(arrayOfURLs, DETAILS_DOWNLOAD_BATCH_SIZE)
+    const results = []
+    for (let b = 0; b < batches.length; b++) {
+        const batch = batches[b]
+        console.log(`Downloading batch ${b+1} (${batch.length} entries)`)
+        const batchResults = await Promise.all(batch.map(downloadJSON))
+        batchResults.forEach(result => results.push(result))
+    }
+    return results
+}
+
 const readLicenseListVersionFromJsonObject = (jsonObj) => {
     return jsonObj.licenseListVersion
+}
+
+const readLicensesFromFile = (file_path) => {
+    if (fs.existsSync(file_path)) {
+        const jsonObj = JSON.parse(fs.readFileSync(file_path))
+        return jsonObj.licenses
+    }
+    console.warn(`File ${file_path} does not exist - can't read licenses from it`)
+    return []
 }
 
 const readLicenseListVersionFromFile = (file_path) => {
@@ -47,7 +81,7 @@ const readLicenseListVersionFromFile = (file_path) => {
     return ''
 }
 
-const updateFileFromURL = async (destinationFilePath, sourceUrl, entryListKey) => {
+const updateFileFromURL = async (destinationFilePath, sourceUrl, entryListKey, detailsUrlMapper, detailsObjectMapper) => {
     const json = await downloadJSON(sourceUrl)
     const latestVersion = readLicenseListVersionFromJsonObject(json)
     const localVersion = readLicenseListVersionFromFile(destinationFilePath)
@@ -55,6 +89,7 @@ const updateFileFromURL = async (destinationFilePath, sourceUrl, entryListKey) =
         console.log(`${destinationFilePath} already has version ${latestVersion} from ${sourceUrl} --> skip update`)
     } else {
         console.log(`Update available (from ${localVersion} to ${latestVersion}) --> updating ${entryListKey}`)
+        json[entryListKey] = (await downloadManyJSONFiles(json[entryListKey].map(detailsUrlMapper))).map(detailsObjectMapper)
         fs.writeFileSync(destinationFilePath, JSON.stringify(json, null, 2))
         console.log(`Updated ${destinationFilePath} with version ${latestVersion} from ${sourceUrl}`)
     }
@@ -68,11 +103,89 @@ const updateLicenseFileAt = async (destinationFilePath) => {
     }
 }
 
-const updateExceptionsFileAt = async (destinationFilePath) => {
+const unique = (listOfWords) => {
+    return [...new Set(listOfWords)]
+}
+
+const expandListOfKnownLicenses = (ids) => {
+    ids.filter(id => id.endsWith('+')).forEach(id => ids.push(id.replace(/\+$/, '-or-later')))
+    return ids
+}
+
+const expandListOfMentionedLicenses = (words) => {
+    words.filter(w => w === 'gpl').forEach(w => {
+        words.push('gpl-2.0')
+        words.push('gpl-3.0')
+    })
+    words.filter(w => w === 'lgpl').forEach(w => {
+        words.push('lgpl-2.0')
+        words.push('lgpl-2.1')
+        words.push('lgpl-3.0')
+    })
+    return words
+}
+
+const sanitizeSpecialCharacters = (text) => {
+    return text.replace(/[^a-zA-Z0-9\.\-\+]/g, ' ').replace(/\s+/g, ' ')
+}
+
+const findLicensesMentionedInLicenseComments = (licenses, entry, explicitGplVersionsOnly = true) => {
+    const knownLicenseIds = expandListOfKnownLicenses(licenses.map(x => x.licenseId))
+    const lowercaseLicenseIds = knownLicenseIds.map(x => x.toLowerCase())
+    const textFromLicenseComments = sanitizeSpecialCharacters(entry.licenseComments || '').replace(/[\.,](\s|$)/g, ' ').replace(/(GPL)\s+(\d\.\d)/g, '$1-$2')
+    const uniqueWords = unique(textFromLicenseComments.trim().split(/\s+/).map(w => w.toLowerCase()))
+    const expandedWords = explicitGplVersionsOnly ? uniqueWords : expandListOfMentionedLicenses(uniqueWords)
+    const licensesMentioned = expandedWords.filter(w => lowercaseLicenseIds.includes(w)).map(id => id.replace(/\+$/, '-or-later'))
+    return licensesMentioned.map(lc => knownLicenseIds.find(x => x.toLowerCase() === lc))
+}
+
+const findLicensesMentionedInExceptionName = (licenses, entry, explicitGplVersionsOnly = true) => {
+    const knownLicenseIds = expandListOfKnownLicenses(licenses.map(x => x.licenseId))
+    const lowercaseLicenseIds = knownLicenseIds.map(x => x.toLowerCase())
+    const text = sanitizeSpecialCharacters(entry.name || '').replace(/(GPL)\s+(\d\.\d)/g, '$1-$2').split(/\s+/).filter(w => w.startsWith('LGPL') || w.startsWith('GPL') || w.startsWith('AGPL')).join(' ').trim()
+    const uniqueWords = unique(text.split(/\s+/).map(w => w.toLowerCase()))
+    const expandedWords = explicitGplVersionsOnly ? uniqueWords : expandListOfMentionedLicenses(uniqueWords.map(w => w.replace(/\.$/, '')))
+    const licensesMentioned = expandedWords.filter(w => lowercaseLicenseIds.includes(w)).map(id => id.replace(/\+$/, '-or-later'))
+    return licensesMentioned.map(lc => knownLicenseIds.find(x => x.toLowerCase() === lc))
+}
+
+const extractLicenseIdentifiersReferredTo = (licenses, entry) => {
+    const methods = [
+        () => findLicensesMentionedInLicenseComments(licenses, entry, true),
+        () => findLicensesMentionedInExceptionName(licenses, entry, true),
+        () => findLicensesMentionedInLicenseComments(licenses, entry, false),
+        () => findLicensesMentionedInExceptionName(licenses, entry, false)
+    ]
+    let mentions = []
+    for (let i=0; mentions.length === 0 && i < methods.length; i++) {
+        mentions = methods[i]()
+    }
+    return mentions
+}
+
+const exceptionDetailsUrlMapper = (entry) => EXCEPTION_DETAILS_FILE_BASEURL + entry.reference.replace(/^.\//, '')
+const exceptionDetailsObjectMapper = (licenses) => {
+    return (entry) => {
+        let licensesMentionedInComments = extractLicenseIdentifiersReferredTo(licenses, entry)
+        return {
+            licenseExceptionId: entry.licenseExceptionId,
+            isDeprecatedLicenseId: entry.isDeprecatedLicenseId,
+            // licenseExceptionText: entry.licenseExceptionText,
+            name: entry.name,
+            seeAlso: entry.seeAlso,
+            licenseComments: entry.licenseComments,
+            relatedLicenses: licensesMentionedInComments,
+        }
+    }
+}
+
+
+const updateExceptionsFileAt = async (exceptionsFilePath, licensesFilePath) => {
     try {
-        await updateFileFromURL(destinationFilePath, EXCEPTIONS_FILE_URL, 'exceptions')
+        const licenses = readLicensesFromFile(licensesFilePath)
+        await updateFileFromURL(exceptionsFilePath, EXCEPTIONS_FILE_URL, 'exceptions', exceptionDetailsUrlMapper, exceptionDetailsObjectMapper(licenses))
     } catch (err) {
-        console.error(`Updating ${destinationFilePath} failed: ${err}`)
+        console.error(`Updating ${exceptionsFilePath} failed: ${err}`)
     }
 }
 
@@ -88,9 +201,9 @@ const updateLicenseFileIfOlderThan = async (oldestAcceptableTimestamp, filePath)
     }
 }
 
-const updateExceptionsFileIfOlderThan = async (oldestAcceptableTimestamp, filePath) => {
+const updateExceptionsFileIfOlderThan = async (oldestAcceptableTimestamp, filePath, licenseFilePath) => {
     if (!fs.existsSync(filePath) || fileIsOlderThan(oldestAcceptableTimestamp, filePath)) {
-        return await updateExceptionsFileAt(filePath)
+        return await updateExceptionsFileAt(filePath, licenseFilePath)
     } else {
         console.log(`Not updating ${filePath} (it's recent enough)`)
     }
@@ -105,7 +218,7 @@ const dateHoursBeforeNow = (hours) => {
 const main = async (licenseFilePath, exceptionsFilePath) => {
     const oldestAcceptableTimestamp = dateHoursBeforeNow(24)
     await updateLicenseFileIfOlderThan(oldestAcceptableTimestamp, licenseFilePath)
-    await updateExceptionsFileIfOlderThan(oldestAcceptableTimestamp, exceptionsFilePath)
+    await updateExceptionsFileIfOlderThan(oldestAcceptableTimestamp, exceptionsFilePath, licenseFilePath)
 }
 
 (async () => {

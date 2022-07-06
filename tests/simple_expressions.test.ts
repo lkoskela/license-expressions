@@ -32,19 +32,19 @@ describe('Simple expressions', () => {
             })
         })
 
-        describe('examples', () => {
+        describe('samples (randomized)', () => {
             describe('non-deprecated licenses', () => {
-                const randomIds = [...nonDeprecatedLicenseIds].sort(() => .5 - Math.random()).slice(0, 5)
+                const randomIds = [...nonDeprecatedLicenseIds].sort(() => .5 - Math.random()).slice(0, 10).sort()
                 randomIds.forEach(id => {
                     it(`${id}  =>  ${id}`, () => expect(parse(id)).toStrictEqual({ license: id }))
                 })
             })
 
             describe('deprecated licenses might be somewhat altered', () => {
-                const randomIds = [...deprecatedLicenseIds].sort(() => .5 - Math.random()).slice(0, 5)
+                const randomIds = [...deprecatedLicenseIds].sort(() => .5 - Math.random()).slice(0, 10).sort()
                 randomIds.forEach(id => {
                     const expectedPrefix = id.replace(/\+$/, '')
-                    it(`${id}  ~  ${expectedPrefix}`, () => {
+                    it(`${id} starts with ${JSON.stringify(expectedPrefix)} after alteration`, () => {
                         expect((parse(id) as LicenseInfo).license).toStartWith(expectedPrefix)
                     })
                 })
