@@ -27,6 +27,9 @@ export type FullSpdxParseResult = {
     return input
         .trim()               // remove surrounding whitespace
         .replace(/\s+/, ' ')  // compress consecutive whitespaces to a single space
+        .replace(/\s+and\s+/i, ' AND ')  // fix lowercase keywords
+        .replace(/\s+or\s+/i, ' OR ')  // fix lowercase keywords
+        .replace(/\s+with\s+/i, ' WITH ')  // fix lowercase keywords
 }
 
 const compileFullSpdxParseResult = (input: string, parserResult: StrictParserResult | LiberalParserResult): FullSpdxParseResult => {

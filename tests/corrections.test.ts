@@ -238,6 +238,21 @@ describe('Expressions with nonexistent version numbers', () => {
 
 describe('Expressions with slight errors', () => {
 
+    describe('lowercase "or", "and" and "with"', () => {
+
+        it('foo and bar', () => expect(parse('foo and bar')).toStrictEqual({
+            conjunction: 'and',
+            left: { license: 'foo' },
+            right: { license: 'bar'}
+        }))
+
+        it('Mit Or Gpl', () => expect(parse('Mit Or Gpl')).toStrictEqual({
+            conjunction: 'or',
+            left: { license: 'MIT' },
+            right: { license: 'GPL-3.0-or-later'}
+        }))
+    })
+
     /**
      * @see https://spdx.github.io/spdx-spec/SPDX-license-expressions/#d2-case-sensitivity
      */
