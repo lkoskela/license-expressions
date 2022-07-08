@@ -90,6 +90,15 @@ This is an example of how to list things you need to use the software and how to
 
 ### Installation for command line use
 
+**With a global install from the NPM registry:**
+
+1. Install the NPM package globally
+   ```sh
+   $ npm install -g license-expressions
+   ```
+
+**By cloning the Git repository and installing locally:**
+
 1. Clone the repo
    ```sh
    $ git clone https://github.com/lkoskela/license-expressions.git
@@ -111,9 +120,13 @@ This is an example of how to list things you need to use the software and how to
    ```sh
    $ npm install --save license-expressions
    ```
-2. Import the utility in your code
+2. Import the parse function in your code...
    ```js
    const parse = require('license-expressions')
+   ```
+3. ...or import the whole set:
+   ```js
+   import { parse, normalize, validate } from 'license-expressions'
    ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -149,7 +162,7 @@ After installing for command-line use, run the `spdx` command and pass an SPDX e
 Parsing SPDX expressions into a structured object:
 
    ```js
-   const parse = require('license-expressions')
+   import { parse } from 'license-expressions'
 
    const simple = parse("GPL-3.0+")
    // => { license: 'GPL-3.0+' }
