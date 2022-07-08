@@ -109,6 +109,42 @@ const fixExceptionid = (id: string): string | undefined => {
     return matchedIds.filter(matchedId => !!matchedId)[0]
 }
 
+const mapExceptionIdByAssociatedLicense = (id: string, associatedLicense?: string): string|undefined => {
+    const expandLicenses = (identifiers: string[]): string[] => {
+        const expandedList = [...identifiers]
+        identifiers.forEach(id => {
+            if (id.match(/[^\+]\+$/)) {
+                expandedList.push(id.replace(/\+$/, '-or-later'))
+                expandedList.push(id.replace(/\+$/, ''))
+            } else if (id.match(/-or-later$/)) {
+                expandedList.push(id.replace(/-or-later$/, ''))
+            } else if (id.match(/-only$/)) {
+                expandedList.push(id.replace(/-only$/, ''))
+            } else if (id.match(/[AL]?GPL\-\d\.\d$/)) {
+                expandedList.push(`${id}-only`)
+                expandedList.push(`${id}-or-later`)
+            }
+        })
+        return expandedList
+    }
+    if (associatedLicense) {
+        const possibleMatches = exceptions.exceptions.filter(e => {
+            const hasRelation = () => {
+                const relatedLicenses = expandLicenses(e.relatedLicenses)
+                return relatedLicenses.length === 0 || relatedLicenses.includes(associatedLicense)
+            }
+            const looksSimilar = () => {
+                return e.licenseExceptionId.toLowerCase().startsWith(id.toLowerCase())
+            }
+            return looksSimilar() && hasRelation()
+        }).map(e => e.licenseExceptionId).sort()
+        if (possibleMatches.length > 0) {
+            return possibleMatches[0]
+        }
+    }
+    return undefined
+}
+
 /**
  * Fix the given license identifier, if possible, or return it unchanged.
  *
@@ -169,7 +205,7 @@ export function correctLicenseId(identifier: string): string {
  * @param identifier SPDX exception identifier to "fix" if possible
  * @returns A corrected SPDX exception identifier or the original, if no suitable "fix" was found
  */
-export function correctExceptionId(identifier: string): string {
+export function correctExceptionId(identifier: string, associatedLicense?: string): string {
 
     const removeExtras = (id: string): string => {
         return id.replace(/^the\s+/i, '').replace(/\s+/, ' ')
@@ -182,5 +218,13 @@ export function correctExceptionId(identifier: string): string {
     }
 
     const id = applyAliases(removeExtras(identifier))
-    return mapExceptionId(id) || fixExceptionid(id) || id
+    return mapExceptionId(id) || fixExceptionid(id) || mapExceptionIdByAssociatedLicense(id, associatedLicense) || id
+}
+
+export function isKnownLicenseId(id: string): boolean {
+    return !!mapLicenseId(id)
+}
+
+export function isKnownExceptionId(id: string): boolean {
+    return !!mapExceptionId(id)
 }

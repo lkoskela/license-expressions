@@ -1,5 +1,9 @@
 import { parse } from '../src'
 
+const scenario = (name: string, body: (name: string) => void) => it(name, () => {
+    body(name)
+})
+
 
 describe('GPL family of expressions with a "+" suffix', () => {
     describe('"AGPL-3.0+" is interpreted as "AGPL-3.0-or-later"', () => {
@@ -407,6 +411,38 @@ describe('Special cases', () => {
     describe('Magick++', () => {
         it('is left as-is', () => {
             expect(parse('Magick++')).toStrictEqual({ license: 'Magick++' })
+        })
+    })
+
+    describe('Known license identifiers incorporating an exception', () => {
+        describe('are left as-is', () => {
+            [
+                'GPL-2.0-with-autoconf-exception',
+                'GPL-2.0-with-classpath-exception',
+                'GPL-2.0-with-bison-exception',
+                'GPL-3.0-with-GCC-exception'
+            ].forEach(id => {
+                it(id, () => expect(parse(id)).toStrictEqual({ license: id }))
+            })
+        })
+    })
+
+    describe('Unknown license identifiers incorporating an exception', () => {
+        describe('are corrected if possible through splitting the identifier', () => {
+
+            scenario('GPL-3.0-with-bison-exception', (expression) => {
+                expect(parse(expression)).toStrictEqual({
+                    license: 'GPL-3.0-only',
+                    exception: 'Bison-exception-2.2'
+                })
+            })
+
+            scenario('GPL-3.0-or-later-with-bison-exception', (expression) => {
+                expect(parse(expression)).toStrictEqual({
+                    license: 'GPL-3.0-or-later',
+                    exception: 'Bison-exception-2.2'
+                })
+            })
         })
     })
 })

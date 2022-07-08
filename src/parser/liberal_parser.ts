@@ -3,7 +3,7 @@ import assert from 'assert'
 import * as LiberalParser from '../codegen/parser_liberal'
 import {correctExceptionId, correctLicenseId} from '../licenses'
 import { ConjunctionInfo, LicenseInfo, ParsedSpdxExpression } from './types'
-
+export { LiberalParser }
 
 export type LiberalParserResult = {
     parse: LiberalParser.ParseResult,
