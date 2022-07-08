@@ -20,15 +20,20 @@ export type FullSpdxParseResult = {
  * 2. compressing consecutive whitespace characters into a single space.
  *
  * @param input SPDX expression as a string
+ * @param strictSyntax If {true}, don't clean up spec-violating details
  * @returns A slightly cleaned up SPDX expression as a string
  */
- const prepareInput = (input: string): string => {
-    return input
-        .trim()               // remove surrounding whitespace
-        .replace(/\s+/, ' ')  // compress consecutive whitespaces to a single space
-        .replace(/\s+and\s+/i, ' AND ')  // fix lowercase keywords
-        .replace(/\s+or\s+/i, ' OR ')  // fix lowercase keywords
-        .replace(/\s+with\s+/i, ' WITH ')  // fix lowercase keywords
+ const prepareInput = (input: string, strictSyntax: boolean): string => {
+    let cleanedInput = input
+        .trim()                // remove surrounding whitespace
+        .replace(/\s+/, ' ')   // compress consecutive whitespaces to a single space
+    if (!strictSyntax) {
+        cleanedInput = cleanedInput
+            .replace(/\s+and\s+/i, ' AND ')    // fix lowercase keywords
+            .replace(/\s+or\s+/i, ' OR ')      // fix lowercase keywords
+            .replace(/\s+with\s+/i, ' WITH ')  // fix lowercase keywords
+    }
+    return cleanedInput
 }
 
 const compileFullSpdxParseResult = (input: string, parserResult: StrictParserResult | LiberalParserResult): FullSpdxParseResult => {
@@ -64,7 +69,7 @@ export function parse(input: string, strictSyntax: boolean = false) : ParsedSpdx
  * @returns {FullSpdxParseResult}
  */
  export function parseSpdxExpressionWithDetails(input: string, strictSyntax: boolean = false) : FullSpdxParseResult {
-    const preparedInput = prepareInput(input)
+    const preparedInput = prepareInput(input, strictSyntax)
     const notCorrected = parseWithStrictParser(preparedInput)
     const strictResult = compileFullSpdxParseResult(preparedInput, notCorrected)
 

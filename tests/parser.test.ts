@@ -13,6 +13,7 @@ describe('Parsing API', () => {
 
     const VALID_SPDX_EXPRESSION = 'XYZ-1.2'
     const WHITESPACE_IN_LICENSE_ID = 'INVALID SPDX SYNTAX'
+    const LOWERCASE_KEYWORD = 'MIT or Apache-2.0'
     const INVALID_EXPRESSION = 'MIT (OR Apache-2.0)'
 
     describe('default export', () => {
@@ -35,11 +36,21 @@ describe('Parsing API', () => {
 
         it('`strictSyntax` is `false` by default', () => {
             expect(() => parseSpdxExpression(WHITESPACE_IN_LICENSE_ID)).not.toThrow()
+            expect(() => parseSpdxExpression(LOWERCASE_KEYWORD)).not.toThrow()
         })
 
         it('invalid expressions with whitespace in license name is tolerated if `strictSyntax` is false', () => {
             expect(() => parseSpdxExpression(WHITESPACE_IN_LICENSE_ID, false)).not.toThrow()
             expect(parseSpdxExpression(WHITESPACE_IN_LICENSE_ID, false)).toStrictEqual({ license: WHITESPACE_IN_LICENSE_ID })
+        })
+
+        it('invalid expressions with lowercase keywords are tolerated if `strictSyntax` is false', () => {
+            expect(() => parseSpdxExpression(LOWERCASE_KEYWORD, false)).not.toThrow()
+            expect(() => parseSpdxExpression(LOWERCASE_KEYWORD, true)).toThrow()
+        })
+
+        it('invalid expressions with lowercase keywords are not tolerated if `strictSyntax` is true', () => {
+            expect(() => parseSpdxExpression(LOWERCASE_KEYWORD, true)).toThrow()
         })
     })
 
