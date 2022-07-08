@@ -84,10 +84,12 @@ const renderExpression = (expression: ParsedSpdxExpression, options?: RenderExpr
  * @param spdxExpression The SPDX expression to render in a normalized form.
  * @returns Normalized string representation of the given SPDX expression.
  */
-export function normalize(spdxExpression: string): string {
+function normalize(spdxExpression: string): string {
     try {
         return renderExpression(sortElement(parse(spdxExpression)))
     } catch (error) {
         return spdxExpression
     }
 }
+
+export default normalize

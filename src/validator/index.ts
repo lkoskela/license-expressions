@@ -123,3 +123,5 @@ export function validate(input: string): ValidationResult {
     }
     /* istanbul ignore next */ fail(`Unexpected execution path for validate(${JSON.stringify(input)})`)
 }
+
+export default validate

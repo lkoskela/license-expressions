@@ -34,8 +34,12 @@
   "bin": {
     "spdx": "./build/cli/index.js"
   },
-  "main": "./build/index.js",
   "types": "./build/index.d.ts",
+  "exports": {
+    ".": "./build/index.js",
+    "./validate": "./build/validator/index.js",
+    "./normalize": "./build/normalizer/index.js"
+  },
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
