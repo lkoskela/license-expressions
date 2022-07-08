@@ -216,16 +216,25 @@ describe('Common shorthands or forms for Apache-2.0', () => {
 
 describe('Common shorthands for GPL versions', () => {
 
-    it('"GPL" is interpreted as "GPL-3.0-or-later"', () => {
-        expect(parse('GPL')).toStrictEqual({ license: 'GPL-3.0-or-later' })
+    const testForVariationsOf = (expectedLicenseId: string, variations: string[]) => {
+        variations.forEach(id => {
+            it(`"${id}" is interpreted as ${expectedLicenseId}`, () => {
+                expect(parse(id)).toStrictEqual({ license: expectedLicenseId })
+            })
+        })
+    }
+
+    testForVariationsOf('GPL-2.0-only', ["GPLv2", "GPL2", "GPL-2"])
+    testForVariationsOf('GPL-2.0-or-later', ["GPLv2+", "GPL2+", "GPL-2+"])
+    testForVariationsOf('GPL-3.0-only', ["GPL", "GPL3", "GPL-3", "GPLv3"])
+    testForVariationsOf('GPL-3.0-or-later', ["GPLv3+", "GPL3+", "GPL-3+"])
+
+    it('"LGPL-3" is interpreted as "LGPL-3.0-only"', () => {
+        expect(parse('LGPL-3')).toStrictEqual({ license: 'LGPL-3.0-only' })
     })
 
-    it('"GPLv3" is interpreted as "GPL-3.0-or-later"', () => {
-        expect(parse('GPLv3')).toStrictEqual({ license: 'GPL-3.0-or-later' })
-    })
-
-    it('"GPLv2" is interpreted as "GPL-2.0-or-later"', () => {
-        expect(parse('GPLv2')).toStrictEqual({ license: 'GPL-2.0-only' })
+    it('"LGPL-2+" is interpreted as "LGPL-2.0-or-later"', () => {
+        expect(parse('LGPL-2+')).toStrictEqual({ license: 'LGPL-2.0-or-later' })
     })
 })
 
@@ -249,7 +258,7 @@ describe('Expressions with slight errors', () => {
         it('Mit Or Gpl', () => expect(parse('Mit Or Gpl')).toStrictEqual({
             conjunction: 'or',
             left: { license: 'MIT' },
-            right: { license: 'GPL-3.0-or-later'}
+            right: { license: 'GPL-3.0-only'}
         }))
     })
 

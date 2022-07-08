@@ -130,8 +130,21 @@ export function correctLicenseId(identifier: string): string {
     // The `spdx-correct` package will coerce "GPL-3.0" into "GPL-3.0-or-later", although
     // "GPL-3.0-only" would be more true to the original intent:
     const applyGPLFixes = (id: string): string => {
+        if (id.toUpperCase() === 'GPL') return mapLicense('GPL-3.0-only') || id
+        if (id.toUpperCase() === 'LGPL') return mapLicense('LGPL-3.0-only') || id
+        if (id.toUpperCase() === 'AGPL') return mapLicense('AGPL-3.0-only') || id
+
         if (mapLicense(id)) {
             return mapLicense(`${id}-only`) || id
+        }
+        if (id.match(/^([AL]?GPL)([\-vV]?)(\d)(\+?)$/)) {
+            return applyGPLFixes(id.replace(/^([AL]?GPL)([\-vV]?)(\d)(\+?)$/, '$1-$3.0$4'))
+        }
+
+        if (id.match(/^([AL]?GPL[\-vV]?\d)(\+)$/)) {
+            const candidateId = id.replace(/([AL]?GPL[\-vV]?\d)(\+)$/, '$1.0-or-later')
+            console.log(`candidateId: ${id} => ${candidateId} => ${mapLicense(candidateId)}`)
+            return mapLicense(candidateId) || id
         }
         return id
     }
