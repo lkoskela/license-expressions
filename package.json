@@ -29,7 +29,8 @@
   "files": [
     "build/**/*.js",
     "build/**/*.ts",
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "src/**/*.json"
   ],
   "bin": {
     "spdx": "./build/index.js"
