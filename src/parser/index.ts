@@ -69,18 +69,27 @@ export function parse(input: string, strictSyntax: boolean = false) : ParsedSpdx
  * @returns {FullSpdxParseResult}
  */
  export function parseSpdxExpressionWithDetails(input: string, strictSyntax: boolean = false) : FullSpdxParseResult {
+    // Apply general clean up on the raw input string
     const preparedInput = prepareInput(input, strictSyntax)
+
+    // Always try to parse with the strict parser first in order to
+    // minimize risk of unwanted "corrections"
     const notCorrected = parseWithStrictParser(preparedInput)
     const strictResult = compileFullSpdxParseResult(preparedInput, notCorrected)
 
-    // attempt to apply corrections if allowed
+    // If strict parsing failed, attempt to apply corrections if allowed
     if (strictResult.error && !strictSyntax)  {
         const corrected = parseWithLiberalParser(preparedInput)
         const liberalResult = compileFullSpdxParseResult(preparedInput, corrected)
+        // We'll use the results of liberal parsing only if it succeeds. In case
+        // of failure, we'll return the errors from strict parser for maximum
+        // awareness of deviations from the SPDX specification
         if (!liberalResult.error) {
             return liberalResult
         }
     }
 
+    // If liberal parsing was not allowed or it failed, too, let's return the
+    // (possibly failed) strict parsing result
     return strictResult
 }
