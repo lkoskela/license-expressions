@@ -402,3 +402,11 @@ describe('Expressions with slight errors', () => {
         })
     })
 })
+
+describe('Special cases', () => {
+    describe('Magick++', () => {
+        it('is left as-is', () => {
+            expect(parse('Magick++')).toStrictEqual({ license: 'Magick++' })
+        })
+    })
+})

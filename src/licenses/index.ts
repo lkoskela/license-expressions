@@ -151,11 +151,9 @@ export function correctLicenseId(identifier: string): string {
 
     // Expand the "+" syntax to "-or-later" if one exists:
     const expandPlus = (id: string): string => {
-        if (id.endsWith('+')) {
+        if (id.match(/[^\+]\+$/)) {
             const orLaterId = id.replace(/\+$/, '-or-later')
-            if (mapLicense(orLaterId)) {
-                return orLaterId
-            }
+            return mapLicense(orLaterId) || id
         }
         return id
     }

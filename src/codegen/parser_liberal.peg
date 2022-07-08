@@ -19,7 +19,7 @@ wrapped_expression :=
 license_exception :=
 	WITH value=words
 
-words_expression := prefix=words suffix='\+'?
+words_expression := prefix=words suffix='\+?\+?'
 	.value = any { return { prefix: this.prefix, suffix: (this.suffix ? this.suffix : '') }; }
 
 WITH := whitespace 'WITH' whitespace

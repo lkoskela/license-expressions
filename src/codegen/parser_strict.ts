@@ -28,7 +28,7 @@
 * whitespace := '[\s\t\n]+'
 * license_ref_id := prefix='LicenseRef-' value='[a-zA-Z0-9\-\.]+'
 * document_ref_id := prefix='DocumentRef-' value='[a-zA-Z0-9\-\.]+'
-* idstring := '[a-zA-Z0-9 ][a-zA-Z0-9\.\-]*[a-zA-Z0-9]+\+?'
+* idstring := '[a-zA-Z0-9 ][a-zA-Z0-9\.\-]*[a-zA-Z0-9]+\+?\+?'
 * license_id := license=idstring '\+'?
 */
 type Nullable<T> = T | null;
@@ -657,7 +657,7 @@ export class Parser {
             });
     }
     public matchidstring($$dpth: number, $$cr?: ErrorTracker): Nullable<idstring> {
-        return this.regexAccept(String.raw`(?:[a-zA-Z0-9 ][a-zA-Z0-9\.\-]*[a-zA-Z0-9]+\+?)`, $$dpth + 1, $$cr);
+        return this.regexAccept(String.raw`(?:[a-zA-Z0-9 ][a-zA-Z0-9\.\-]*[a-zA-Z0-9]+\+?\+?)`, $$dpth + 1, $$cr);
     }
     public matchlicense_id($$dpth: number, $$cr?: ErrorTracker): Nullable<license_id> {
         return this.run<license_id>($$dpth,

@@ -14,7 +14,7 @@
 * 	'\(' whitespace? value={compound_expression | wrapped_expression | simple_expression} whitespace? '\)'
 * license_exception :=
 * 	WITH value=words
-* words_expression := prefix=words suffix='\+'?
+* words_expression := prefix=words suffix='\+?\+?'
 * 	.value = any { return { prefix: this.prefix, suffix: (this.suffix ? this.suffix : '') }; }
 * WITH := whitespace 'WITH' whitespace
 * AND := whitespace 'AND' whitespace
@@ -124,9 +124,9 @@ export interface license_exception {
 export class words_expression {
     public kind: ASTKinds.words_expression = ASTKinds.words_expression;
     public prefix: words;
-    public suffix: Nullable<string>;
+    public suffix: string;
     public value: any;
-    constructor(prefix: words, suffix: Nullable<string>){
+    constructor(prefix: words, suffix: string){
         this.prefix = prefix;
         this.suffix = suffix;
         this.value = ((): any => {
@@ -415,11 +415,11 @@ export class Parser {
         return this.run<words_expression>($$dpth,
             () => {
                 let $scope$prefix: Nullable<words>;
-                let $scope$suffix: Nullable<Nullable<string>>;
+                let $scope$suffix: Nullable<string>;
                 let $$res: Nullable<words_expression> = null;
                 if (true
                     && ($scope$prefix = this.matchwords($$dpth + 1, $$cr)) !== null
-                    && (($scope$suffix = this.regexAccept(String.raw`(?:\+)`, $$dpth + 1, $$cr)) || true)
+                    && ($scope$suffix = this.regexAccept(String.raw`(?:\+?\+?)`, $$dpth + 1, $$cr)) !== null
                 ) {
                     $$res = new words_expression($scope$prefix, $scope$suffix);
                 }
