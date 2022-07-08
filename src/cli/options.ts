@@ -38,7 +38,7 @@ const commands: Command[] = [
     },
     {
         name: 'normalize',
-        flags: ['-n', '--normalize'],
+        flags: ['-n', '--normalize', '--normalise'],
         description: 'Normalize an expression into its canonical form'
     },
 ]

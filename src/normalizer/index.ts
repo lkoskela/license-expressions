@@ -1,5 +1,5 @@
 import { fail } from "assert"
-import { parseSpdxExpression, ParsedSpdxExpression, ConjunctionInfo, LicenseInfo, LicenseRef } from "../parser"
+import { parse, ParsedSpdxExpression, ConjunctionInfo, LicenseInfo, LicenseRef } from "../parser"
 
 
 const sortKey = (element: ParsedSpdxExpression): string => {
@@ -86,7 +86,7 @@ const renderExpression = (expression: ParsedSpdxExpression, options?: RenderExpr
  */
 export function normalize(spdxExpression: string): string {
     try {
-        return renderExpression(sortElement(parseSpdxExpression(spdxExpression)))
+        return renderExpression(sortElement(parse(spdxExpression)))
     } catch (error) {
         return spdxExpression
     }

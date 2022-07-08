@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { parseSpdxExpression } from '../parser'
+import { parse } from '../parser'
 import { validate } from '../validator'
 import { normalize } from '../normalizer'
 import { parseCLIOptions, CLIOptions, usage } from './options'
@@ -11,7 +11,7 @@ const process = require('process')
 const parseCommand = (options: CLIOptions): string => {
     try {
         const strictSyntax = options.options.includes('strict')
-        const ast = parseSpdxExpression(options.expression, strictSyntax)
+        const ast = parse(options.expression, strictSyntax)
         const result = {
             expression: ast,
             errors: validate(options.expression).errors

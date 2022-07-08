@@ -1,6 +1,6 @@
 import 'jest-extended'
 
-import {parseSpdxExpression as parse} from '../src'
+import { parse } from '../src'
 import licenses from '../src/codegen/licenses.json'
 import { LicenseInfo } from '../src/parser/types'
 

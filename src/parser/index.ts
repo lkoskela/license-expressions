@@ -12,7 +12,6 @@ export type FullSpdxParseResult = {
     expression?: ParsedSpdxExpression
 }
 
-
 /**
  * Clean up the given SPDX expression before processing it with the grammar.
  *
@@ -47,7 +46,7 @@ const buildErrorMessage = (input: string, strictSyntax: boolean): string => {
  * @returns {ParsedSpdxExpression} A structured object describing the given SPDX expression
  *          or throws an `Error` if parsing failed.
  */
-export function parseSpdxExpression(input: string, strictSyntax: boolean = false) : ParsedSpdxExpression {
+export function parse(input: string, strictSyntax: boolean = false) : ParsedSpdxExpression {
     const data = parseSpdxExpressionWithDetails(input, strictSyntax)
     if (data.error) {
         throw new Error([buildErrorMessage(input, strictSyntax), data.error].join(': '))
@@ -62,8 +61,7 @@ export function parseSpdxExpression(input: string, strictSyntax: boolean = false
  * metadata such as the underlying AST tree used and any errors in case parsing failed.
  *
  * @param input SPDX expression as a string to be parsed.
- * @returns {FullSpdxParseResult} i.e. a {@link SuccessfulParse} when parsing succeees and
- *          a {@link FailedParse} if parsing fails.
+ * @returns {FullSpdxParseResult}
  */
  export function parseSpdxExpressionWithDetails(input: string, strictSyntax: boolean = false) : FullSpdxParseResult {
     const preparedInput = prepareInput(input)

@@ -1,4 +1,4 @@
-import {parseSpdxExpression as parse} from '../src'
+import {parse} from '../src'
 
 
 describe('Compound expressions (e.g. dual licensing scenarios)', () => {

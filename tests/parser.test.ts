@@ -1,5 +1,12 @@
-import {parseSpdxExpression, parseSpdxExpressionWithDetails} from '../src'
+import {parse } from '../src'
+import { parse as parseSpdxExpression, parseSpdxExpressionWithDetails } from '../src/parser'
 import defaultParseFunction from '../src'
+
+describe('Importing "parse"', () => {
+    it('is the same as importing "parser/parse"', () => {
+        expect(parse).toBe(parseSpdxExpression)
+    })
+})
 
 
 describe('Parsing API', () => {
