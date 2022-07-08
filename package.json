@@ -28,12 +28,11 @@
   },
   "files": [
     "build/**/*.js",
-    "build/**/*.ts",
-    "src/**/*.ts",
-    "src/**/*.json"
+    "build/**/*.json",
+    "build/**/*.ts"
   ],
   "bin": {
-    "spdx": "./build/index.js"
+    "spdx": "./build/cli/index.js"
   },
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
@@ -56,7 +55,8 @@
     "test": "npm run build && npx jest --verbose",
     "build": "npm run codegen && tsc",
     "eval": "npm run build && node build/cli.js",
-    "prepublish": "scripts/prepublish.sh",
+    "prepack": "scripts/clean_build_dir.sh && npm run build",
+    "prepublish": "scripts/clean_build_dir.sh && npm run build",
     "codegen": "scripts/codegen.sh"
   },
   "repository": {

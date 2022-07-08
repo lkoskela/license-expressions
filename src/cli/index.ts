@@ -3,7 +3,7 @@
 import { parseSpdxExpression } from '../parser'
 import { validate } from '../validator'
 import { normalize } from '../normalizer'
-import { parseCLIOptions, CLIOptions } from './options'
+import { parseCLIOptions, CLIOptions, usage } from './options'
 
 const process = require('process')
 
@@ -42,25 +42,16 @@ const mapOptionsToCommand = (options: CLIOptions): Function => {
 
 const cliRunner = (args: string[]) => {
     const cliOptions = parseCLIOptions(args)
-    const command = mapOptionsToCommand(cliOptions)
-    console.log(command.call(command, cliOptions))
-}
-
-export function run(): void {
-    cliRunner(process.argv.slice(2) as string[])
-}
-
-export function isREPL(): boolean {
-    try {
-        const repl = __dirname
-        return false
-    } catch (err) {
-        return true
+    if (cliOptions.expression.trim().length === 0) {
+        console.log(usage('spdx'))
+    } else {
+        const command = mapOptionsToCommand(cliOptions)
+        console.log(command.call(command, cliOptions))
     }
 }
 
-export function isTTY(): boolean {
-    return require('process').stdin.isTTY
+function runCLI(): void {
+    cliRunner(process.argv.slice(2) as string[])
 }
 
-export default run
+runCLI()

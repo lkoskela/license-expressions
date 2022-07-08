@@ -5,17 +5,67 @@ export type CLIOptions = {
     expression: string,
 }
 
+export type CommandOption = {
+    name: string,
+    flags: string[],
+    description: string
+}
+
 export type Command = {
     name: string,
     flags: string[],
-    commandOptions?: string[][],
+    commandOptions?: CommandOption[],
+    description: string
 }
 
 const commands: Command[] = [
-    { name: 'parse', flags: ['-p', '--parse'], commandOptions: [[ 'strict', '-s', '--strict' ]] },
-    { name: 'validate', flags: ['-v', '--validate'] },
-    { name: 'normalize', flags: ['-n', '--normalize', '--normalise'] },
+    {
+        name: 'parse',
+        flags: ['-p', '--parse'],
+        commandOptions: [
+            {
+                name: 'strict',
+                flags: ['-s', '--strict'],
+                description: 'Use strict parsing rules'
+            }
+        ],
+        description: 'Parse an expression into a structured object'
+    },
+    {
+        name: 'validate',
+        flags: ['-v', '--validate'],
+        description: 'Validate the semantic correctness of an expression'
+    },
+    {
+        name: 'normalize',
+        flags: ['-n', '--normalize'],
+        description: 'Normalize an expression into its canonical form'
+    },
 ]
+
+const longestFlagCombination = Math.max(...commands.map(cmd => {
+    const optionsLength = Math.max(...(cmd.commandOptions || []).map(opt => opt.flags.join(', ').length))
+    const commandLength = cmd.flags.join(', ').length
+    return Math.max(optionsLength, commandLength)
+}))
+
+export const usage = (nameOfExecutable: string): string => {
+    const rows: string[] = []
+    rows.push(`Usage:  ${nameOfExecutable} [command] [options] EXPRESSION`)
+    rows.push('')
+    rows.push('Commands:')
+    commands.forEach(cmd => {
+        rows.push(`\n${cmd.flags.join(', ').padEnd(longestFlagCombination + 4)}\t${cmd.description}`)
+        if (cmd.commandOptions && cmd.commandOptions.length > 0) {
+            rows.push('\n  Options:')
+            cmd.commandOptions.forEach(opt => {
+                rows.push(`  ${opt.flags.join(', ').padEnd(longestFlagCombination)}\t${opt.description}`)
+            })
+        }
+    })
+    rows.push('')
+    return rows.join('\n')
+}
 
 export const parseCLIOptions = (args: string[]): CLIOptions => {
     let params = [...args]
@@ -36,9 +86,9 @@ export const parseCLIOptions = (args: string[]): CLIOptions => {
 
     // Then, consume any command-specific options:
     while (params[0] && params[0].startsWith('-')) {
-        const commandOption = (selectedCommand.commandOptions || []).find(opt => opt.slice(1).includes(params[0]))
+        const commandOption = (selectedCommand.commandOptions || []).find(opt => opt.flags.includes(params[0]))
         if (commandOption) {
-            options.options.push(commandOption[0])
+            options.options.push(commandOption.name)
             params = params.slice(1)
         } else {
             throw new Error(`Option ${params[0]} is not supported by the ${selectedCommand.name} command.`)
