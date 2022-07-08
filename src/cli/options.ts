@@ -35,7 +35,7 @@ export const parseCLIOptions = (args: string[]): CLIOptions => {
     }
 
     // Then, consume any command-specific options:
-    while (params[0].startsWith('-')) {
+    while (params[0] && params[0].startsWith('-')) {
         const commandOption = (selectedCommand.commandOptions || []).find(opt => opt.slice(1).includes(params[0]))
         if (commandOption) {
             options.options.push(commandOption[0])

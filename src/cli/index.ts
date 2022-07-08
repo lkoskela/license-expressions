@@ -50,4 +50,17 @@ export function run(): void {
     cliRunner(process.argv.slice(2) as string[])
 }
 
+export function isREPL(): boolean {
+    try {
+        const repl = __dirname
+        return false
+    } catch (err) {
+        return true
+    }
+}
+
+export function isTTY(): boolean {
+    return require('process').stdin.isTTY
+}
+
 export default run
