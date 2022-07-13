@@ -21,7 +21,7 @@
 * OR := whitespace 'OR' whitespace
 * whitespace := '[\s\t\n]+'
 * words := head=word tail={ {whitespace | ',' whitespace?} rest=words}?
-* word := !'WITH' !'AND' !'OR' !'\(' !'\)' value='[a-zA-Z0-9\.\-:]+'
+* word := !'WITH' !'AND' !'OR' !'\(' !'\)' value='[a-zA-Z0-9\.\-:\+]+'
 */
 type Nullable<T> = T | null;
 type $$RuleType<T> = () => Nullable<T>;
@@ -533,7 +533,7 @@ export class Parser {
                     && this.negate(() => this.regexAccept(String.raw`(?:OR)`, $$dpth + 1, $$cr)) !== null
                     && this.negate(() => this.regexAccept(String.raw`(?:\()`, $$dpth + 1, $$cr)) !== null
                     && this.negate(() => this.regexAccept(String.raw`(?:\))`, $$dpth + 1, $$cr)) !== null
-                    && ($scope$value = this.regexAccept(String.raw`(?:[a-zA-Z0-9\.\-:]+)`, $$dpth + 1, $$cr)) !== null
+                    && ($scope$value = this.regexAccept(String.raw`(?:[a-zA-Z0-9\.\-:\+]+)`, $$dpth + 1, $$cr)) !== null
                 ) {
                     $$res = {kind: ASTKinds.word, value: $scope$value};
                 }

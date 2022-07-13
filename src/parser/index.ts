@@ -1,7 +1,7 @@
 import { parse as parseWithStrictParser, StrictParserResult } from './strict_parser'
 import { parse as parseWithLiberalParser, LiberalParserResult } from './liberal_parser'
 import { ParsedSpdxExpression, ConjunctionInfo, LicenseInfo, LicenseRef } from './types'
-import { correctExceptionId, correctLicenseId, isKnownLicenseId, isKnownExceptionId } from '../licenses'
+import { fixDashedLicenseInfo } from '../licenses'
 
 
 export { ParsedSpdxExpression, ConjunctionInfo, LicenseInfo, LicenseRef }
@@ -76,7 +76,7 @@ export function parse(input: string, strictSyntax: boolean = false) : ParsedSpdx
     // Always try to parse with the strict parser first in order to
     // minimize risk of unwanted "corrections"
     const notCorrected = parseWithStrictParser(preparedInput)
-    if (notCorrected.expression && !strictSyntax) {
+    if (!!notCorrected.expression && !strictSyntax) {
         notCorrected.expression = correctDashSeparatedLicenseIds(notCorrected.expression)
     }
     const strictResult = compileFullSpdxParseResult(preparedInput, notCorrected)
@@ -110,25 +110,12 @@ const correctDashSeparatedLicenseIds = (expression: ParsedSpdxExpression): Parse
             return { conjunction: node.conjunction, left: recurse(node.left), right: recurse(node.right) }
         }
 
-        const fixLicenseInfo = (node: LicenseInfo): LicenseInfo => {
-            if (!node.exception && node.license.includes('-with-') && !isKnownLicenseId(node.license)) {
-                // let's see if we can map the parts to actual known identifiers
-                const [splitLicense, splitException] = node.license.split('-with-')
-                const fixedLicense = correctLicenseId(splitLicense)
-                const fixedException = correctExceptionId(splitException, fixedLicense)
-                if (isKnownLicenseId(fixedLicense)) {
-                    return { license: fixedLicense, exception: fixedException }
-                }
-            }
-            return node
-        }
-
         if ((expression as ConjunctionInfo).conjunction) {
             return fixConjunctionInfo(expression as ConjunctionInfo)
         } else if ((expression as LicenseRef).licenseRef) {
             return fixLicenseRef(expression as LicenseRef)
         } else {
-            return fixLicenseInfo(expression as LicenseInfo)
+            return fixDashedLicenseInfo(expression as LicenseInfo)
         }
     }
     return recurse(expression)

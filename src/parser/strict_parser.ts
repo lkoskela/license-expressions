@@ -74,5 +74,5 @@ export function parse(input: string): StrictParserResult {
     const p = new StrictParser.Parser(input)
     const tree = p.parse()
     const expression = reduceNode(tree.ast?.value)
-    return { parse: tree, expression: expression || undefined, error: extractErrorMessage(tree) }
+    return { parse: tree, expression: expression, error: extractErrorMessage(tree) }
 }

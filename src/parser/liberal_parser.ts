@@ -1,7 +1,7 @@
 import assert from 'assert'
 
 import * as LiberalParser from '../codegen/parser_liberal'
-import {correctExceptionId, correctLicenseId} from '../licenses'
+import {correctExceptionId, correctLicenseId, fixDashedLicenseInfo, isKnownLicenseId} from '../licenses'
 import { ConjunctionInfo, LicenseInfo, ParsedSpdxExpression } from './types'
 export { LiberalParser }
 
@@ -20,7 +20,7 @@ export function parse(input: string): LiberalParserResult {
 
     const reduceNode = (node: any | undefined): any|undefined => {
         if (!node) {
-            return null
+            return undefined
         } else if (node.kind === LiberalParser.ASTKinds.or_expression) {
             return {
                 conjunction: 'or',
@@ -34,14 +34,19 @@ export function parse(input: string): LiberalParserResult {
                 right: reduceNode(node.right)
             } as ConjunctionInfo
         } else if (node.kind === LiberalParser.ASTKinds.license_exception) {
-            return correctExceptionId(reduceNode(node.value))
+            const value = reduceNode(node.value) as string
+            return correctExceptionId(value)
         } else if (node.kind === LiberalParser.ASTKinds.simple_expression) {
-            const license = correctLicenseId(reduceNode(node.value))
-            const exception = reduceNode(node.exception)
-            if (exception) {
-                return { license, exception } as LicenseInfo
+            if (node.exception) {
+                const license = correctLicenseId(reduceNode(node.value) as string)
+                const exception = correctExceptionId(reduceNode(node.exception), license)
+                return { license: license, exception } as LicenseInfo
             } else {
-                return { license } as LicenseInfo
+                const license = correctLicenseId(reduceNode(node.value) as string)
+                if (!isKnownLicenseId(license) && license.includes('-with-')) {
+                    return fixDashedLicenseInfo({ license: license })
+                }
+                return { license: license } as LicenseInfo
             }
         } else if (node.kind === LiberalParser.ASTKinds.words_expression) {
             const head = node.value.prefix.head.value
@@ -61,5 +66,6 @@ export function parse(input: string): LiberalParserResult {
 
     const p = new LiberalParser.Parser(input)
     const tree = p.parse()
-    return { parse: tree, expression: reduceNode(tree.ast?.value), error: extractErrorMessage(tree) }
+    const expression = reduceNode(tree.ast?.value)
+    return { parse: tree, expression: expression, error: extractErrorMessage(tree) }
 }

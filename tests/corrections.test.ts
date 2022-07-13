@@ -1,5 +1,6 @@
 import { parse } from '../src'
 
+
 const scenario = (name: string, body: (name: string) => void) => it(name, () => {
     body(name)
 })
@@ -438,6 +439,20 @@ describe('Special cases', () => {
             })
 
             scenario('GPL-3.0-or-later-with-bison-exception', (expression) => {
+                expect(parse(expression)).toStrictEqual({
+                    license: 'GPL-3.0-or-later',
+                    exception: 'Bison-exception-2.2'
+                })
+            })
+
+            scenario('GPL-3.0+-with-bison-exception', (expression) => {
+                expect(parse(expression)).toStrictEqual({
+                    license: 'GPL-3.0-or-later',
+                    exception: 'Bison-exception-2.2'
+                })
+            })
+
+            scenario('GPL-3+-with-bison-exception', (expression) => {
                 expect(parse(expression)).toStrictEqual({
                     license: 'GPL-3.0-or-later',
                     exception: 'Bison-exception-2.2'

@@ -1,5 +1,6 @@
 import spdxCorrect from 'spdx-correct'
 
+import { LicenseInfo } from '../parser/types'
 import { licenses, Licenses, License, exceptions, Exceptions, Exception } from './data'
 export { licenses, Licenses, License, exceptions, Exceptions, Exception }
 
@@ -179,7 +180,6 @@ export function correctLicenseId(identifier: string): string {
 
         if (id.match(/^([AL]?GPL[\-vV]?\d)(\+)$/)) {
             const candidateId = id.replace(/([AL]?GPL[\-vV]?\d)(\+)$/, '$1.0-or-later')
-            console.log(`candidateId: ${id} => ${candidateId} => ${mapLicense(candidateId)}`)
             return mapLicense(candidateId) || id
         }
         return id
@@ -193,6 +193,10 @@ export function correctLicenseId(identifier: string): string {
         }
         return id
     }
+
+    // If the license identifier contains a "-with-" substring, it's an expression, not
+    // a single identifier so let's not try to "fix" it at this point:
+    if (identifier.includes('-with-')) return identifier
 
     const id = expandPlus(applyGPLFixes(applyAliases(identifier)))
 
@@ -227,4 +231,17 @@ export function isKnownLicenseId(id: string): boolean {
 
 export function isKnownExceptionId(id: string): boolean {
     return !!mapExceptionId(id)
+}
+
+export function fixDashedLicenseInfo(node: LicenseInfo): LicenseInfo {
+    if (!node.exception && node.license.includes('-with-') && !isKnownLicenseId(node.license)) {
+        // let's see if we can map the parts to actual known identifiers
+        const [splitLicense, splitException] = node.license.split('-with-')
+        const fixedLicense = correctLicenseId(splitLicense)
+        const fixedException = correctExceptionId(splitException, fixedLicense)
+        if (isKnownLicenseId(fixedLicense)) {
+            return { license: fixedLicense, exception: fixedException } as LicenseInfo
+        }
+    }
+    return node
 }
