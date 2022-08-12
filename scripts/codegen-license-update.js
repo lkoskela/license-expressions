@@ -25,7 +25,10 @@ const downloadJSON = async (url) => {
         const tmpFilePath = path.join(os.tmpdir(), hash(url))
         https.get(url, (response) => {
             const errorHandler = (err) => {
-                if (err) { reject(err) }
+                if (err) {
+                    console.warn(`Could not download JSON from ${url} - ${err}`)
+                    resolve('{}')
+                }
                 else { resolve(fs.readFileSync(tmpFilePath)) }
             }
             pipeline(response, fs.createWriteStream(tmpFilePath), errorHandler)
@@ -34,7 +37,7 @@ const downloadJSON = async (url) => {
     try {
         return JSON.parse(rawJson)
     } catch (err) {
-        console.error(`Error parsing JSON from ${url}: ${err}\nJSON: ${rawJson}`)
+        console.error(`Error parsing JSON from ${url}: ${err}\n\nRaw content:\n${rawJson}`)
         return {}
     }
 }
@@ -89,17 +92,33 @@ const updateFileFromURL = async (destinationFilePath, sourceUrl, entryListKey, d
         console.log(`${destinationFilePath} already has version ${latestVersion} from ${sourceUrl} --> skip update`)
     } else {
         console.log(`Update available (from ${localVersion} to ${latestVersion}) --> updating ${entryListKey}`)
-        json[entryListKey] = (await downloadManyJSONFiles(json[entryListKey].map(detailsUrlMapper))).map(detailsObjectMapper)
+        const urls = json[entryListKey].map(detailsUrlMapper)
+        const details = await downloadManyJSONFiles(urls)
+        json[entryListKey] = details.filter(x => !!x).map(detailsObjectMapper)
         fs.writeFileSync(destinationFilePath, JSON.stringify(json, null, 2))
         console.log(`Updated ${destinationFilePath} with version ${latestVersion} from ${sourceUrl}`)
     }
 }
 
 const updateLicenseFileAt = async (destinationFilePath) => {
+    const licenseDetailsUrlMapper = (license) => license.detailsUrl
+    const licenseDetailsObjectMapper = (license) => {
+        if (license && license.licenseId) {
+            return {
+                name: license.name,
+                licenseId: license.licenseId,
+                isDeprecatedLicenseId: !!license.isDeprecatedLicenseId,
+                isOsiApproved: !!license.isOsiApproved,
+                isFsfLibre: !!license.isFsfLibre,
+                seeAlso: license.seeAlso
+            }
+        }
+        return undefined
+    }
     try {
-        await updateFileFromURL(destinationFilePath, LICENSE_FILE_URL, 'licenses')
+        await updateFileFromURL(destinationFilePath, LICENSE_FILE_URL, 'licenses', licenseDetailsUrlMapper, licenseDetailsObjectMapper)
     } catch (err) {
-        console.error(`Updating ${destinationFilePath} failed: ${err}`)
+        console.error(`Updating ${destinationFilePath} failed: ${err}`, err)
     }
 }
 
@@ -108,7 +127,7 @@ const unique = (listOfWords) => {
 }
 
 const expandListOfKnownLicenses = (ids) => {
-    ids.filter(id => id.endsWith('+')).forEach(id => ids.push(id.replace(/\+$/, '-or-later')))
+    ids.filter(id => !!id && id.endsWith('+')).forEach(id => ids.push(id.replace(/\+$/, '-or-later')))
     return ids
 }
 
@@ -130,7 +149,7 @@ const sanitizeSpecialCharacters = (text) => {
 }
 
 const findLicensesMentionedInLicenseComments = (licenses, entry, explicitGplVersionsOnly = true) => {
-    const knownLicenseIds = expandListOfKnownLicenses(licenses.map(x => x.licenseId))
+    const knownLicenseIds = expandListOfKnownLicenses(licenses.map(x => x.licenseId)).filter(x => !!x)
     const lowercaseLicenseIds = knownLicenseIds.map(x => x.toLowerCase())
     const textFromLicenseComments = sanitizeSpecialCharacters(entry.licenseComments || '').replace(/[\.,](\s|$)/g, ' ').replace(/(GPL)\s+(\d\.\d)/g, '$1-$2')
     const uniqueWords = unique(textFromLicenseComments.trim().split(/\s+/).map(w => w.toLowerCase()))
@@ -140,7 +159,7 @@ const findLicensesMentionedInLicenseComments = (licenses, entry, explicitGplVers
 }
 
 const findLicensesMentionedInExceptionName = (licenses, entry, explicitGplVersionsOnly = true) => {
-    const knownLicenseIds = expandListOfKnownLicenses(licenses.map(x => x.licenseId))
+    const knownLicenseIds = expandListOfKnownLicenses(licenses.map(x => x.licenseId)).filter(x => !!x)
     const lowercaseLicenseIds = knownLicenseIds.map(x => x.toLowerCase())
     const text = sanitizeSpecialCharacters(entry.name || '').replace(/(GPL)\s+(\d\.\d)/g, '$1-$2').split(/\s+/).filter(w => w.startsWith('LGPL') || w.startsWith('GPL') || w.startsWith('AGPL')).join(' ').trim()
     const uniqueWords = unique(text.split(/\s+/).map(w => w.toLowerCase()))
@@ -163,29 +182,27 @@ const extractLicenseIdentifiersReferredTo = (licenses, entry) => {
     return mentions
 }
 
-const exceptionDetailsUrlMapper = (entry) => EXCEPTION_DETAILS_FILE_BASEURL + entry.reference.replace(/^.\//, '')
-const exceptionDetailsObjectMapper = (licenses) => {
-    return (entry) => {
-        let licensesMentionedInComments = extractLicenseIdentifiersReferredTo(licenses, entry)
-        return {
-            licenseExceptionId: entry.licenseExceptionId,
-            isDeprecatedLicenseId: entry.isDeprecatedLicenseId,
-            // licenseExceptionText: entry.licenseExceptionText,
-            name: entry.name,
-            seeAlso: entry.seeAlso,
-            licenseComments: entry.licenseComments,
-            relatedLicenses: licensesMentionedInComments,
+const updateExceptionsFileAt = async (exceptionsFilePath, licensesFilePath) => {
+    const exceptionDetailsUrlMapper = (entry) => EXCEPTION_DETAILS_FILE_BASEURL + entry.reference.replace(/^.\//, '')
+    const exceptionDetailsObjectMapper = (licenses) => {
+        return (entry) => {
+            let licensesMentionedInComments = extractLicenseIdentifiersReferredTo(licenses, entry)
+            return {
+                licenseExceptionId: entry.licenseExceptionId,
+                isDeprecatedLicenseId: entry.isDeprecatedLicenseId,
+                // licenseExceptionText: entry.licenseExceptionText,
+                name: entry.name,
+                seeAlso: entry.seeAlso,
+                licenseComments: entry.licenseComments,
+                relatedLicenses: licensesMentionedInComments,
+            }
         }
     }
-}
-
-
-const updateExceptionsFileAt = async (exceptionsFilePath, licensesFilePath) => {
     try {
         const licenses = readLicensesFromFile(licensesFilePath)
         await updateFileFromURL(exceptionsFilePath, EXCEPTIONS_FILE_URL, 'exceptions', exceptionDetailsUrlMapper, exceptionDetailsObjectMapper(licenses))
     } catch (err) {
-        console.error(`Updating ${exceptionsFilePath} failed: ${err}`)
+        console.error(`Updating ${exceptionsFilePath} failed: ${err}`, err)
     }
 }
 
