@@ -38,7 +38,10 @@ const downloadJSON = async (url) => {
         return JSON.parse(rawJson)
     } catch (err) {
         console.error(`Error parsing JSON from ${url}: ${err}\n\nRaw content:\n${rawJson}`)
-        return {}
+        return {
+            error: `Error parsing JSON from ${url}: ${err}`,
+            details: `Raw content received:\n${rawJson}`
+        }
     }
 }
 
@@ -70,7 +73,7 @@ const readLicenseListVersionFromJsonObject = (jsonObj) => {
 const readLicensesFromFile = (file_path) => {
     if (fs.existsSync(file_path)) {
         const jsonObj = JSON.parse(fs.readFileSync(file_path))
-        return jsonObj.licenses
+        return jsonObj.licenses.filter(x => !!x)
     }
     console.warn(`File ${file_path} does not exist - can't read licenses from it`)
     return []
@@ -94,7 +97,7 @@ const updateFileFromURL = async (destinationFilePath, sourceUrl, entryListKey, d
         console.log(`Update available (from ${localVersion} to ${latestVersion}) --> updating ${entryListKey}`)
         const urls = json[entryListKey].map(detailsUrlMapper)
         const details = await downloadManyJSONFiles(urls)
-        json[entryListKey] = details.filter(x => !!x).map(detailsObjectMapper)
+        json[entryListKey] = details.filter(x => !!x && !x.error).map(detailsObjectMapper)
         fs.writeFileSync(destinationFilePath, JSON.stringify(json, null, 2))
         console.log(`Updated ${destinationFilePath} with version ${latestVersion} from ${sourceUrl}`)
     }
