@@ -9,14 +9,31 @@ type MapOfIds = {
     get: (id: string) => string | undefined,
 }
 
+const idEndsWithVersionNumber = (id: string): boolean => {
+    return !!id.match(/^.*\d+(\.\d+)*$/)
+}
+
+const removeVersionNumberFromId = (id: string): string => {
+    return idEndsWithVersionNumber(id) ? id.replace(/(v|\-)?\d+(\.\d+)*$/, '') : id
+}
+
+const countVersionsOf = (ids: string[], id: string): number => {
+    let prefix = removeVersionNumberFromId(id)
+    return ids.filter(candidateId => candidateId.startsWith(prefix)).length
+}
+
 const createMapOfIds = (ids: string[]): MapOfIds => {
     const mutilateId = (id: string): string => id.toUpperCase().replace(/[^0-9a-zA-Z\+]/g, '')
     const listOfOfficialIds: string[] = ids
     const mapOfLowercaseIds: Map<string, string> = new Map()
     const mapOfMutilatedIds: Map<string, string> = new Map()
+    const mapOfSingleVersionIdsWithoutExplicitVersion: Map<string, string> = new Map()
     listOfOfficialIds.forEach(id => {
         mapOfLowercaseIds.set(id.toLowerCase(), id)
         mapOfMutilatedIds.set(mutilateId(id), id)
+        if (idEndsWithVersionNumber(id) && countVersionsOf(listOfOfficialIds, id) === 1) {
+            mapOfSingleVersionIdsWithoutExplicitVersion.set(removeVersionNumberFromId(id.toLowerCase()), id)
+        }
     })
     const getExactMatch = (id: string) => listOfOfficialIds.find(x => x === id)
     const getCaseInsensitiveMatch = (id: string) => {
@@ -28,8 +45,9 @@ const createMapOfIds = (ids: string[]): MapOfIds => {
         return variationsToTest.map(x => mapOfLowercaseIds.get(x)).filter(m => !!m)[0]
     }
     const getFuzzyMatch = (id: string) => mapOfMutilatedIds.get(mutilateId(id))
+    const getSingleVersionMatch = (id: string) => mapOfSingleVersionIdsWithoutExplicitVersion.get(id)
     const get = (id: string): string | undefined => {
-        return getExactMatch(id) || getCaseInsensitiveMatch(id) || getFuzzyMatch(id)
+        return getExactMatch(id) || getCaseInsensitiveMatch(id) || getFuzzyMatch(id) || getSingleVersionMatch(id)
     }
     return { get } as MapOfIds
 }
