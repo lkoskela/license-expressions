@@ -4,7 +4,7 @@ const https = require('https')
 const fs = require('fs')
 const os = require('os')
 const path = require('path')
-var crypto = require('crypto')
+const crypto = require('crypto')
 const { pipeline } = require('stream')
 
 
@@ -15,7 +15,7 @@ const DETAILS_DOWNLOAD_BATCH_SIZE = 10
 
 
 const hash = (str) => {
-    var shasum = crypto.createHash('sha1')
+    let shasum = crypto.createHash('sha1')
     shasum.update(str)
     return shasum.digest('hex')
 }
