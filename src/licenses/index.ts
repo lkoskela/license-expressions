@@ -9,14 +9,31 @@ type MapOfIds = {
     get: (id: string) => string | undefined,
 }
 
+const idEndsWithVersionNumber = (id: string): boolean => {
+    return !!id.match(/^.*\d+(\.\d+)*$/)
+}
+
+const removeVersionNumberFromId = (id: string): string => {
+    return idEndsWithVersionNumber(id) ? id.replace(/(v|\-)?\d+(\.\d+)*$/, '') : id
+}
+
+const countVersionsOf = (ids: string[], id: string): number => {
+    let prefix = removeVersionNumberFromId(id)
+    return ids.filter(candidateId => candidateId.startsWith(prefix)).length
+}
+
 const createMapOfIds = (ids: string[]): MapOfIds => {
     const mutilateId = (id: string): string => id.toUpperCase().replace(/[^0-9a-zA-Z\+]/g, '')
     const listOfOfficialIds: string[] = ids
     const mapOfLowercaseIds: Map<string, string> = new Map()
     const mapOfMutilatedIds: Map<string, string> = new Map()
+    const mapOfSingleVersionIdsWithoutExplicitVersion: Map<string, string> = new Map()
     listOfOfficialIds.forEach(id => {
         mapOfLowercaseIds.set(id.toLowerCase(), id)
         mapOfMutilatedIds.set(mutilateId(id), id)
+        if (idEndsWithVersionNumber(id) && countVersionsOf(listOfOfficialIds, id) === 1) {
+            mapOfSingleVersionIdsWithoutExplicitVersion.set(removeVersionNumberFromId(id.toLowerCase()), id)
+        }
     })
     const getExactMatch = (id: string) => listOfOfficialIds.find(x => x === id)
     const getCaseInsensitiveMatch = (id: string) => {
@@ -28,8 +45,9 @@ const createMapOfIds = (ids: string[]): MapOfIds => {
         return variationsToTest.map(x => mapOfLowercaseIds.get(x)).filter(m => !!m)[0]
     }
     const getFuzzyMatch = (id: string) => mapOfMutilatedIds.get(mutilateId(id))
+    const getSingleVersionMatch = (id: string) => mapOfSingleVersionIdsWithoutExplicitVersion.get(id)
     const get = (id: string): string | undefined => {
-        return getExactMatch(id) || getCaseInsensitiveMatch(id) || getFuzzyMatch(id)
+        return getExactMatch(id) || getCaseInsensitiveMatch(id) || getFuzzyMatch(id) || getSingleVersionMatch(id)
     }
     return { get } as MapOfIds
 }
@@ -84,7 +102,7 @@ const mapLicenseId = (id: string): string | undefined => {
 const fixLicenseId = (id: string): string | null => {
     // Don't try to correct license identifiers that are syntactically legit on the
     // surface and have an explicit version number such as "3.0" or "2.1":
-    if (id.match(/([a-zA-Z_0-9]+(\-[a-zA-Z_0-9]+)*)\-\d+(\.\d+)+(\-[a-zA-Z_0-9]+)*/)) {
+    if (id.match(/(\w+(\-\w+)*)\-\d+(\.\d+)+(\-\w+)*/)) {
         return id
     }
 
@@ -171,17 +189,28 @@ export function correctLicenseId(identifier: string): string {
         if (id.toUpperCase() === 'LGPL') return mapLicense('LGPL-3.0-only') || id
         if (id.toUpperCase() === 'AGPL') return mapLicense('AGPL-3.0-only') || id
 
+        // If the id is already a known license, also check if there's a "-only" version
         if (mapLicense(id)) {
             return mapLicense(`${id}-only`) || id
         }
+
+        // Expand a single-digit "GPL2+" or "GPLv3" into a "-2.0+" or "-3.0" with the trailing zero
         if (id.match(/^([AL]?GPL)([\-vV]?)(\d)(\+?)$/)) {
             return applyGPLFixes(id.replace(/^([AL]?GPL)([\-vV]?)(\d)(\+?)$/, '$1-$3.0$4'))
         }
 
+        // Correct the '-and-later' to the canonical '-or-later'
+        if (id.match(/^([AL]?GPL.*)(\-and\-later)$/)) {
+            const candidateId = id.replace(/([AL]?GPL.*)(\-and\-later)$/, '$1-or-later')
+            return applyGPLFixes(candidateId) || id
+        }
+
+        // Expand the '+' syntax to the canonical '-or-later'
         if (id.match(/^([AL]?GPL[\-vV]?\d)(\+)$/)) {
             const candidateId = id.replace(/([AL]?GPL[\-vV]?\d)(\+)$/, '$1.0-or-later')
             return mapLicense(candidateId) || id
         }
+
         return id
     }
 

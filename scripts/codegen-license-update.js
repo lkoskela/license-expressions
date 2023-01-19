@@ -4,7 +4,7 @@ const https = require('https')
 const fs = require('fs')
 const os = require('os')
 const path = require('path')
-var crypto = require('crypto')
+const crypto = require('crypto')
 const { pipeline } = require('stream')
 
 
@@ -15,7 +15,7 @@ const DETAILS_DOWNLOAD_BATCH_SIZE = 10
 
 
 const hash = (str) => {
-    var shasum = crypto.createHash('sha1')
+    let shasum = crypto.createHash('sha1')
     shasum.update(str)
     return shasum.digest('hex')
 }
@@ -38,7 +38,10 @@ const downloadJSON = async (url) => {
         return JSON.parse(rawJson)
     } catch (err) {
         console.error(`Error parsing JSON from ${url}: ${err}\n\nRaw content:\n${rawJson}`)
-        return {}
+        return {
+            error: `Error parsing JSON from ${url}: ${err}`,
+            details: `Raw content received:\n${rawJson}`
+        }
     }
 }
 
@@ -70,7 +73,7 @@ const readLicenseListVersionFromJsonObject = (jsonObj) => {
 const readLicensesFromFile = (file_path) => {
     if (fs.existsSync(file_path)) {
         const jsonObj = JSON.parse(fs.readFileSync(file_path))
-        return jsonObj.licenses
+        return jsonObj.licenses.filter(x => !!x)
     }
     console.warn(`File ${file_path} does not exist - can't read licenses from it`)
     return []
@@ -94,7 +97,7 @@ const updateFileFromURL = async (destinationFilePath, sourceUrl, entryListKey, d
         console.log(`Update available (from ${localVersion} to ${latestVersion}) --> updating ${entryListKey}`)
         const urls = json[entryListKey].map(detailsUrlMapper)
         const details = await downloadManyJSONFiles(urls)
-        json[entryListKey] = details.filter(x => !!x).map(detailsObjectMapper)
+        json[entryListKey] = details.filter(x => !!x && !x.error).map(detailsObjectMapper)
         fs.writeFileSync(destinationFilePath, JSON.stringify(json, null, 2))
         console.log(`Updated ${destinationFilePath} with version ${latestVersion} from ${sourceUrl}`)
     }
@@ -127,7 +130,10 @@ const unique = (listOfWords) => {
 }
 
 const expandListOfKnownLicenses = (ids) => {
-    ids.filter(id => !!id && id.endsWith('+')).forEach(id => ids.push(id.replace(/\+$/, '-or-later')))
+    ids.filter(id => !!id && id.endsWith('+')).forEach(id => {
+        ids.push(id.replace(/\+$/, '-or-later'))
+        ids.push(id.replace(/\+$/, '-and-later'))
+    })
     return ids
 }
 
@@ -140,6 +146,9 @@ const expandListOfMentionedLicenses = (words) => {
         words.push('lgpl-2.0')
         words.push('lgpl-2.1')
         words.push('lgpl-3.0')
+    })
+    words.filter(w => w.match(/^[al]?gpl.*\-and\-later$/)).forEach(w => {
+        words.push(w.replace(/^([al]?gpl.*)\-and\-later$/, '$1-or-later'))
     })
     return words
 }
