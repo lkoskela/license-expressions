@@ -171,17 +171,28 @@ export function correctLicenseId(identifier: string): string {
         if (id.toUpperCase() === 'LGPL') return mapLicense('LGPL-3.0-only') || id
         if (id.toUpperCase() === 'AGPL') return mapLicense('AGPL-3.0-only') || id
 
+        // If the id is already a known license, also check if there's a "-only" version
         if (mapLicense(id)) {
             return mapLicense(`${id}-only`) || id
         }
+
+        // Expand a single-digit "GPL2+" or "GPLv3" into a "-2.0+" or "-3.0" with the trailing zero
         if (id.match(/^([AL]?GPL)([\-vV]?)(\d)(\+?)$/)) {
             return applyGPLFixes(id.replace(/^([AL]?GPL)([\-vV]?)(\d)(\+?)$/, '$1-$3.0$4'))
         }
 
+        // Correct the '-and-later' to the canonical '-or-later'
+        if (id.match(/^([AL]?GPL.*)(\-and\-later)$/)) {
+            const candidateId = id.replace(/([AL]?GPL.*)(\-and\-later)$/, '$1-or-later')
+            return applyGPLFixes(candidateId) || id
+        }
+
+        // Expand the '+' syntax to the canonical '-or-later'
         if (id.match(/^([AL]?GPL[\-vV]?\d)(\+)$/)) {
             const candidateId = id.replace(/([AL]?GPL[\-vV]?\d)(\+)$/, '$1.0-or-later')
             return mapLicense(candidateId) || id
         }
+
         return id
     }
 

@@ -130,7 +130,10 @@ const unique = (listOfWords) => {
 }
 
 const expandListOfKnownLicenses = (ids) => {
-    ids.filter(id => !!id && id.endsWith('+')).forEach(id => ids.push(id.replace(/\+$/, '-or-later')))
+    ids.filter(id => !!id && id.endsWith('+')).forEach(id => {
+        ids.push(id.replace(/\+$/, '-or-later'))
+        ids.push(id.replace(/\+$/, '-and-later'))
+    })
     return ids
 }
 
@@ -143,6 +146,9 @@ const expandListOfMentionedLicenses = (words) => {
         words.push('lgpl-2.0')
         words.push('lgpl-2.1')
         words.push('lgpl-3.0')
+    })
+    words.filter(w => w.match(/^[al]?gpl.*\-and\-later$/)).forEach(w => {
+        words.push(w.replace(/^([al]?gpl.*)\-and\-later$/, '$1-or-later'))
     })
     return words
 }

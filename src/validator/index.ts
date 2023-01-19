@@ -40,7 +40,7 @@ const expandGplLicenseVersionExpressions = (relatedLicenseIds: string[]): string
             ids.push(`${license}-only`)
             ids.push(`${license}-or-later`)
         }
-        const orLaterMatch = license.match(/^([AL]?GPL)\-(\d(\.\d)+)\-or\-later$/)
+        const orLaterMatch = license.match(/^([AL]?GPL)\-(\d(\.\d)+)\-(or|and)\-later$/)
         if (orLaterMatch) {
             // if "GPL-2.0+" or "GPL-3.0-or-later" etc.
             const licenseFamily = orLaterMatch[1]

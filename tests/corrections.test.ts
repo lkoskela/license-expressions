@@ -230,9 +230,9 @@ describe('Common shorthands for GPL versions', () => {
     }
 
     testForVariationsOf('GPL-2.0-only', ["GPLv2", "GPL2", "GPL-2"])
-    testForVariationsOf('GPL-2.0-or-later', ["GPLv2+", "GPL2+", "GPL-2+"])
+    testForVariationsOf('GPL-2.0-or-later', ["GPLv2+", "GPL2+", "GPL-2+", "GPL-2.0-and-later", "GPLv2-and-later"])
     testForVariationsOf('GPL-3.0-only', ["GPL", "GPL3", "GPL-3", "GPLv3"])
-    testForVariationsOf('GPL-3.0-or-later', ["GPLv3+", "GPL3+", "GPL-3+"])
+    testForVariationsOf('GPL-3.0-or-later', ["GPLv3+", "GPL3+", "GPL-3+", "GPL-3.0-and-later", "GPL3-and-later"])
 
     it('"LGPL-3" is interpreted as "LGPL-3.0-only"', () => {
         expect(parse('LGPL-3')).toStrictEqual({ license: 'LGPL-3.0-only' })
