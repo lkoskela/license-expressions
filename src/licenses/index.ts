@@ -84,7 +84,7 @@ const mapLicenseId = (id: string): string | undefined => {
 const fixLicenseId = (id: string): string | null => {
     // Don't try to correct license identifiers that are syntactically legit on the
     // surface and have an explicit version number such as "3.0" or "2.1":
-    if (id.match(/([a-zA-Z_0-9]+(\-[a-zA-Z_0-9]+)*)\-\d+(\.\d+)+(\-[a-zA-Z_0-9]+)*/)) {
+    if (id.match(/(\w+(\-\w+)*)\-\d+(\.\d+)+(\-\w+)*/)) {
         return id
     }
 
