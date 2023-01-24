@@ -30,9 +30,9 @@ export type FullSpdxParseResult = {
         .replace(/\s+/, ' ')   // compress consecutive whitespaces to a single space
     if (!strictSyntax) {
         cleanedInput = cleanedInput
-            .replace(/\s+and\s+/i, ' AND ')    // fix lowercase keywords
-            .replace(/\s+or\s+/i, ' OR ')      // fix lowercase keywords
-            .replace(/\s+with\s+/i, ' WITH ')  // fix lowercase keywords
+            .replace(/(?<!\s)\s+and\s+/i, ' AND ')    // fix lowercase keywords
+            .replace(/(?<!\s)\s+or\s+/i, ' OR ')      // fix lowercase keywords
+            .replace(/(?<!\s)\s+with\s+/i, ' WITH ')  // fix lowercase keywords
     }
     return cleanedInput
 }
