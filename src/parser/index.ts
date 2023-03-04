@@ -35,7 +35,7 @@ export type FullSpdxParseResult = {
             .replace(/(?<!\s)\s+and\s+/i, ' AND ')    // fix lowercase keywords
             .replace(/(?<!\s)\s+or\s+/i, ' OR ')      // fix lowercase keywords
             .replace(/(?<!\s)\s+with\s+/i, ' WITH ')  // fix lowercase keywords
-            .replace(/\s+[wW]\//, ' WITH ')           // expand "w/" shorthand for "WITH"
+            .replace(/\s[wW]\/\s?/, ' WITH ')           // expand "w/" shorthand for "WITH"
     }
     return cleanedInput
 }
@@ -105,7 +105,7 @@ const findNameBasedMatch = (text: string): License|undefined => {
         }
 
         // If the license identifier happens to be an exact match of a license name...
-        let nameBasedMatch = findNameBasedMatch(preparedInput)
+        const nameBasedMatch = findNameBasedMatch(preparedInput)
         if (nameBasedMatch) {
             return parseSpdxExpressionWithDetails(nameBasedMatch.licenseId, strictSyntax)
         }
@@ -113,10 +113,10 @@ const findNameBasedMatch = (text: string): License|undefined => {
         // If the license identifier looks like "Mozilla Public License 2.0 (MPL 2.0)", try
         // to parse the identifier in the parenthesis. If that fails, we'll try to see if the
         // parenthesized text is an exact match against a license name.
-        let potentialIdentifier = (preparedInput?.match(/\s+\((.*)\)$/))?.[1]
+        const potentialIdentifier = (preparedInput?.match(/\s\((.*)\)$/))?.[1]
         if (potentialIdentifier) {
             // check if it's an SPDX identifier
-            const candidateResult = parseSpdxExpressionWithDetails(potentialIdentifier, true)
+            const candidateResult = parseSpdxExpressionWithDetails(potentialIdentifier, strictSyntax)
             if (!candidateResult.error && candidateResult.expression && validate(candidateResult.input).valid) {
                 return candidateResult
             }
