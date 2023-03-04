@@ -113,7 +113,7 @@ const findNameBasedMatch = (text: string): License|undefined => {
         // If the license identifier looks like "Mozilla Public License 2.0 (MPL 2.0)", try
         // to parse the identifier in the parenthesis. If that fails, we'll try to see if the
         // parenthesized text is an exact match against a license name.
-        const potentialIdentifier = (preparedInput?.match(/\s\((.*)\)$/))?.[1]
+        const potentialIdentifier = (preparedInput?.match(/\s\((.+?)\)$/))?.[1]
         if (potentialIdentifier) {
             // check if it's an SPDX identifier
             const candidateResult = parseSpdxExpressionWithDetails(potentialIdentifier, strictSyntax)
