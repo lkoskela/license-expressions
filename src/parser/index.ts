@@ -2,6 +2,8 @@ import { parse as parseWithStrictParser, StrictParserResult } from './strict_par
 import { parse as parseWithLiberalParser, LiberalParserResult } from './liberal_parser'
 import { ParsedSpdxExpression, ConjunctionInfo, LicenseInfo, LicenseRef } from './types'
 import { fixDashedLicenseInfo, licenses } from '../licenses'
+import { License } from '../licenses/data'
+import validate from '../validator'
 
 
 export { ParsedSpdxExpression, ConjunctionInfo, LicenseInfo, LicenseRef }
@@ -63,6 +65,12 @@ export function parse(input: string, strictSyntax: boolean = false) : ParsedSpdx
     return data.expression
 }
 
+const findNameBasedMatch = (text: string): License|undefined => {
+    const normalizeName = (name: string): string => name.toLowerCase()
+    const lowercaseText = normalizeName(text)
+    return licenses.licenses.find(x => normalizeName(x.name) === lowercaseText)
+}
+
 /**
  * Parse an SPDX expression into a structured object representation along with additional
  * metadata such as the underlying AST tree used and any errors in case parsing failed.
@@ -97,9 +105,26 @@ export function parse(input: string, strictSyntax: boolean = false) : ParsedSpdx
         }
 
         // If the license identifier happens to be an exact match of a license name...
-        let nameBasedMatch = licenses.licenses.find(x => x.name === preparedInput)
+        let nameBasedMatch = findNameBasedMatch(preparedInput)
         if (nameBasedMatch) {
             return parseSpdxExpressionWithDetails(nameBasedMatch.licenseId, strictSyntax)
+        }
+
+        // If the license identifier looks like "Mozilla Public License 2.0 (MPL 2.0)", try
+        // to parse the identifier in the parenthesis. If that fails, we'll try to see if the
+        // parenthesized text is an exact match against a license name.
+        let potentialIdentifier = (preparedInput?.match(/\s+\((.*)\)$/))?.[1]
+        if (potentialIdentifier) {
+            // check if it's an SPDX identifier
+            const candidateResult = parseSpdxExpressionWithDetails(potentialIdentifier, true)
+            if (!candidateResult.error && candidateResult.expression && validate(candidateResult.input).valid) {
+                return candidateResult
+            }
+            // check for a name-based match
+            const nameBasedMatch = findNameBasedMatch(potentialIdentifier)
+            if (nameBasedMatch) {
+                return parseSpdxExpressionWithDetails(nameBasedMatch.licenseId, strictSyntax)
+            }
         }
     }
 

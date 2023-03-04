@@ -522,3 +522,34 @@ describe('Special cases', () => {
         })
     })
 })
+
+describe('Parenthesized scenarios', () => {
+
+    describe('Long form exact-name-match followed by a valid (IDENTIFIER-1.2.3)', () => {
+        it('tries to match the parenthesized identifier first', () => {
+            expect(parse('Mozilla Public License 2.0 (Apache-2.0)')).toStrictEqual({ license: 'Apache-2.0' })
+        })
+    })
+
+    describe('Long form followed by a valid (IDENTIFIER-1.2.3)', () => {
+        it('detects parenthesized identifier in liberal mode', () => {
+            expect(() => parse('Mozilla Public License 2.0 (MPL 2.0)', true)).toThrow()
+            expect(parse('Mozilla Public License 2.0 (MPL 2.0)', false)).toStrictEqual({ license: 'MPL-2.0' })
+            expect(parse('GNU Lesser General Public License v3 or later (LGPLv3+)', false)).toStrictEqual({ license: 'LGPL-3.0-or-later' })
+            expect(parse('Does not have to be valid name here (Apache-2.0)', false)).toStrictEqual({ license: 'Apache-2.0' })
+        })
+
+        it('detects parenthesized exact name match in liberal mode', () => {
+            expect(() => parse('It will throw in strict mode (Mozilla Public License 2.0)', true)).toThrow()
+            expect(() => parse('It will throw unless there is an exact match (This is not an exact match)', false)).toThrow()
+            expect(parse('Some freeform text here (Mozilla Public License 2.0)', false)).toStrictEqual({ license: 'MPL-2.0' })
+            expect(parse('Blah blah blah blah (GNU Lesser General Public License v3.0 or later)', false)).toStrictEqual({ license: 'LGPL-3.0-or-later' })
+        })
+
+        it('ignores multiple parenthesized identifiers even in liberal mode', () => {
+            expect(() => parse('Licensed the GPL (GPLv3+) or the Modified BSD License (BSD-3-Clause)', false)).toThrow()
+            expect(parse('Licensed under the GPL (GPLv3+)', false)).toStrictEqual({ license: 'GPL-3.0-or-later' })
+            expect(parse('Licensed under the Modified BSD License (BSD-3-Clause)', false)).toStrictEqual({ license: 'BSD-3-Clause' })
+        })
+    })
+})
