@@ -110,15 +110,22 @@ const findNameBasedMatch = (text: string): License|undefined => {
             return parseSpdxExpressionWithDetails(nameBasedMatch.licenseId, strictSyntax)
         }
 
-        // If the license identifier looks like "Mozilla Public License 2.0 (MPL 2.0)", try
-        // to parse the identifier in the parenthesis. If that fails, we'll try to see if the
-        // parenthesized text is an exact match against a license name.
-        const potentialIdentifier = (preparedInput?.match(/\s\((.+?)\)$/))?.[1]
-        if (potentialIdentifier) {
-            // check if it's an SPDX identifier
-            const candidateResult = parseSpdxExpressionWithDetails(potentialIdentifier, strictSyntax)
-            if (!candidateResult.error && candidateResult.expression && validate(candidateResult.input).valid) {
-                return candidateResult
+        // If the value looks like "Mozilla Public License 2.0 (MPL 2.0)", and is short enough
+        // to look like a license name, try to parse the identifier in the parenthesis.
+        // If that fails, we'll try to see if the parenthesized text is an exact match against
+        // a license name in the SPDX data.
+        const potentialMatchForParenthesizedPattern = preparedInput?.match(/^(.+?)\s\((.+?)\)$/)
+        const pretext = potentialMatchForParenthesizedPattern?.[1]
+        const potentialIdentifier = potentialMatchForParenthesizedPattern?.[2]
+        if (pretext && potentialIdentifier) {
+            // check if the pretext is within threshold length
+            const thresholdLength = 100
+            if (pretext.length < thresholdLength) {
+                // check if it's an SPDX identifier
+                const candidateResult = parseSpdxExpressionWithDetails(potentialIdentifier, strictSyntax)
+                if (!candidateResult.error && candidateResult.expression && validate(candidateResult.input).valid) {
+                    return candidateResult
+                }
             }
             // check for a name-based match
             const nameBasedMatch = findNameBasedMatch(potentialIdentifier)

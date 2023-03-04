@@ -1,5 +1,7 @@
-import { parse } from '../src'
+import assert from 'assert'
 
+import { parse } from '../src'
+import { licenses } from '../src/licenses'
 
 const scenario = (name: string, body: (name: string) => void) => it(name, () => {
     body(name)
@@ -531,11 +533,13 @@ describe('Parenthesized scenarios', () => {
         })
     })
 
-    describe('Long form followed by a valid (IDENTIFIER-1.2.3)', () => {
+    describe('Text ending with a parenthesized license name or identifier', () => {
+
         it('detects parenthesized identifier in liberal mode', () => {
-            expect(() => parse('Mozilla Public License 2.0 (MPL 2.0)', true)).toThrow()
+            expect(() => parse('Mozilla Public License 2.0 (MPL-2.0)', true)).toThrow()
+            expect(() => parse('Something something something (MPL 2.0)', true)).toThrow()
             expect(parse('Mozilla Public License 2.0 (MPL 2.0)', false)).toStrictEqual({ license: 'MPL-2.0' })
-            expect(parse('GNU Lesser General Public License v3 or later (LGPLv3+)', false)).toStrictEqual({ license: 'LGPL-3.0-or-later' })
+            expect(parse('GNU Lesser General Public License (LGPLv3+)', false)).toStrictEqual({ license: 'LGPL-3.0-or-later' })
             expect(parse('Does not have to be valid name here (Apache-2.0)', false)).toStrictEqual({ license: 'Apache-2.0' })
         })
 
@@ -551,5 +555,25 @@ describe('Parenthesized scenarios', () => {
             expect(parse('Licensed under the GPL (GPLv3+)', false)).toStrictEqual({ license: 'GPL-3.0-or-later' })
             expect(parse('Licensed under the Modified BSD License (BSD-3-Clause)', false)).toStrictEqual({ license: 'BSD-3-Clause' })
         })
+
+        describe('ignores the parenthesized pattern for texts clearly longer than the longest license name', () => {
+            const THRESHOLD_LENGTH = 100
+            const justShortEnoughPretext = '123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789' // 99 chars
+            const slightlyTooLongPretext = '123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 1'  // 101 chars
+
+            const longestLicenseName = licenses.licenses.map(l => l.name.length).sort().reverse()[0]
+            assert(THRESHOLD_LENGTH > longestLicenseName, `Our SPDX data contains license names longer than our hardcoded threshold of ${THRESHOLD_LENGTH} - we should probably increase the threshold!`)
+            assert(justShortEnoughPretext.length < THRESHOLD_LENGTH, `Our "just short enough" pretext isn't short enough!`)
+            assert(slightlyTooLongPretext.length > THRESHOLD_LENGTH, `Our "slightly too long" pretext isn't long enough!`)
+
+            it(`liberal mode accepts the parenthesized pattern for text short enough to be a license name`, () => {
+                expect(parse(`${justShortEnoughPretext} (Apache-2.0)`, false)).toStrictEqual({ license: 'Apache-2.0' })
+            })
+
+            it(`liberal mode ignores the parenthesized pattern for too long text preceding the parenthesis`, () => {
+                expect(() => parse(`${slightlyTooLongPretext} (Apache-2.0)`, false)).toThrow()
+            })
+        })
     })
 })
+
