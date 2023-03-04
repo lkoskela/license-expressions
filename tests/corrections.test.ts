@@ -5,7 +5,6 @@ const scenario = (name: string, body: (name: string) => void) => it(name, () => 
     body(name)
 })
 
-
 describe('GPL family of expressions with a "+" suffix', () => {
     describe('"AGPL-3.0+" is interpreted as "AGPL-3.0-or-later"', () => {
 
@@ -44,6 +43,7 @@ describe('Deprecated "default" GPL versions are coerced into their non-deprecate
             expect(parse('LGPL-3.0')).toStrictEqual({ license: 'LGPL-3.0-only' })
             expect(parse('LGPL-3.0-or-later')).toStrictEqual({ license: 'LGPL-3.0-or-later' })
             expect(parse('LGPL-3.0+')).toStrictEqual({ license: 'LGPL-3.0-or-later' })
+            expect(parse('LGPLv3+')).toStrictEqual({ license: 'LGPL-3.0-or-later' })
         })
     })
 
