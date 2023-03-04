@@ -1,5 +1,5 @@
 {
-  "licenseListVersion": "9ce8db0",
+  "licenseListVersion": "17632be",
   "exceptions": [
     {
       "licenseExceptionId": "389-exception",
@@ -49,6 +49,17 @@
         "https://launchpad.net/ubuntu/precise/+source/xmltooling/+copyright",
         "https://tracker.debian.org/media/packages/s/sipwitch/copyright-1.9.15-3",
         "https://opensource.apple.com/source/launchd/launchd-258.1/launchd/compile.auto.html"
+      ],
+      "relatedLicenses": []
+    },
+    {
+      "licenseExceptionId": "Autoconf-exception-macro",
+      "isDeprecatedLicenseId": false,
+      "name": "Autoconf macro exception",
+      "seeAlso": [
+        "https://github.com/freedesktop/xorg-macros/blob/39f07f7db58ebbf3dcb64a2bf9098ed5cf3d1223/xorg-macros.m4.in",
+        "https://www.gnu.org/software/autoconf-archive/ax_pthread.html",
+        "https://launchpad.net/ubuntu/precise/+source/xmltooling/+copyright"
       ],
       "relatedLicenses": []
     },
@@ -462,7 +473,9 @@
         "https://github.com/maranget/hevea/blob/master/LICENSE"
       ],
       "licenseComments": "This exception is primarily used with QPL-1.0-INRIA-2004",
-      "relatedLicenses": []
+      "relatedLicenses": [
+        "QPL-1.0-INRIA-2004"
+      ]
     },
     {
       "licenseExceptionId": "Qt-GPL-exception-1.0",
@@ -592,5 +605,5 @@
       "relatedLicenses": []
     }
   ],
-  "releaseDate": "2023-02-16"
+  "releaseDate": "2023-02-23"
 }

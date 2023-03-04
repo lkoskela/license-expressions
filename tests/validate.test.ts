@@ -94,6 +94,8 @@ describe('Examples passing validation', () => {
         describe('without exception', () => {
             shouldPassValidation('Apache-2.0')
             shouldPassValidation('MIT')
+            shouldPassValidation('PSF-2.0')
+            shouldPassValidation('MPL-2.0')
             shouldPassValidation('GPL-2.0-or-later')
             shouldPassValidation('LGPL-2.0+')
         })

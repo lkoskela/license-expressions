@@ -1,7 +1,9 @@
 import { parse as parseWithStrictParser, StrictParserResult } from './strict_parser'
 import { parse as parseWithLiberalParser, LiberalParserResult } from './liberal_parser'
 import { ParsedSpdxExpression, ConjunctionInfo, LicenseInfo, LicenseRef } from './types'
-import { fixDashedLicenseInfo } from '../licenses'
+import { fixDashedLicenseInfo, licenses } from '../licenses'
+import { License } from '../licenses/data'
+import validate from '../validator'
 
 
 export { ParsedSpdxExpression, ConjunctionInfo, LicenseInfo, LicenseRef }
@@ -33,6 +35,7 @@ export type FullSpdxParseResult = {
             .replace(/(?<!\s)\s+and\s+/i, ' AND ')    // fix lowercase keywords
             .replace(/(?<!\s)\s+or\s+/i, ' OR ')      // fix lowercase keywords
             .replace(/(?<!\s)\s+with\s+/i, ' WITH ')  // fix lowercase keywords
+            .replace(/\s[wW]\/\s?/, ' WITH ')           // expand "w/" shorthand for "WITH"
     }
     return cleanedInput
 }
@@ -60,6 +63,12 @@ export function parse(input: string, strictSyntax: boolean = false) : ParsedSpdx
         /* istanbul ignore next */ throw new Error(buildErrorMessage(input, strictSyntax))
     }
     return data.expression
+}
+
+const findNameBasedMatch = (text: string): License|undefined => {
+    const normalizeName = (name: string): string => name.toLowerCase()
+    const lowercaseText = normalizeName(text)
+    return licenses.licenses.find(x => normalizeName(x.name) === lowercaseText)
 }
 
 /**
@@ -93,6 +102,36 @@ export function parse(input: string, strictSyntax: boolean = false) : ParsedSpdx
         // awareness of deviations from the SPDX specification
         if (!liberalResult.error) {
             return liberalResult
+        }
+
+        // If the license identifier happens to be an exact match of a license name...
+        const nameBasedMatch = findNameBasedMatch(preparedInput)
+        if (nameBasedMatch) {
+            return parseSpdxExpressionWithDetails(nameBasedMatch.licenseId, strictSyntax)
+        }
+
+        // If the value looks like "Mozilla Public License 2.0 (MPL 2.0)", and is short enough
+        // to look like a license name, try to parse the identifier in the parenthesis.
+        // If that fails, we'll try to see if the parenthesized text is an exact match against
+        // a license name in the SPDX data.
+        const potentialMatchForParenthesizedPattern = preparedInput?.match(/^(.+?)\s\((.+?)\)$/)
+        const pretext = potentialMatchForParenthesizedPattern?.[1]
+        const potentialIdentifier = potentialMatchForParenthesizedPattern?.[2]
+        if (pretext && potentialIdentifier) {
+            // check if the pretext is within threshold length
+            const thresholdLength = 100
+            if (pretext.length < thresholdLength) {
+                // check if it's an SPDX identifier
+                const candidateResult = parseSpdxExpressionWithDetails(potentialIdentifier, strictSyntax)
+                if (!candidateResult.error && candidateResult.expression && validate(candidateResult.input).valid) {
+                    return candidateResult
+                }
+            }
+            // check for a name-based match
+            const nameBasedMatch = findNameBasedMatch(potentialIdentifier)
+            if (nameBasedMatch) {
+                return parseSpdxExpressionWithDetails(nameBasedMatch.licenseId, strictSyntax)
+            }
         }
     }
 
