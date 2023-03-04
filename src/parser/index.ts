@@ -33,6 +33,7 @@ export type FullSpdxParseResult = {
             .replace(/(?<!\s)\s+and\s+/i, ' AND ')    // fix lowercase keywords
             .replace(/(?<!\s)\s+or\s+/i, ' OR ')      // fix lowercase keywords
             .replace(/(?<!\s)\s+with\s+/i, ' WITH ')  // fix lowercase keywords
+            .replace(/\s+[wW]\//, ' WITH ')           // expand "w/" shorthand for "WITH"
     }
     return cleanedInput
 }

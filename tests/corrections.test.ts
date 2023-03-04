@@ -316,6 +316,54 @@ describe('Expressions with slight errors', () => {
 
     describe('common misspellings', () => {
 
+        describe('of "WITH" as "w/"', () => {
+
+            it('"w/" is corrected when strictSyntax = false', () => {
+                const expression = 'GPL-3.0-only w/ Autoconf-exception-2.0'
+                expect(() => parse(expression, true)).toThrowError()
+                expect(parse(expression, false)).toMatchObject({
+                    license: 'GPL-3.0-only',
+                    exception: 'Autoconf-exception-2.0'
+                })
+            })
+
+            it('"W/" is corrected when strictSyntax = false', () => {
+                const expression = 'GPLv3+ W/ autoconf-exception-2.0'
+                expect(() => parse(expression, true)).toThrowError()
+                expect(parse(expression, false)).toMatchObject({
+                    license: 'GPL-3.0-or-later',
+                    exception: 'Autoconf-exception-2.0'
+                })
+            })
+
+            it('"w/" is corrected even when there is no whitespace before a valid exception', () => {
+                const expression = 'GPL-3.0-only w/autoconf-exception-2.0'
+                expect(() => parse(expression, true)).toThrowError()
+                expect(parse(expression, false)).toMatchObject({
+                    license: 'GPL-3.0-only',
+                    exception: 'Autoconf-exception-2.0'
+                })
+            })
+
+            it('"w/" is corrected even when there is no whitespace before an unknown exception', () => {
+                const expression = 'GPL-3.0-only w/not an exception'
+                expect(() => parse(expression, true)).toThrowError()
+                expect(parse(expression, false)).toMatchObject({
+                    license: 'GPL-3.0-only',
+                    exception: 'not an exception'
+                })
+            })
+
+            it('"w/" is not corrected even in liberal mode when there is no license identifier before it', () => {
+                expect(() => parse('w/whatever', true)).toThrowError()
+                expect(() => parse('w/whatever', false)).toThrowError()
+                expect(() => parse(' w/ whatever', true)).toThrowError()
+                expect(() => parse(' w/ whatever', false)).toThrowError()
+                expect(() => parse('XXXw/whatever', true)).toThrowError()
+                expect(() => parse('XXXw/whatever', false)).toThrowError()
+            })
+        })
+
         describe('of license exceptions', () => {
 
             it('"autoconf exception 2.0" or "autoconf exception version 2" is corrected to Autoconf-exception-2.0', () => {
