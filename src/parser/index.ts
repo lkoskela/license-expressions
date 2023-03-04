@@ -1,7 +1,7 @@
 import { parse as parseWithStrictParser, StrictParserResult } from './strict_parser'
 import { parse as parseWithLiberalParser, LiberalParserResult } from './liberal_parser'
 import { ParsedSpdxExpression, ConjunctionInfo, LicenseInfo, LicenseRef } from './types'
-import { fixDashedLicenseInfo } from '../licenses'
+import { fixDashedLicenseInfo, licenses } from '../licenses'
 
 
 export { ParsedSpdxExpression, ConjunctionInfo, LicenseInfo, LicenseRef }
@@ -94,6 +94,12 @@ export function parse(input: string, strictSyntax: boolean = false) : ParsedSpdx
         // awareness of deviations from the SPDX specification
         if (!liberalResult.error) {
             return liberalResult
+        }
+
+        // If the license identifier happens to be an exact match of a license name...
+        let nameBasedMatch = licenses.licenses.find(x => x.name === preparedInput)
+        if (nameBasedMatch) {
+            return parseSpdxExpressionWithDetails(nameBasedMatch.licenseId, strictSyntax)
         }
     }
 

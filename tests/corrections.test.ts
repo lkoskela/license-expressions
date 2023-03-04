@@ -5,6 +5,19 @@ const scenario = (name: string, body: (name: string) => void) => it(name, () => 
     body(name)
 })
 
+describe('Exact matches of license names', () => {
+
+    it('are accepted/corrected in liberal mode', () => {
+        expect(parse('Mozilla Public License 2.0', false)).toStrictEqual({ license: 'MPL-2.0' })
+        expect(parse('The Unlicense', false)).toStrictEqual({ license: 'Unlicense' })
+    })
+
+    it('are not accepted/corrected in strict mode', () => {
+        expect(() => parse('Mozilla Public License 2.0', true)).toThrow()
+        expect(() => parse('The Unlicense', true)).toThrow()
+    })
+})
+
 describe('GPL family of expressions with a "+" suffix', () => {
     describe('"AGPL-3.0+" is interpreted as "AGPL-3.0-or-later"', () => {
 
