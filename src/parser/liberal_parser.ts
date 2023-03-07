@@ -2,7 +2,7 @@ import assert from 'assert'
 
 import * as LiberalParser from '../codegen/parser_liberal'
 import {correctExceptionId, correctLicenseId, fixDashedLicenseInfo, isKnownLicenseId} from '../licenses'
-import { ConjunctionInfo, LicenseInfo, ParsedSpdxExpression } from './types'
+import { ConjunctionInfo, LicenseInfo, LicenseRef, ParsedSpdxExpression } from './types'
 export { LiberalParser }
 
 export type LiberalParserResult = {
@@ -18,15 +18,43 @@ const extractErrorMessage = (tree: LiberalParser.ParseResult): string | undefine
 
 export function parse(input: string): LiberalParserResult {
 
+    const convertAnOrLaterOrLaterSpecialCase = (node: ConjunctionInfo): ConjunctionInfo|LicenseInfo => {
+        const isLicenseInfo = (node: LicenseInfo|LicenseRef|ConjunctionInfo): boolean => {
+            return (node as any).license
+        }
+        const isALater = (node: LicenseInfo): boolean => {
+            return ['later', 'newer', 'greater'].includes(node.license)
+        }
+        const isADashOrDashLaterLicense = (node: LicenseInfo): boolean => {
+            return node.license.endsWith('-or-later')
+        }
+        if (isLicenseInfo(node.left) && isLicenseInfo(node.right)) {
+            const left = node.left as LicenseInfo
+            const right = node.right as LicenseInfo
+            if (isALater(right) && !isADashOrDashLaterLicense(left)) {
+                return { ...left, license: `${left.license} or later` } as LicenseInfo
+            } else if (isALater(left) && !isADashOrDashLaterLicense(right)) {
+                return { ...right, license: `${right.license} or later` } as LicenseInfo
+            } else if (isALater(right) && isADashOrDashLaterLicense(left)) {
+                return left
+            } else if (isALater(left) && isADashOrDashLaterLicense(right)) {
+                return right
+            }
+        }
+        return node
+    }
+
     const reduceNode = (node: any | undefined): any|undefined => {
         if (!node) {
             return undefined
         } else if (node.kind === LiberalParser.ASTKinds.or_expression) {
-            return {
+            const conjunction = {
                 conjunction: 'or',
                 left: reduceNode(node.left),
                 right: reduceNode(node.right)
             } as ConjunctionInfo
+            // check for the special case of "LGPL v3 or later" getting parsed as a conjunction
+            return convertAnOrLaterOrLaterSpecialCase(conjunction)
         } else if (node.kind === LiberalParser.ASTKinds.and_expression) {
             return {
                 conjunction: 'and',
