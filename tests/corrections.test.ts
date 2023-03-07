@@ -1,10 +1,21 @@
 import assert from 'assert'
 
 import { parse } from '../src'
-import { licenses } from '../src/licenses'
+import { licenses, correctLicenseId } from '../src/licenses'
 
 const scenario = (name: string, body: (name: string) => void) => it(name, () => {
     body(name)
+})
+
+describe('correctLicenseId', () => {
+    it('handles the GPL family okay', () => {
+        expect(correctLicenseId('Lesser General Public License v3.0')).toBe('LGPL-3.0-or-later')
+        expect(correctLicenseId('General Public License v3.0')).toBe('General Public License v3.0')
+        expect(correctLicenseId('Affero General Public License v3.0')).toBe('AGPL-3.0-or-later')
+        expect(correctLicenseId('GNU Affero General Public License v3.0')).toBe('AGPL-3.0-or-later')
+        expect(correctLicenseId('GNU General Public License v3.0')).toBe('GPL-3.0-or-later')
+        expect(correctLicenseId('GNU Lesser General Public License v3.0')).toBe('LGPL-3.0-or-later')
+    })
 })
 
 describe('Exact matches of license names', () => {
@@ -330,6 +341,75 @@ describe('Expressions with slight errors', () => {
     })
 
     describe('common misspellings', () => {
+
+        describe('of "or later"', () => {
+
+            const scenario = (expectedId: string, text: string) => {
+                it(JSON.stringify(text), () => expect(parse(text, false)).toMatchObject({license: expectedId}))
+            }
+
+            describe('Variations of GNU Lesser General Public License', () => {
+                scenario('LGPL-3.0-or-later', 'GNU Lesser General Public License, version 3 or later')
+                scenario('LGPL-3.0-or-later', 'GNU Lesser General Public License version 3 or later')
+                scenario('LGPL-3.0-or-later', 'GNU Lesser General Public License version 3.0 or later')
+                scenario('LGPL-3.0-or-later', 'GNU Lesser General Public License v3.0 or later')
+                scenario('LGPL-3.0-or-later', 'GNU Lesser General Public License, version 3 or greater')
+                scenario('LGPL-3.0-or-later', 'GNU Lesser General Public License, version 3 or newer')
+                scenario('LGPL-3.0-or-later', 'Lesser General Public License, version 3.0 or later')
+                scenario('LGPL-3.0-or-later', 'Lesser General Public License version 3.0 or later')
+                scenario('LGPL-3.0-or-later', 'Lesser General Public License v3 or newer')
+                scenario('LGPL-3.0-or-later', 'Lesser General Public License v3.0 or newer')
+                scenario('LGPL-3.0-or-later', 'Lesser General Public License, version 3 or newer')
+                scenario('LGPL-3.0-or-later', 'Lesser General Public License version 3 or greater')
+                scenario('LGPL-3.0-or-later', 'Lesser General Public License, version 3 or newer')
+            })
+
+            describe('Variations of GNU General Public License', () => {
+
+                it('GNU General Public License v3.0 or greater', () => {
+                    const expression = 'GNU General Public License, version 3 or greater'
+                    expect(parse(expression, false)).toMatchObject({license: 'GPL-3.0-or-later'})
+                })
+
+                it('GNU General Public License, v3.0 or newer', () => {
+                    const expression = 'GNU General Public License, version 3 or newer'
+                    expect(parse(expression, false)).toMatchObject({license: 'GPL-3.0-or-later'})
+                })
+
+                it('General Public License v3.0 or greater', () => {
+                    const expression = 'General Public License, version 3 or greater'
+                    expect(parse(expression, false)).toMatchObject({license: 'GPL-3.0-or-later'})
+                })
+
+                it('General Public License v3.0 or newer', () => {
+                    const expression = 'General Public License, version 3 or newer'
+                    expect(parse(expression, false)).toMatchObject({license: 'GPL-3.0-or-later'})
+                })
+            })
+
+            describe('Variations of GNU Affero General Public License', () => {
+
+                it('GNU Affero General Public License v3.0 or greater', () => {
+                    const expression = 'GNU Affero General Public License, version 3 or greater'
+                    expect(parse(expression, false)).toMatchObject({license: 'AGPL-3.0-or-later'})
+                })
+
+                it('GNU Affero General Public License v3.0 or newer', () => {
+                    const expression = 'GNU Affero General Public License, version 3 or newer'
+                    expect(parse(expression, false)).toMatchObject({license: 'AGPL-3.0-or-later'})
+                })
+
+                it('Affero General Public License v3.0 or greater', () => {
+                    const expression = 'Affero General Public License, version 3 or greater'
+                    expect(parse(expression, false)).toMatchObject({license: 'AGPL-3.0-or-later'})
+                })
+
+                it('Affero General Public License v3.0 or newer', () => {
+                    const expression = 'Affero General Public License, version 3 or newer'
+                    expect(parse(expression, false)).toMatchObject({license: 'AGPL-3.0-or-later'})
+                })
+            })
+        })
 
         describe('of "WITH" as "w/"', () => {
 

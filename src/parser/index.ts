@@ -1,8 +1,7 @@
 import { parse as parseWithStrictParser, StrictParserResult } from './strict_parser'
 import { parse as parseWithLiberalParser, LiberalParserResult } from './liberal_parser'
 import { ParsedSpdxExpression, ConjunctionInfo, LicenseInfo, LicenseRef } from './types'
-import { fixDashedLicenseInfo, licenses } from '../licenses'
-import { License } from '../licenses/data'
+import { fixDashedLicenseInfo, findNameBasedMatch } from '../licenses'
 import validate from '../validator'
 
 
@@ -35,7 +34,7 @@ export type FullSpdxParseResult = {
             .replace(/(?<!\s)\s+and\s+/i, ' AND ')    // fix lowercase keywords
             .replace(/(?<!\s)\s+or\s+/i, ' OR ')      // fix lowercase keywords
             .replace(/(?<!\s)\s+with\s+/i, ' WITH ')  // fix lowercase keywords
-            .replace(/\s[wW]\/\s?/, ' WITH ')           // expand "w/" shorthand for "WITH"
+            .replace(/\s[wW]\/\s?/, ' WITH ')         // expand "w/" shorthand for "WITH"
     }
     return cleanedInput
 }
@@ -65,12 +64,6 @@ export function parse(input: string, strictSyntax: boolean = false) : ParsedSpdx
     return data.expression
 }
 
-const findNameBasedMatch = (text: string): License|undefined => {
-    const normalizeName = (name: string): string => name.toLowerCase()
-    const lowercaseText = normalizeName(text)
-    return licenses.licenses.find(x => normalizeName(x.name) === lowercaseText)
-}
-
 /**
  * Parse an SPDX expression into a structured object representation along with additional
  * metadata such as the underlying AST tree used and any errors in case parsing failed.
@@ -92,22 +85,25 @@ const findNameBasedMatch = (text: string): License|undefined => {
 
     // If strict parsing failed, attempt to apply corrections if allowed
     if (strictResult.error && !strictSyntax)  {
+
         const corrected = parseWithLiberalParser(preparedInput)
         if (corrected.expression) {
             corrected.expression = correctDashSeparatedLicenseIds(corrected.expression)
         }
+
         const liberalResult = compileFullSpdxParseResult(preparedInput, corrected)
+
+        // If the license identifier happens to be an exact match of a license name...
+        const nameBasedMatch = findNameBasedMatch((liberalResult.expression as LicenseInfo)?.license || preparedInput)
+        if (nameBasedMatch !== undefined) {
+            return parseSpdxExpressionWithDetails(nameBasedMatch.licenseId, true)
+        }
+
         // We'll use the results of liberal parsing only if it succeeds. In case
         // of failure, we'll return the errors from strict parser for maximum
         // awareness of deviations from the SPDX specification
         if (!liberalResult.error) {
             return liberalResult
-        }
-
-        // If the license identifier happens to be an exact match of a license name...
-        const nameBasedMatch = findNameBasedMatch(preparedInput)
-        if (nameBasedMatch) {
-            return parseSpdxExpressionWithDetails(nameBasedMatch.licenseId, strictSyntax)
         }
 
         // If the value looks like "Mozilla Public License 2.0 (MPL 2.0)", and is short enough

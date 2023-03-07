@@ -274,3 +274,91 @@ export function fixDashedLicenseInfo(node: LicenseInfo): LicenseInfo {
     }
     return node
 }
+
+export const variationsOf = (name: string): string[] => {
+
+    const versionPrefixVariationsOf = (_value: string): string[] => [' version ', ' v']
+
+    const namePrefixVariationsOf = (value: string): string[] => {
+        const namePrefixVariations = [value]
+        if (value.startsWith('gnu ')) {
+            namePrefixVariations.push(value.substring('gnu '.length))
+        } else if (value.match(/^((lesser|affero) )?general public license/)) {
+            namePrefixVariations.push(`gnu ${value}`)
+        }
+        return namePrefixVariations
+    }
+
+    const suffixVariationsOf = (value: string|undefined): string[] => {
+        const fixedAlternatives = [' or greater', ' or later', ' or newer']
+        if (value === undefined) {
+            return ['', 'only']
+        } else if (fixedAlternatives.includes(value)) {
+            return [ value, ...fixedAlternatives.filter(x => x !== value) ]
+        } else {
+            return [value]
+        }
+    }
+
+    const versionNumberVariationsOf = (value: string): string[] => {
+        const versionNumberVariations = [value]
+        if (value.endsWith('.0')) {
+            // For "3.1.0", let's also try "3.1"
+            versionNumberVariations.push(value.replace(/\.0$/, ''))
+            if (value.endsWith('.0.0')) {
+                // For "3.0.0", let's also try "3"
+                versionNumberVariations.push(value.replace(/\.0\.0$/, ''))
+            }
+        } else if (!value.includes('.')) {
+            // For "3", let's also try "3.0"
+            versionNumberVariations.push(`${value}.0`)
+        }
+        return versionNumberVariations
+    }
+
+    const variations: string[] = [name]
+    const versionMatch = name.match(/^(.+)(\sversion\s|\sv)(\d+(\.\d+)*)(\+|(\s.*))?$/)
+    if (versionMatch) {
+        const namePrefixVariations = namePrefixVariationsOf(versionMatch[1])
+        const suffixVariations = suffixVariationsOf(versionMatch[5])
+        const versionPrefixVariations = versionPrefixVariationsOf(versionMatch[2])
+        const versionNumberVariations = versionNumberVariationsOf(versionMatch[3])
+
+        namePrefixVariations.forEach(namePrefix => {
+            versionPrefixVariations.forEach(versionPrefix => {
+                versionNumberVariations.forEach(versionNumber => {
+                    suffixVariations.forEach(suffix => {
+                        variations.push(`${namePrefix}${versionPrefix}${versionNumber}${suffix}`)
+                    })
+                })
+            })
+        })
+    }
+    return variations.sort((a, b) => {
+        const lengthBasedSort = b.length - a.length
+        if (lengthBasedSort !== 0) {
+            // string length is the primary sort key
+            return lengthBasedSort
+        } else {
+            // between strings of equal length, sort alphabetically
+            // (with uppercase "A" coming before lowercase "a")
+            return a.localeCompare(b, undefined, { caseFirst: 'upper' })
+        }
+    })
+}
+
+/**
+ * Try to identify the license by comparing the given text with the official names of
+ * known licenses in the SPDX data.
+ *
+ * @param text The text that could be a license name
+ * @returns The {@link License}, or `undefined`
+ */
+export const findNameBasedMatch = (text: string): License|undefined => {
+    const normalizeName = (name: string): string => {
+        return name.toLowerCase().replace(/,/g, ' ').replace(/\s+/, ' ')
+    }
+    const lowercaseText = normalizeName(text)
+    const variations = variationsOf(lowercaseText)
+    return licenses.licenses.find(x => variations.includes(normalizeName(x.name)))
+}
