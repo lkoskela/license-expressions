@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
+import * as process from 'process'
+
 import { parse } from '../parser'
 import validate from '../validator'
 import normalize from '../normalizer'
 import { parseCLIOptions, CLIOptions, usage } from './options'
-
-const process = require('process')
 
 
 const parseCommand = (options: CLIOptions): string => {
