@@ -89,6 +89,7 @@ const aliasesForLicenseIds: Map<string, string> = ((): Map<string, string> => {
 const aliasesForExceptions: Map<string, string> = ((): Map<string, string> => {
     const mapOfAliases = new Map<string, string>()
     mapOfAliases.set('qwt license 1.0', 'Qwt-exception-1.0')
+    mapOfAliases.set('cpe', 'Classpath-exception-2.0')
     return mapOfAliases
 })()
 

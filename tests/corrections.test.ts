@@ -438,6 +438,10 @@ describe('Expressions with slight errors', () => {
             it('"the classpath exception" is corrected to "Classpath-exception-2.0"', () => {
                 expect(parse('GPL-2.0-only WITH the classpath exception')).toStrictEqual({ license: 'GPL-2.0-only', exception: 'Classpath-exception-2.0' })
             })
+
+            it('"CPE" is corrected to "Classpath-exception-2.0"', () => {
+                expect(parse('GPL-2.0-only WITH CPE')).toStrictEqual({ license: 'GPL-2.0-only', exception: 'Classpath-exception-2.0' })
+            })
         })
 
         describe('of licenses', () => {
