@@ -321,6 +321,10 @@ describe('Expressions with slight errors', () => {
             expect(parse('apache 2.0 WITH LLVM Exception')).toStrictEqual({ license: 'Apache-2.0', exception: 'LLVM-exception' })
             expect(parse('apache 2.0 WITH llvm exception')).toStrictEqual({ license: 'Apache-2.0', exception: 'LLVM-exception' })
         })
+
+        it('GPL-2.0-only WITH Classpath Exception 2.0', () => {
+            expect(parse('GPL-2.0-only WITH Classpath Exception 2.0')).toStrictEqual({ license: 'GPL-2.0-only', exception: 'Classpath-exception-2.0' })
+        })
     })
 
     describe('misspelling that has no fix', () => {
@@ -413,6 +417,26 @@ describe('Expressions with slight errors', () => {
             it('"UBoot exception 2.0" is corrected to "u-boot-exception-2.0"', () => {
                 expect(parse('GPL-2.0+ WITH UBoot exception 2.0')).toMatchObject({ exception: 'u-boot-exception-2.0' })
                 expect(parse('GPL-2.0+ WITH UBoot exception 2')).toMatchObject({ exception: 'u-boot-exception-2.0' })
+            })
+
+            it('"GNU Classpath Exception 2.0" is corrected to "Classpath-exception-2.0"', () => {
+                expect(parse('GPL-2.0-only WITH GNU Classpath Exception 2.0')).toStrictEqual({ license: 'GPL-2.0-only', exception: 'Classpath-exception-2.0' })
+            })
+
+            it('"GNU Classpath Exception" is corrected to "Classpath-exception-2.0"', () => {
+                expect(parse('GPL-2.0-only WITH GNU Classpath Exception')).toStrictEqual({ license: 'GPL-2.0-only', exception: 'Classpath-exception-2.0' })
+            })
+
+            it('"GNU Classpath Exception 2.0" is corrected to "Classpath-exception-2.0"', () => {
+                expect(parse('GPL-2.0-only WITH GNU Classpath Exception 2.0')).toStrictEqual({ license: 'GPL-2.0-only', exception: 'Classpath-exception-2.0' })
+            })
+
+            it('"classpath exception" is corrected to "Classpath-exception-2.0"', () => {
+                expect(parse('GPL-2.0-only WITH classpath exception')).toStrictEqual({ license: 'GPL-2.0-only', exception: 'Classpath-exception-2.0' })
+            })
+
+            it('"the classpath exception" is corrected to "Classpath-exception-2.0"', () => {
+                expect(parse('GPL-2.0-only WITH the classpath exception')).toStrictEqual({ license: 'GPL-2.0-only', exception: 'Classpath-exception-2.0' })
             })
         })
 
