@@ -97,5 +97,3 @@ export const parseCLIOptions = (args: string[]): CLIOptions => {
     options.expression = params.join(' ')
     return options
 }
-
-export default parseCLIOptions
