@@ -1,4 +1,4 @@
-import { parseCLIOptions } from '../src/cli/options'
+import { parseCLIOptions } from '../../src/cli/options'
 
 
 describe('No options provided at all', () => {
