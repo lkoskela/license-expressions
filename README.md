@@ -143,17 +143,41 @@ After installing for command-line use, run the `spdx` command and pass an SPDX e
 
    ```sh
    $ spdx "GPL-3.0+"
-   # => { license: 'GPL-3.0+' }
+   # => {
+   #        "expression": {
+   #            "license": "GPL-3.0-or-later"
+   #        },
+   #        "errors": []
+   #    }
 
    $ spdx "MIT OR (Apache-2.0 AND 0BSD)"
    # => {
-   #        conjunction: 'or',
-   #        left: { license: 'MIT' },
-   #        right: {
-   #            conjunction: 'and',
-   #            left: { license: 'Apache-2.0' },
-   #            right: { license: '0BSD' }
-   #        }
+   #        "expression": {
+   #            "conjunction": "or",
+   #            "left": {
+   #                "license": "MIT"
+   #            },
+   #            "right": {
+   #                "conjunction": "and",
+   #                "left": {
+   #                    "license": "Apache-2.0"
+   #                },
+   #                "right": {
+   #                    "license": "0BSD"
+   #                }
+   #            }
+   #        },
+   #        "errors": []
+   #    }
+
+   $ spdx "Invalid license expression"
+   # => {
+   #        "expression": {
+   #            "license": "Invalid license expression"
+   #        },
+   #        "errors": [
+   #            "Unknown SPDX license identifier: \"Invalid license expression\""
+   #        ]
    #    }
    ```
 
