@@ -1,5 +1,6 @@
 import spdxCorrect from 'spdx-correct'
 
+import { permutationsOf } from '../utils/permutations'
 import { LicenseInfo } from '../parser/types'
 import { licenses, Licenses, License, exceptions, Exceptions, Exception } from './data'
 export { licenses, Licenses, License, exceptions, Exceptions, Exception }
@@ -88,6 +89,7 @@ const aliasesForLicenseIds: Map<string, string> = ((): Map<string, string> => {
 const aliasesForExceptions: Map<string, string> = ((): Map<string, string> => {
     const mapOfAliases = new Map<string, string>()
     mapOfAliases.set('qwt license 1.0', 'Qwt-exception-1.0')
+    mapOfAliases.set('cpe', 'Classpath-exception-2.0')
     return mapOfAliases
 })()
 
@@ -119,13 +121,22 @@ const mapExceptionId = (id: string): string | undefined => {
 }
 
 const fixExceptionid = (id: string): string | undefined => {
-    const variations: string[] = [
-        id.replace(/\s+/, '-'),
-        id.replace(/\s+version\s+/i, ' '),
-        id.replace(/(\d+)$/, '$1.0')
+    type Mutation = (s: string) => string
+
+    const mutations: Mutation[] = [
+        (id: string): string => id.replace(/\s+/, '-'),
+        (id: string): string => id.replace(/\s+version\s+/i, ' '),
+        (id: string): string => id.replace(/([^.])(\d+)$/, '$1$2.0'),   // replace a trailing "3" with "3.0" but don't append another ".0" to e.g. "3.0"
+        (id: string): string => id.replace(/^GNU (.*)$/i, '$1')
     ]
-    const matchedIds = variations.map(mapExceptionId)
-    return matchedIds.filter(matchedId => !!matchedId)[0]
+    const permutations = permutationsOf<Mutation>(mutations, 3)
+    const potentialIdentifiers = permutations.map((combo: Mutation[]): string => {
+        const initialValue = combo[0](id)
+        return combo.slice(1).reduce((prev, curr) => curr(prev), initialValue)
+    })
+    const matchedIds = [ ...new Set(potentialIdentifiers.map(mapExceptionId).filter(id => !!id)) ]
+    if (matchedIds.length > 1) console.warn(`fixExceptionId(${JSON.stringify(id)}) found ${matchedIds.length} matches through mutations: ${JSON.stringify(matchedIds)}`)
+    return matchedIds[0]
 }
 
 const mapExceptionIdByAssociatedLicense = (id: string, associatedLicense?: string): string|undefined => {
