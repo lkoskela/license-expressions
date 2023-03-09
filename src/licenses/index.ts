@@ -363,7 +363,7 @@ export function fixDashedLicenseInfo(node: LicenseInfo, upgradeGPLVariants: bool
 
 export const variationsOf = (name: string, upgradeGPLVariants: boolean): string[] => {
 
-    const versionPrefixVariationsOf = (_value: string): string[] => [' version ', ' v']
+    const versionPrefixVariationsOf = (_value: string): string[] => [' version ', ' v', ' ']
 
     const namePrefixVariationsOf = (value: string): string[] => {
         const namePrefixVariations = [value]

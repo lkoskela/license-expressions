@@ -464,6 +464,12 @@ describe('Expressions with slight errors', () => {
 
     describe('common misspellings', () => {
 
+        describe('of an extraneous word "version" or "v" before the version number', () => {
+            expect(parse('Common Public License 1.0')).toStrictEqual({ license: 'CPL-1.0' })
+            expect(parse('Common Public License Version 1.0')).toStrictEqual({ license: 'CPL-1.0' })
+            expect(parse('Common Public License v1.0')).toStrictEqual({ license: 'CPL-1.0' })
+        })
+
         describe('of "or later"', () => {
 
             const scenario = (expectedId: string, text: string) => {
