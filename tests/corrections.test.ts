@@ -7,10 +7,13 @@ const scenario = (name: string, body: (name: string) => void) => it(name, () => 
     body(name)
 })
 
-const and = (left: string|ConjunctionInfo, right: string|ConjunctionInfo): ConjunctionInfo => {
+const and = (left: string|ConjunctionInfo, right: string|ConjunctionInfo) => conjunction('and', left, right)
+const or = (left: string|ConjunctionInfo, right: string|ConjunctionInfo) => conjunction('or', left, right)
+
+const conjunction = (type: 'and'|'or', left: string|ConjunctionInfo, right: string|ConjunctionInfo): ConjunctionInfo => {
     const leftValue = typeof(left) === 'string' ? { license: left } : left
     const rightValue = typeof(right) === 'string' ? { license: right } : right
-    return { conjunction: 'and', left: leftValue, right: rightValue }
+    return { conjunction: type, left: leftValue, right: rightValue }
 }
 
 describe('correctLicenseId', () => {
@@ -350,28 +353,71 @@ describe('Expressions with slight errors', () => {
         })
     })
 
-    describe('keyword AND in the license name', () => {
+    describe('keyword in the license name', () => {
 
         const scenario = (expected: string|any, input: string) => {
             const expectedValue = typeof(expected) === 'string' ? { license: expected } : expected as any
             it(JSON.stringify(input), () => expect(parse(input)).toStrictEqual(expectedValue))
         }
 
-        describe('CDDL', () => {
-            scenario('CDDL-1.1', 'Common Development and Distribution License')
-            scenario('CDDL-1.0', 'Common Development and Distribution License 1.0')
-            scenario('CDDL-1.1', 'Common Development and Distribution License 1.1')
-            scenario('CDDL-1.0', 'Common Development and Distribution License v1.0')
-            scenario('CDDL-1.1', 'Common Development and Distribution License v1.1')
-            scenario('CDDL-1.0', 'Common Development and Distribution License version 1.0')
-            scenario('CDDL-1.1', 'Common Development and Distribution License version 1.1')
+        describe('AND', () => {
+
+            describe('alone', () => {
+                describe('CDDL', () => {
+                    scenario('CDDL-1.1', 'Common Development and Distribution License')
+                    scenario('CDDL-1.0', 'Common Development and Distribution License 1.0')
+                    scenario('CDDL-1.1', 'Common Development and Distribution License 1.1')
+                    scenario('CDDL-1.0', 'Common Development and Distribution License v1.0')
+                    scenario('CDDL-1.1', 'Common Development and Distribution License v1.1')
+                    scenario('CDDL-1.0', 'Common Development and Distribution License version 1.0')
+                    scenario('CDDL-1.1', 'Common Development and Distribution License version 1.1')
+                })
+            })
+
+            describe('in a (semantic) AND conjunction', () => {
+                scenario(and('CDDL-1.1', 'MIT'), 'Common Development and Distribution License AND MIT')
+                scenario(and('CDDL-1.0', 'Apache-2.0'), 'Common Development and Distribution License 1.0 AND Apache-2.0')
+                scenario(and('MIT', 'CDDL-1.1'), 'MIT AND Common Development and Distribution License')
+                scenario(and('0BSD', 'CDDL-1.0'), '0BSD AND Common Development and Distribution License 1.0')
+            })
+
+            describe('in a (semantic) OR conjunction', () => {
+                scenario(or('CDDL-1.1', 'MIT'), 'Common Development and Distribution License OR MIT')
+                scenario(or('CDDL-1.0', 'Apache-2.0'), 'Common Development and Distribution License 1.0 OR Apache-2.0')
+                scenario(or('MIT', 'CDDL-1.1'), 'MIT OR Common Development and Distribution License')
+                scenario(or('0BSD', 'CDDL-1.0'), '0BSD OR Common Development and Distribution License 1.0')
+            })
         })
 
-        describe('CDDL AND MIT', () => {
-            scenario(and('CDDL-1.1', 'MIT'), 'Common Development and Distribution License AND MIT')
-            scenario(and('CDDL-1.0', 'Apache-2.0'), 'Common Development and Distribution License 1.0 AND Apache-2.0')
-            scenario(and('MIT', 'CDDL-1.1'), 'MIT AND Common Development and Distribution License')
-            scenario(and('0BSD', 'CDDL-1.0'), '0BSD AND Common Development and Distribution License 1.0')
+        describe('OR', () => {
+
+            describe('alone', () => {
+                // baseline: the "only" versions that don't have the OR keyword in them:
+                scenario('GFDL-1.1-only', 'GNU Free Documentation License v1.1')
+                scenario('GFDL-1.2-only', 'GNU Free Documentation License v1.2')
+                scenario('GFDL-1.3-only', 'GNU Free Documentation License v1.3')
+                // test set 1: the "or later" versions without additional text afterwards
+                scenario('GFDL-1.1-or-later', 'GNU Free Documentation License v1.1 or later')
+                scenario('GFDL-1.2-or-later', 'GNU Free Documentation License v1.2 or later')
+                scenario('GFDL-1.3-or-later', 'GNU Free Documentation License v1.3 or later')
+                // test set 2: the "or later" versions with additional text afterwards
+                scenario('GFDL-1.1-no-invariants-or-later', 'GNU Free Documentation License v1.1 or later - no invariants')
+                scenario('GFDL-1.1-invariants-or-later', 'GNU Free Documentation License v1.1 or later - invariants')
+                scenario('GFDL-1.2-no-invariants-or-later', 'GNU Free Documentation License v1.2 or later - no invariants')
+                scenario('GFDL-1.2-invariants-or-later', 'GNU Free Documentation License v1.2 or later - invariants')
+                scenario('GFDL-1.3-no-invariants-or-later', 'GNU Free Documentation License v1.3 or later - no invariants')
+                scenario('GFDL-1.3-invariants-or-later', 'GNU Free Documentation License v1.3 or later - invariants')
+            })
+
+            describe('in a (semantic) AND conjunction', () => {
+                scenario(and('CDDL-1.1', 'MIT'), 'Common Development and Distribution License AND MIT')
+                scenario(and('MIT', 'CDDL-1.1'), 'MIT AND Common Development and Distribution License')
+            })
+
+            describe('in a (semantic) OR conjunction', () => {
+                scenario(or('CDDL-1.1', 'MIT'), 'Common Development and Distribution License OR MIT')
+                scenario(or('MIT', 'CDDL-1.1'), 'MIT OR Common Development and Distribution License')
+            })
         })
     })
 
