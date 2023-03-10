@@ -1,11 +1,20 @@
 import assert from 'assert'
 
-import { parse } from '../src'
+import { ConjunctionInfo, parse } from '../src'
 import { licenses, correctLicenseId } from '../src/licenses'
 
 const scenario = (name: string, body: (name: string) => void) => it(name, () => {
     body(name)
 })
+
+const and = (left: string|ConjunctionInfo, right: string|ConjunctionInfo) => conjunction('and', left, right)
+const or = (left: string|ConjunctionInfo, right: string|ConjunctionInfo) => conjunction('or', left, right)
+
+const conjunction = (type: 'and'|'or', left: string|ConjunctionInfo, right: string|ConjunctionInfo): ConjunctionInfo => {
+    const leftValue = typeof(left) === 'string' ? { license: left } : left
+    const rightValue = typeof(right) === 'string' ? { license: right } : right
+    return { conjunction: type, left: leftValue, right: rightValue }
+}
 
 describe('correctLicenseId', () => {
     it('handles the GPL family okay', () => {
@@ -341,6 +350,74 @@ describe('Expressions with slight errors', () => {
     describe('misspelling that has no fix', () => {
         it('renders the exception in its original form', () => {
             expect(parse('MIT WITH No Such Exception')).toStrictEqual({ license: 'MIT', exception: 'No Such Exception' })
+        })
+    })
+
+    describe('keyword in the license name', () => {
+
+        const scenario = (expected: string|any, input: string) => {
+            const expectedValue = typeof(expected) === 'string' ? { license: expected } : expected as any
+            it(JSON.stringify(input), () => expect(parse(input)).toStrictEqual(expectedValue))
+        }
+
+        describe('AND', () => {
+
+            describe('alone', () => {
+                describe('CDDL', () => {
+                    scenario('CDDL-1.1', 'Common Development and Distribution License')
+                    scenario('CDDL-1.0', 'Common Development and Distribution License 1.0')
+                    scenario('CDDL-1.1', 'Common Development and Distribution License 1.1')
+                    scenario('CDDL-1.0', 'Common Development and Distribution License v1.0')
+                    scenario('CDDL-1.1', 'Common Development and Distribution License v1.1')
+                    scenario('CDDL-1.0', 'Common Development and Distribution License version 1.0')
+                    scenario('CDDL-1.1', 'Common Development and Distribution License version 1.1')
+                })
+            })
+
+            describe('in a (semantic) AND conjunction', () => {
+                scenario(and('CDDL-1.1', 'MIT'), 'Common Development and Distribution License AND MIT')
+                scenario(and('CDDL-1.0', 'Apache-2.0'), 'Common Development and Distribution License 1.0 AND Apache-2.0')
+                scenario(and('MIT', 'CDDL-1.1'), 'MIT AND Common Development and Distribution License')
+                scenario(and('0BSD', 'CDDL-1.0'), '0BSD AND Common Development and Distribution License 1.0')
+            })
+
+            describe('in a (semantic) OR conjunction', () => {
+                scenario(or('CDDL-1.1', 'MIT'), 'Common Development and Distribution License OR MIT')
+                scenario(or('CDDL-1.0', 'Apache-2.0'), 'Common Development and Distribution License 1.0 OR Apache-2.0')
+                scenario(or('MIT', 'CDDL-1.1'), 'MIT OR Common Development and Distribution License')
+                scenario(or('0BSD', 'CDDL-1.0'), '0BSD OR Common Development and Distribution License 1.0')
+            })
+        })
+
+        describe('OR', () => {
+
+            describe('alone', () => {
+                // baseline: the "only" versions that don't have the OR keyword in them:
+                scenario('GFDL-1.1-only', 'GNU Free Documentation License v1.1')
+                scenario('GFDL-1.2-only', 'GNU Free Documentation License v1.2')
+                scenario('GFDL-1.3-only', 'GNU Free Documentation License v1.3')
+                // test set 1: the "or later" versions without additional text afterwards
+                scenario('GFDL-1.1-or-later', 'GNU Free Documentation License v1.1 or later')
+                scenario('GFDL-1.2-or-later', 'GNU Free Documentation License v1.2 or later')
+                scenario('GFDL-1.3-or-later', 'GNU Free Documentation License v1.3 or later')
+                // test set 2: the "or later" versions with additional text afterwards
+                scenario('GFDL-1.1-no-invariants-or-later', 'GNU Free Documentation License v1.1 or later - no invariants')
+                scenario('GFDL-1.1-invariants-or-later', 'GNU Free Documentation License v1.1 or later - invariants')
+                scenario('GFDL-1.2-no-invariants-or-later', 'GNU Free Documentation License v1.2 or later - no invariants')
+                scenario('GFDL-1.2-invariants-or-later', 'GNU Free Documentation License v1.2 or later - invariants')
+                scenario('GFDL-1.3-no-invariants-or-later', 'GNU Free Documentation License v1.3 or later - no invariants')
+                scenario('GFDL-1.3-invariants-or-later', 'GNU Free Documentation License v1.3 or later - invariants')
+            })
+
+            describe('in a (semantic) AND conjunction', () => {
+                scenario(and('CDDL-1.1', 'MIT'), 'Common Development and Distribution License AND MIT')
+                scenario(and('MIT', 'CDDL-1.1'), 'MIT AND Common Development and Distribution License')
+            })
+
+            describe('in a (semantic) OR conjunction', () => {
+                scenario(or('CDDL-1.1', 'MIT'), 'Common Development and Distribution License OR MIT')
+                scenario(or('MIT', 'CDDL-1.1'), 'MIT OR Common Development and Distribution License')
+            })
         })
     })
 
@@ -685,3 +762,82 @@ describe('Parenthesized scenarios', () => {
     })
 })
 
+describe('full license names that contain parenthesized parts', () => {
+
+    const scenario = (expected: string|any, input: string) => {
+        const expectedValue = typeof(input) === 'string' ? { license: expected } : input as any
+        it(JSON.stringify(input), () => expect(parse(input)).toStrictEqual(expectedValue))
+    }
+
+    describe('CDDL', () => {
+        scenario('CDDL-1.1', 'Common Development and Distribution License (CDDL)')
+        scenario('CDDL-1.0', 'Common Development and Distribution License (CDDL) 1.0')
+        scenario('CDDL-1.1', 'Common Development and Distribution License (CDDL) 1.1')
+        scenario('CDDL-1.0', 'Common Development and Distribution License (CDDL) v1.0')
+        scenario('CDDL-1.1', 'Common Development and Distribution License (CDDL) v1.1')
+        scenario('CDDL-1.0', 'Common Development and Distribution License (CDDL) version 1.0')
+        scenario('CDDL-1.1', 'Common Development and Distribution License (CDDL) version 1.1')
+    })
+
+    describe('OLDAP-2.0', () => {
+        scenario('OLDAP-2.0', 'Open LDAP Public License v2.0 (or possibly 2.0A and 2.0B)')
+    })
+
+    describe('SWL', () => {
+        scenario('SWL', 'Scheme Widget Library (SWL) Software License Agreement')
+    })
+
+    describe('Unicode-DFS-*', () => {
+        scenario('Unicode-DFS-2015', 'Unicode License Agreement - Data Files and Software (2015)')
+        scenario('Unicode-DFS-2015', 'Unicode License Agreement - Data Files and Software (2015)')
+    })
+
+    describe('W3C', () => {
+        scenario('W3C', 'W3C Software Notice and License (2002-12-31)')
+        scenario('W3C-19980720', 'W3C Software Notice and License (1998-07-20)')
+        scenario('W3C-20150513', ' W3C Software Notice and Document License (2015-05-13)')
+    })
+
+    describe('Artistic', () => {
+        scenario('Artistic-1.0-Perl', 'Artistic License 1.0 (Perl)')
+    })
+
+    describe('BSD-4-Clause-UC', () => {
+        scenario('BSD-4-Clause-UC', 'BSD-4-Clause (University of California-Specific)')
+    })
+
+    describe('CAL-1.0-Combined-Work-Exception', () => {
+        scenario('CAL-1.0-Combined-Work-Exception', 'Cryptographic Autonomy License 1.0 (Combined Work Exception)')
+    })
+
+    describe('FSF Unlimited License (with License Retention)', () => {
+        scenario('FSFULLR', 'FSF Unlimited License (with License Retention)')
+    })
+
+    describe('FSFULLRWD', () => {
+        scenario('FSFULLRWD', 'FSF Unlimited License (With License Retention    and Warranty Disclaimer)')
+        scenario('FSFULLRWD', 'FSF Unlimited License (With License Retention and Warranty Disclaimer)')
+    })
+
+    describe('LZMA', () => {
+        scenario('LZMA-SDK-9.11-to-9.20', 'LZMA SDK License (versions 9.11 to 9.20)')
+        scenario('LZMA-SDK-9.22', 'LZMA SDK License (versions 9.22 and beyond)')
+    })
+
+    describe('Enlightenment', () => {
+        scenario('MIT-advertising', 'Enlightenment License (e16)')   // "MIT-advertising" is not a typo :)
+    })
+
+    describe('MPL-2.0', () => {
+        scenario('MPL-2.0-no-copyleft-exception', 'Mozilla Public License 2.0 (no copyleft exception)')
+    })
+
+    describe('NAIST-2003', () => {
+        scenario('NAIST-2003', 'Nara Institute of Science and Technology License (2003)')
+    })
+
+    describe('NLOD', () => {
+        scenario('NLOD-1.0', 'Norwegian Licence for Open Government Data (NLOD) 1.0')
+        scenario('NLOD-2.0', 'Norwegian Licence for Open Government Data (NLOD) 2.0')
+    })
+})

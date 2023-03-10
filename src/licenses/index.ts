@@ -83,6 +83,9 @@ const aliasesForLicenseIds: Map<string, string> = ((): Map<string, string> => {
     mapOfAliases.set('apache software license 1.1', 'Apache-1.1')
     mapOfAliases.set('apache software license version 1.1', 'Apache-1.1')
 
+    // GNU Free Documentation License v1.1
+    //mapOfAliases.set('GFDL-1.1', 'GNU Free Documentation License v1.1')
+
     return mapOfAliases
 })()
 
@@ -101,6 +104,11 @@ const mapLicenseId = (id: string): string | undefined => {
     return mapOfKnownLicenses.get(id.toLowerCase())
 }
 
+const shouldIgnoreCorrection = (input: string, output: string): boolean => {
+    // known bug in spdx-correcting e.g. "GNU Free Documentation License v1.1" into GPL-3.0-or-later:
+    return output?.startsWith('GPL-') && input.includes('Free Documentation License')
+}
+
 const fixLicenseId = (id: string): string | null => {
     // Don't try to correct license identifiers that are syntactically legit on the
     // surface and have an explicit version number such as "3.0" or "2.1":
@@ -109,7 +117,11 @@ const fixLicenseId = (id: string): string | null => {
     }
 
     // Use `spdx-correct` to try and correct identifiers that we haven't fixed already:
-    return spdxCorrect(id, { upgrade: true })
+    const corrected = spdxCorrect(id, { upgrade: true })
+    if (corrected && !shouldIgnoreCorrection(id, corrected)) {
+        return corrected
+    }
+    return null
 }
 
 const mapExceptionAlias = (alias: string): string | undefined => {
@@ -127,7 +139,8 @@ const fixExceptionid = (id: string): string | undefined => {
         (id: string): string => id.replace(/\s+/, '-'),
         (id: string): string => id.replace(/\s+version\s+/i, ' '),
         (id: string): string => id.replace(/([^.])(\d+)$/, '$1$2.0'),   // replace a trailing "3" with "3.0" but don't append another ".0" to e.g. "3.0"
-        (id: string): string => id.replace(/^GNU (.*)$/i, '$1')
+        (id: string): string => id.replace(/^GNU (.*)$/i, '$1'),
+        (id: string): string => id.replace(/(.+)\s+\(.+?\)((v|version )?\d\.\d)?/gi, '$1$2'),
     ]
     const permutations = permutationsOf<Mutation>(mutations, 3)
     const potentialIdentifiers = permutations.map((combo: Mutation[]): string => {
@@ -238,8 +251,13 @@ export function correctLicenseId(identifier: string): string {
     // a single identifier so let's not try to "fix" it at this point:
     if (identifier.includes('-with-')) return identifier
 
-    const id = expandPlus(applyGPLFixes(applyAliases(identifier)))
+    const aliased = applyAliases(identifier)
+    if (aliased !== identifier) {
+        // the identifier was successfully aliased – let's retry with the alias!
+        return correctLicenseId(aliased)
+    }
 
+    const id = expandPlus(applyGPLFixes(aliased))
     return mapLicense(id) || fixLicenseId(id) || id
 }
 

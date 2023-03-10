@@ -57,10 +57,6 @@ export function parse(input: string): StrictParserResult {
                 left: reduceNode(node.left) as ParsedSpdxExpression,
                 right: reduceNode(node.right) as ParsedSpdxExpression
             }
-            // check for the special case of "LGPL v3 or later" getting parsed as a conjunction
-            //if (['later', 'newer', 'greater'].includes((compound.right as any).license)) {
-            //    return { license: (compound.left as any).license + ' or later' }
-            //}
             return compound
         } else if (node.kind === 'and_expression') {
             let compound: ConjunctionInfo = {

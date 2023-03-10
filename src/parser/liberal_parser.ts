@@ -53,7 +53,6 @@ export function parse(input: string): LiberalParserResult {
                 left: reduceNode(node.left),
                 right: reduceNode(node.right)
             } as ConjunctionInfo
-            // check for the special case of "LGPL v3 or later" getting parsed as a conjunction
             return convertAnOrLaterOrLaterSpecialCase(conjunction)
         } else if (node.kind === LiberalParser.ASTKinds.and_expression) {
             return {
