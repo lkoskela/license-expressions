@@ -127,7 +127,8 @@ const fixExceptionid = (id: string): string | undefined => {
         (id: string): string => id.replace(/\s+/, '-'),
         (id: string): string => id.replace(/\s+version\s+/i, ' '),
         (id: string): string => id.replace(/([^.])(\d+)$/, '$1$2.0'),   // replace a trailing "3" with "3.0" but don't append another ".0" to e.g. "3.0"
-        (id: string): string => id.replace(/^GNU (.*)$/i, '$1')
+        (id: string): string => id.replace(/^GNU (.*)$/i, '$1'),
+        (id: string): string => id.replace(/(.+)\s+\(.+?\)((v|version )?\d\.\d)?/gi, '$1$2'),
     ]
     const permutations = permutationsOf<Mutation>(mutations, 3)
     const potentialIdentifiers = permutations.map((combo: Mutation[]): string => {

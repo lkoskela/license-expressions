@@ -1,7 +1,7 @@
 import { parse as parseWithStrictParser, StrictParserResult } from './strict_parser'
 import { parse as parseWithLiberalParser, LiberalParserResult } from './liberal_parser'
 import { ParsedSpdxExpression, ConjunctionInfo, LicenseInfo, LicenseRef } from './types'
-import { fixDashedLicenseInfo, findNameBasedMatch } from '../licenses'
+import { fixDashedLicenseInfo, findNameBasedMatch, licenses } from '../licenses'
 import validate from '../validator'
 
 
@@ -64,6 +64,51 @@ export function parse(input: string, strictSyntax: boolean = false) : ParsedSpdx
     return data.expression
 }
 
+
+/**
+ * Preprocess the original input for the liberal parser, detecting ~full license name matches
+ * that would syntactically fail parsing (e.g. due to parenthesis or keywords such as "and").
+ *
+ * @param input The input to "clean up" before lexical parsing
+ * @returns The preprocessed string ready to be fed to the parser
+ */
+const prepareLiberalInput = (input: string): string => {
+    type Mutation = (input: string) => string
+
+    // List of (hand-crafted) mutations to apply, replacing license names with a matching identifier
+    const mutations: Mutation[] = [
+        // CDDL
+        (input: string): string => {
+            const pattern = /Common Development and Distribution License( \(CDDL\))?( (v|version )?(1\.[10]))?/im
+            const match = input.match(pattern)
+            if (match) {
+                const replacement = !!(match[4]) ? 'CDDL-$4' : 'CDDL-1.1' // default to the latest version, i.e. 1.1
+                return input.replace(pattern, replacement)
+            }
+            return input
+        },
+        // FSF Unlimited License (With License Retention    and Warranty Disclaimer)
+        (input: string): string => {
+            const pattern = /FSF\s+Unlimited\s+License\s+\(With\s+License\s+Retention\s+and\s+Warranty\s+Disclaimer\)/im
+            const match = input.match(pattern)
+            if (match) {
+                return input.replace(pattern, 'FSFULLRWD')
+            }
+            return input
+        }
+    ]
+
+    // Automated, exact-name based mutations to apply, replacing license names with a matching identifier
+    const relevantLicenses = licenses.licenses.filter(license => license.name.includes('(') || license.name.match(/ and /i))
+    relevantLicenses.forEach(license => {
+        mutations.push((input: string): string => {
+            return input.replace(license.name, license.licenseId)
+        })
+    })
+
+    return mutations.reduce((result, mutation) => mutation(result), input)
+}
+
 /**
  * Parse an SPDX expression into a structured object representation along with additional
  * metadata such as the underlying AST tree used and any errors in case parsing failed.
@@ -86,12 +131,14 @@ export function parse(input: string, strictSyntax: boolean = false) : ParsedSpdx
     // If strict parsing failed, attempt to apply corrections if allowed
     if (strictResult.error && !strictSyntax)  {
 
-        const corrected = parseWithLiberalParser(preparedInput)
+        const liberallyPreparedInput = prepareLiberalInput(preparedInput)
+
+        const corrected = parseWithLiberalParser(liberallyPreparedInput)
         if (corrected.expression) {
             corrected.expression = correctDashSeparatedLicenseIds(corrected.expression)
         }
 
-        const liberalResult = compileFullSpdxParseResult(preparedInput, corrected)
+        const liberalResult = compileFullSpdxParseResult(liberallyPreparedInput, corrected)
 
         // If the license identifier happens to be an exact match of a license name...
         const nameBasedMatch = findNameBasedMatch((liberalResult.expression as LicenseInfo)?.license || preparedInput)
@@ -129,6 +176,8 @@ export function parse(input: string, strictSyntax: boolean = false) : ParsedSpdx
                 return parseSpdxExpressionWithDetails(nameBasedMatch.licenseId, strictSyntax)
             }
         }
+
+        return liberalResult
     }
 
     // If liberal parsing was not allowed or it failed, too, let's return the
