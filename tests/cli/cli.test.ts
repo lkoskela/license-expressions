@@ -153,7 +153,7 @@ describe('CLI', () => {
                 it('results in { valid: false }', () => {
                     const { stdout } = executeShellCommand('spdx -v "not even |n proper format?"')
                     expect(JSON.parse(stdout)).toStrictEqual({
-                        errors: [ "Syntax Error at line 1:4. Expected one of  'WITH', 'AND', 'OR'" ],
+                        errors: [ "Syntax Error at line 1:9. Expected one of  '[a-zA-Z0-9\\.\\-:\\+]+', 'WITH', 'AND', 'OR'" ],
                         valid: false
                     })
                 })
