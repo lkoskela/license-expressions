@@ -47,6 +47,11 @@ const buildErrorMessage = (input: string, strictSyntax: boolean): string => {
     return `${strictSyntax ? 'Strict':'Liberal'} parsing for ${JSON.stringify(input)} failed`
 }
 
+export type ParseOptions = {
+    strictSyntax?: boolean,
+    upgradeGPLVariants?: boolean,
+}
+
 /**
  * Parse an SPDX expression into a structured object representation.
  *
@@ -54,8 +59,10 @@ const buildErrorMessage = (input: string, strictSyntax: boolean): string => {
  * @returns {ParsedSpdxExpression} A structured object describing the given SPDX expression
  *          or throws an `Error` if parsing failed.
  */
-export function parse(input: string, strictSyntax: boolean = false) : ParsedSpdxExpression {
-    const data = parseSpdxExpressionWithDetails(input, strictSyntax)
+export function parse(input: string, parseOptions?: ParseOptions) : ParsedSpdxExpression {
+    const strictSyntax = !!(parseOptions?.strictSyntax)
+    const upgradeGPLVariants = !!(parseOptions?.upgradeGPLVariants)
+    const data = parseSpdxExpressionWithDetails(input, strictSyntax, upgradeGPLVariants)
     if (data.error) {
         throw new Error([buildErrorMessage(input, strictSyntax), data.error].join(': '))
     } else if (data.expression === undefined) {
@@ -116,15 +123,15 @@ const prepareLiberalInput = (input: string): string => {
  * @param input SPDX expression as a string to be parsed.
  * @returns {FullSpdxParseResult}
  */
- export function parseSpdxExpressionWithDetails(input: string, strictSyntax: boolean = false) : FullSpdxParseResult {
+ export function parseSpdxExpressionWithDetails(input: string, strictSyntax: boolean = false, upgradeGPLVariants: boolean = false) : FullSpdxParseResult {
     // Apply general clean up on the raw input string
     const preparedInput = prepareInput(input, strictSyntax)
 
     // Always try to parse with the strict parser first in order to
     // minimize risk of unwanted "corrections"
-    const notCorrected = parseWithStrictParser(preparedInput)
+    const notCorrected = parseWithStrictParser(preparedInput, upgradeGPLVariants)
     if (!!notCorrected.expression && !strictSyntax) {
-        notCorrected.expression = correctDashSeparatedLicenseIds(notCorrected.expression)
+        notCorrected.expression = correctDashSeparatedLicenseIds(notCorrected.expression, upgradeGPLVariants)
     }
     const strictResult = compileFullSpdxParseResult(preparedInput, notCorrected)
 
@@ -133,17 +140,17 @@ const prepareLiberalInput = (input: string): string => {
 
         const liberallyPreparedInput = prepareLiberalInput(preparedInput)
 
-        const corrected = parseWithLiberalParser(liberallyPreparedInput)
+        const corrected = parseWithLiberalParser(liberallyPreparedInput, upgradeGPLVariants)
         if (corrected.expression) {
-            corrected.expression = correctDashSeparatedLicenseIds(corrected.expression)
+            corrected.expression = correctDashSeparatedLicenseIds(corrected.expression, upgradeGPLVariants)
         }
 
         const liberalResult = compileFullSpdxParseResult(liberallyPreparedInput, corrected)
 
         // If the license identifier happens to be an exact match of a license name...
-        const nameBasedMatch = findNameBasedMatch((liberalResult.expression as LicenseInfo)?.license || preparedInput)
+        const nameBasedMatch = findNameBasedMatch((liberalResult.expression as LicenseInfo)?.license || preparedInput, upgradeGPLVariants)
         if (nameBasedMatch !== undefined) {
-            return parseSpdxExpressionWithDetails(nameBasedMatch.licenseId, true)
+            return parseSpdxExpressionWithDetails(nameBasedMatch.licenseId, true, upgradeGPLVariants)
         }
 
         // We'll use the results of liberal parsing only if it succeeds. In case
@@ -165,15 +172,15 @@ const prepareLiberalInput = (input: string): string => {
             const thresholdLength = 100
             if (pretext.length < thresholdLength) {
                 // check if it's an SPDX identifier
-                const candidateResult = parseSpdxExpressionWithDetails(potentialIdentifier, strictSyntax)
+                const candidateResult = parseSpdxExpressionWithDetails(potentialIdentifier, strictSyntax, upgradeGPLVariants)
                 if (!candidateResult.error && candidateResult.expression && validate(candidateResult.input).valid) {
                     return candidateResult
                 }
             }
             // check for a name-based match
-            const nameBasedMatch = findNameBasedMatch(potentialIdentifier)
+            const nameBasedMatch = findNameBasedMatch(potentialIdentifier, upgradeGPLVariants)
             if (nameBasedMatch) {
-                return parseSpdxExpressionWithDetails(nameBasedMatch.licenseId, strictSyntax)
+                return parseSpdxExpressionWithDetails(nameBasedMatch.licenseId, strictSyntax, upgradeGPLVariants)
             }
         }
 
@@ -185,7 +192,7 @@ const prepareLiberalInput = (input: string): string => {
     return strictResult
 }
 
-const correctDashSeparatedLicenseIds = (expression: ParsedSpdxExpression): ParsedSpdxExpression => {
+const correctDashSeparatedLicenseIds = (expression: ParsedSpdxExpression, upgradeGPLVariants: boolean): ParsedSpdxExpression => {
     const recurse = (expression: ParsedSpdxExpression): ParsedSpdxExpression => {
 
         const fixLicenseRef = (node: LicenseRef): LicenseRef => { return node }
@@ -199,7 +206,7 @@ const correctDashSeparatedLicenseIds = (expression: ParsedSpdxExpression): Parse
         } else if ((expression as LicenseRef).licenseRef) {
             return fixLicenseRef(expression as LicenseRef)
         } else {
-            return fixDashedLicenseInfo(expression as LicenseInfo)
+            return fixDashedLicenseInfo(expression as LicenseInfo, upgradeGPLVariants)
         }
     }
     return recurse(expression)

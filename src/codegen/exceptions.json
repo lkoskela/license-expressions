@@ -1,5 +1,5 @@
 {
-  "licenseListVersion": "88a6f17",
+  "licenseListVersion": "8f47f84",
   "exceptions": [
     {
       "licenseExceptionId": "389-exception",
@@ -605,5 +605,5 @@
       "relatedLicenses": []
     }
   ],
-  "releaseDate": "2023-03-05"
+  "releaseDate": "2023-03-09"
 }

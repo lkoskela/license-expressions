@@ -1,6 +1,5 @@
 import { execSync } from 'child_process'
 import { readFileSync, existsSync, statSync } from 'fs'
-import path from 'path'
 
 import * as tmp from 'tmp'
 
@@ -75,7 +74,8 @@ describe('CLI', () => {
             describe('parameter aliases', () => {
                 it('--parse is equivalent to -p', () => {
                     const dashP = executeShellCommand(`spdx -p foo`).stdout
-                    expect(executeShellCommand(`spdx --parse foo`).stdout).toStrictEqual(dashP)
+                    const dashDashParse = executeShellCommand(`spdx --parse foo`).stdout
+                    expect(dashDashParse).toStrictEqual(dashP)
                 })
             })
 
@@ -108,6 +108,19 @@ describe('CLI', () => {
                             "Strict parsing for \"foo and bar are not valid identifiers\" failed:" +
                             " Syntax Error at line 1:4. Expected one of  'WITH', 'AND', 'OR'"
                         ]
+                    })
+                })
+            })
+
+            describe('with the -u parameter', () => {
+                it('Deprecated GPL family identifiers are upgraded to "-only" variants', () => {
+                    const dashP = executeShellCommand(`spdx -u GPL-2.0`).stdout
+                    expect(JSON.parse(dashP)).toStrictEqual({
+                        errors: [], expression: { license: 'GPL-2.0-only' }
+                    })
+                    const dashDashParse = executeShellCommand(`spdx --upgrade LGPL-3.0`).stdout
+                    expect(JSON.parse(dashDashParse)).toStrictEqual({
+                        errors: [], expression: { license: 'LGPL-3.0-only' }
                     })
                 })
             })

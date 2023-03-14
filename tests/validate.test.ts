@@ -199,7 +199,7 @@ describe('Examples failing validation', () => {
         scenario('LGPL-3.0 WITH FLTK-exception', (id) => {
             expect(validate(id)).toStrictEqual({
                 valid: false,
-                errors: [ expect.stringContaining(`Exception associated with unrelated license: "LGPL-3.0-only WITH FLTK-exception"`) ]
+                errors: [ expect.stringContaining(`Exception associated with unrelated license: "LGPL-3.0 WITH FLTK-exception"`) ]
             })
         })
 
@@ -207,7 +207,7 @@ describe('Examples failing validation', () => {
         scenario('LGPL-2.1 WITH u-boot-exception-2.0', (id) =>
             expect(validate(id)).toStrictEqual({
                 valid: false,
-                errors: [ expect.stringContaining(`Exception associated with unrelated license: "LGPL-2.1-only WITH u-boot-exception-2.0"`) ]
+                errors: [ expect.stringContaining(`Exception associated with unrelated license: "LGPL-2.1 WITH u-boot-exception-2.0"`) ]
             })
         )
 

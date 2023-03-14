@@ -114,7 +114,7 @@ export function validate(input: string): ValidationResult {
     if (input.trim() === '') {
         return { valid: false, errors: [ 'Unknown SPDX identifier: ""' ]}
     }
-    const parseResult = parseSpdxExpressionWithDetails(input, false)
+    const parseResult = parseSpdxExpressionWithDetails(input, false, false)
     if (parseResult.error) {
         return { valid: false, errors: [ parseResult.error ] }
     } else if (parseResult.expression) {

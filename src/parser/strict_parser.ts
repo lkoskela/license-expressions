@@ -16,13 +16,13 @@ const extractErrorMessage = (tree: StrictParser.ParseResult): string | undefined
     return tree.errs.map(element => element.toString()).join('\n')
 }
 
-export function parse(input: string): StrictParserResult {
+export function parse(input: string, upgradeGPLVariants: boolean): StrictParserResult {
 
     const reduceNode = (node: any): ParsedSpdxExpression | undefined => {
         if (!node) { return undefined }
 
         const convertLicenseIdExpression = (node: StrictParser.license_id_expression): LicenseInfo => {
-            const correctedLicenseId = correctLicenseId(node.license.license)
+            const correctedLicenseId = correctLicenseId(node.license.license, upgradeGPLVariants)
             if (!!node.exception) {
                 const correctedExceptionId = correctExceptionId(node.exception.exception)
                 return { license: correctedLicenseId, exception: correctedExceptionId } as LicenseInfo

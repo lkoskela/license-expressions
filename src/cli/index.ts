@@ -11,7 +11,8 @@ import { parseCLIOptions, CLIOptions, usage } from './options'
 const parseCommand = (options: CLIOptions): string => {
     try {
         const strictSyntax = options.options.includes('strict')
-        const ast = parse(options.expression, strictSyntax)
+        const upgradeGPLVariants = options.options.includes('upgrade')
+        const ast = parse(options.expression, { strictSyntax, upgradeGPLVariants })
         const result = {
             expression: ast,
             errors: validate(options.expression).errors
