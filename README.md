@@ -142,10 +142,30 @@ This is an example of how to list things you need to use the software and how to
 After installing for command-line use, run the `spdx` command and pass an SPDX expression to it for parsing. The `spdx` command will print out a JSON representation of the given SPDX expression, or a JSON object describing the error should the parsing fail for some reason.
 
    ```sh
+   $ npm install -g license-expressions
+   $ npm link
+   # => the executable `spdx` should now be in your PATH
+
    $ spdx "GPL-3.0+"
    # => {
    #        "expression": {
    #            "license": "GPL-3.0-or-later"
+   #        },
+   #        "errors": []
+   #    }
+
+   $ spdx "GPL-3.0"
+   # => {
+   #        "expression": {
+   #            "license": "GPL-3.0"
+   #        },
+   #        "errors": []
+   #    }
+
+   $ spdx --upgrade "GPL-3.0"
+   # => {
+   #        "expression": {
+   #            "license": "GPL-3.0-only"
    #        },
    #        "errors": []
    #    }
@@ -189,7 +209,7 @@ Parsing SPDX expressions into a structured object:
    import { parse } from 'license-expressions'
 
    const simple = parse("GPL-3.0+")
-   // => { license: 'GPL-3.0+' }
+   // => { license: 'GPL-3.0-or-later' }
 
    const compound = parse("MIT OR (Apache-2.0 AND 0BSD)")
    // => {
@@ -234,9 +254,11 @@ Validating an SPDX expression:
 
 There is currently not much of a roadmap.
 
-The rough idea is to first reach a sufficient level of correctness and robustness within the realm of valid SPDX expressions with valid license identifiers. This is mostly in place already, although the treatment of the "+" syntax versus "-or-later", for example, or the similar relationship between "GPL-2.0" and "GPL-2.0-only" may need to change.
+The rough idea is to first reach a sufficient level of correctness and robustness within the realm of valid SPDX expressions with valid license identifiers. This is mostly in place already.
 
-The subsequent evolutionary step is to add the ability to correct slightly mistyped or liberal references to valid licenses, i.e. parse an input such as parsing `"Apache 2"` into `{ license: Apache-2.0 }`, or parsing `"Apache2 or MIT"` into `{ conjunction: 'or', left: { license: 'Apache-2.0' }, right: { license: 'MIT } }`. The basics for such corrections are in place with the help of a secondary, looser parser grammar and the `spdx-correct` third-party library but the implementation could easily be improved with a better grammar and the corrections made by `spdx-correct` may not be exactly what we want...
+The subsequent evolutionary step is to add the ability to correct slightly mistyped or liberal references to valid licenses, i.e. parse an input such as parsing `"Apache 2"` into `{ license: Apache-2.0 }`, or parsing `"Apache2 or MIT"` into `{ conjunction: 'or', left: { license: 'Apache-2.0' }, right: { license: 'MIT } }`. The basics for such corrections are in place with the help of a secondary, looser parser grammar, the `spdx-correct` third-party library, and additional heuristics/corrections implemented in this library.
+
+Right now we're at a phase where all the major functionality is in place and need for change comes primarily from stumbling onto a live example of a license expression that the library doesn't manage to coerce into a valid format while it seems like a feasible thing to do.
 
 <!--
 - [ ] Feature 1

@@ -16,7 +16,7 @@ const extractErrorMessage = (tree: LiberalParser.ParseResult): string | undefine
     return tree.errs.map(element => element.toString()).join('\n')
 }
 
-export function parse(input: string): LiberalParserResult {
+export function parse(input: string, upgradeGPLVariants: boolean): LiberalParserResult {
 
     const convertAnOrLaterOrLaterSpecialCase = (node: ConjunctionInfo): ConjunctionInfo|LicenseInfo => {
         const isLicenseInfo = (node: LicenseInfo|LicenseRef|ConjunctionInfo): boolean => {
@@ -32,8 +32,12 @@ export function parse(input: string): LiberalParserResult {
             const left = node.left as LicenseInfo
             const right = node.right as LicenseInfo
             if (isALater(right) && !isADashOrDashLaterLicense(left)) {
-                return { ...left, license: `${left.license} or later` } as LicenseInfo
+                const dashedVersion = `${left.license}-or-later`
+                if (isKnownLicenseId(dashedVersion)) return { ...left, license: dashedVersion } as LicenseInfo
+                else return { ...left, license: `${left.license} or later` } as LicenseInfo
             } else if (isALater(left) && !isADashOrDashLaterLicense(right)) {
+                const dashedVersion = `${right.license}-or-later`
+                if (isKnownLicenseId(dashedVersion)) return { ...right, license: dashedVersion } as LicenseInfo
                 return { ...right, license: `${right.license} or later` } as LicenseInfo
             } else if (isALater(right) && isADashOrDashLaterLicense(left)) {
                 return left
@@ -65,13 +69,13 @@ export function parse(input: string): LiberalParserResult {
             return correctExceptionId(value)
         } else if (node.kind === LiberalParser.ASTKinds.simple_expression) {
             if (node.exception) {
-                const license = correctLicenseId(reduceNode(node.value) as string)
+                const license = correctLicenseId(reduceNode(node.value) as string, upgradeGPLVariants)
                 const exception = correctExceptionId(reduceNode(node.exception), license)
                 return { license: license, exception } as LicenseInfo
             } else {
-                const license = correctLicenseId(reduceNode(node.value) as string)
+                const license = correctLicenseId(reduceNode(node.value) as string, upgradeGPLVariants)
                 if (!isKnownLicenseId(license) && license.includes('-with-')) {
-                    return fixDashedLicenseInfo({ license: license })
+                    return fixDashedLicenseInfo({ license: license }, upgradeGPLVariants)
                 }
                 return { license: license } as LicenseInfo
             }

@@ -27,6 +27,11 @@ const commands: Command[] = [
                 name: 'strict',
                 flags: ['-s', '--strict'],
                 description: 'Use strict parsing rules'
+            },
+            {
+                name: 'upgrade',
+                flags: ['-u', '--upgrade'],
+                description: 'Upgrade deprecated GPL identifiers (e.g. LGPL-2.0) to non-deprecated versions (e.g. LGPL-2.0-only)'
             }
         ],
         description: 'Parse an expression into a structured object'

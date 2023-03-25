@@ -31,7 +31,7 @@ describe('Parsing API', () => {
         })
 
         it('invalid expression throws an error if `strictSyntax` is true', () => {
-            expect(() => parseSpdxExpression(WHITESPACE_IN_LICENSE_ID, true)).toThrow()
+            expect(() => parseSpdxExpression(WHITESPACE_IN_LICENSE_ID, { strictSyntax: true })).toThrow()
         })
 
         it('`strictSyntax` is `false` by default', () => {
@@ -40,17 +40,17 @@ describe('Parsing API', () => {
         })
 
         it('invalid expressions with whitespace in license name is tolerated if `strictSyntax` is false', () => {
-            expect(() => parseSpdxExpression(WHITESPACE_IN_LICENSE_ID, false)).not.toThrow()
-            expect(parseSpdxExpression(WHITESPACE_IN_LICENSE_ID, false)).toStrictEqual({ license: WHITESPACE_IN_LICENSE_ID })
+            expect(() => parseSpdxExpression(WHITESPACE_IN_LICENSE_ID, { strictSyntax: false })).not.toThrow()
+            expect(parseSpdxExpression(WHITESPACE_IN_LICENSE_ID, { strictSyntax: false })).toStrictEqual({ license: WHITESPACE_IN_LICENSE_ID })
         })
 
         it('invalid expressions with lowercase keywords are tolerated if `strictSyntax` is false', () => {
-            expect(() => parseSpdxExpression(LOWERCASE_KEYWORD, false)).not.toThrow()
-            expect(() => parseSpdxExpression(LOWERCASE_KEYWORD, true)).toThrow()
+            expect(() => parseSpdxExpression(LOWERCASE_KEYWORD, { strictSyntax: false })).not.toThrow()
+            expect(() => parseSpdxExpression(LOWERCASE_KEYWORD, { strictSyntax: true })).toThrow()
         })
 
         it('invalid expressions with lowercase keywords are not tolerated if `strictSyntax` is true', () => {
-            expect(() => parseSpdxExpression(LOWERCASE_KEYWORD, true)).toThrow()
+            expect(() => parseSpdxExpression(LOWERCASE_KEYWORD, { strictSyntax: true })).toThrow()
         })
     })
 

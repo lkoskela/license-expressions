@@ -109,7 +109,7 @@ const shouldIgnoreCorrection = (input: string, output: string): boolean => {
     return output?.startsWith('GPL-') && input.includes('Free Documentation License')
 }
 
-const fixLicenseId = (id: string): string | null => {
+const fixLicenseId = (id: string, upgradeGPLVariants: boolean): string | null => {
     // Don't try to correct license identifiers that are syntactically legit on the
     // surface and have an explicit version number such as "3.0" or "2.1":
     if (id.match(/(\w+(\-\w+)*)\-\d+(\.\d+)+(\-\w+)*/)) {
@@ -117,7 +117,7 @@ const fixLicenseId = (id: string): string | null => {
     }
 
     // Use `spdx-correct` to try and correct identifiers that we haven't fixed already:
-    const corrected = spdxCorrect(id, { upgrade: true })
+    const corrected = spdxCorrect(id, { upgrade: upgradeGPLVariants })
     if (corrected && !shouldIgnoreCorrection(id, corrected)) {
         return corrected
     }
@@ -194,7 +194,7 @@ const mapExceptionIdByAssociatedLicense = (id: string, associatedLicense?: strin
  * @param identifier SPDX license identifier to "fix" if possible
  * @returns A corrected SPDX license identifier or the original, if no suitable "fix" was found
  */
-export function correctLicenseId(identifier: string): string {
+export function correctLicenseId(identifier: string, upgradeGPLVariants: boolean): string {
 
     const mapLicense = (id: string): string|undefined => mapLicenseId(id) || mapLicenseAlias(id)
 
@@ -209,14 +209,11 @@ export function correctLicenseId(identifier: string): string {
     // The `spdx-correct` package will coerce "GPL-3.0" into "GPL-3.0-or-later", although
     // "GPL-3.0-only" would be more true to the original intent:
     const applyGPLFixes = (id: string): string => {
-        if (id.toUpperCase() === 'GPL') return mapLicense('GPL-3.0-only') || id
-        if (id.toUpperCase() === 'LGPL') return mapLicense('LGPL-3.0-only') || id
-        if (id.toUpperCase() === 'AGPL') return mapLicense('AGPL-3.0-only') || id
-
-        // If the id is already a known license, also check if there's a "-only" version
-        if (mapLicense(id)) {
-            return mapLicense(`${id}-only`) || id
-        }
+        const onlySuffix = upgradeGPLVariants ? '-only' : ''
+        if (upgradeGPLVariants && mapLicense(id)) return mapLicense(`${id}${onlySuffix}`) || id
+        if (id.toUpperCase() === 'GPL') return mapLicense(`GPL-3.0${onlySuffix}`) || id
+        if (id.toUpperCase() === 'LGPL') return mapLicense(`LGPL-3.0${onlySuffix}`) || id
+        if (id.toUpperCase() === 'AGPL') return mapLicense(`AGPL-3.0${onlySuffix}`) || id
 
         // Expand a single-digit "GPL2+" or "GPLv3" into a "-2.0+" or "-3.0" with the trailing zero
         if (id.match(/^([AL]?GPL)([\-vV]?)(\d)(\+?)$/)) {
@@ -254,11 +251,11 @@ export function correctLicenseId(identifier: string): string {
     const aliased = applyAliases(identifier)
     if (aliased !== identifier) {
         // the identifier was successfully aliased – let's retry with the alias!
-        return correctLicenseId(aliased)
+        return correctLicenseId(aliased, upgradeGPLVariants)
     }
 
     const id = expandPlus(applyGPLFixes(aliased))
-    return mapLicense(id) || fixLicenseId(id) || id
+    return mapLicense(id) || fixLicenseId(id, upgradeGPLVariants) || id
 }
 
 /**
@@ -291,11 +288,11 @@ export function isKnownExceptionId(id: string): boolean {
     return !!mapExceptionId(id)
 }
 
-export function fixDashedLicenseInfo(node: LicenseInfo): LicenseInfo {
+export function fixDashedLicenseInfo(node: LicenseInfo, upgradeGPLVariants: boolean): LicenseInfo {
     if (!node.exception && node.license.includes('-with-') && !isKnownLicenseId(node.license)) {
         // let's see if we can map the parts to actual known identifiers
         const [splitLicense, splitException] = node.license.split('-with-')
-        const fixedLicense = correctLicenseId(splitLicense)
+        const fixedLicense = correctLicenseId(splitLicense, upgradeGPLVariants)
         const fixedException = correctExceptionId(splitException, fixedLicense)
         if (isKnownLicenseId(fixedLicense)) {
             return { license: fixedLicense, exception: fixedException } as LicenseInfo
@@ -304,7 +301,7 @@ export function fixDashedLicenseInfo(node: LicenseInfo): LicenseInfo {
     return node
 }
 
-export const variationsOf = (name: string): string[] => {
+export const variationsOf = (name: string, upgradeGPLVariants: boolean): string[] => {
 
     const versionPrefixVariationsOf = (_value: string): string[] => [' version ', ' v']
 
@@ -321,7 +318,11 @@ export const variationsOf = (name: string): string[] => {
     const suffixVariationsOf = (value: string|undefined): string[] => {
         const fixedAlternatives = [' or greater', ' or later', ' or newer']
         if (value === undefined) {
-            return ['', 'only']
+            if (upgradeGPLVariants) {
+                return ['', ' only']
+            } else {
+                return ['']
+            }
         } else if (fixedAlternatives.includes(value)) {
             return [ value, ...fixedAlternatives.filter(x => x !== value) ]
         } else {
@@ -383,11 +384,11 @@ export const variationsOf = (name: string): string[] => {
  * @param text The text that could be a license name
  * @returns The {@link License}, or `undefined`
  */
-export const findNameBasedMatch = (text: string): License|undefined => {
+export const findNameBasedMatch = (text: string, upgradeGPLVariants: boolean): License|undefined => {
     const normalizeName = (name: string): string => {
         return name.toLowerCase().replace(/,/g, ' ').replace(/\s+/, ' ')
     }
     const lowercaseText = normalizeName(text)
-    const variations = variationsOf(lowercaseText)
+    const variations = variationsOf(lowercaseText, upgradeGPLVariants)
     return licenses.licenses.find(x => variations.includes(normalizeName(x.name)))
 }

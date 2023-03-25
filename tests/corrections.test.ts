@@ -18,25 +18,25 @@ const conjunction = (type: 'and'|'or', left: string|ConjunctionInfo, right: stri
 
 describe('correctLicenseId', () => {
     it('handles the GPL family okay', () => {
-        expect(correctLicenseId('Lesser General Public License v3.0')).toBe('LGPL-3.0-or-later')
-        expect(correctLicenseId('General Public License v3.0')).toBe('General Public License v3.0')
-        expect(correctLicenseId('Affero General Public License v3.0')).toBe('AGPL-3.0-or-later')
-        expect(correctLicenseId('GNU Affero General Public License v3.0')).toBe('AGPL-3.0-or-later')
-        expect(correctLicenseId('GNU General Public License v3.0')).toBe('GPL-3.0-or-later')
-        expect(correctLicenseId('GNU Lesser General Public License v3.0')).toBe('LGPL-3.0-or-later')
+        expect(correctLicenseId('Lesser General Public License v3.0', true)).toBe('LGPL-3.0-or-later')
+        expect(correctLicenseId('General Public License v3.0', true)).toBe('General Public License v3.0')
+        expect(correctLicenseId('Affero General Public License v3.0', true)).toBe('AGPL-3.0-or-later')
+        expect(correctLicenseId('GNU Affero General Public License v3.0', true)).toBe('AGPL-3.0-or-later')
+        expect(correctLicenseId('GNU General Public License v3.0', true)).toBe('GPL-3.0-or-later')
+        expect(correctLicenseId('GNU Lesser General Public License v3.0', true)).toBe('LGPL-3.0-or-later')
     })
 })
 
 describe('Exact matches of license names', () => {
 
     it('are accepted/corrected in liberal mode', () => {
-        expect(parse('Mozilla Public License 2.0', false)).toStrictEqual({ license: 'MPL-2.0' })
-        expect(parse('The Unlicense', false)).toStrictEqual({ license: 'Unlicense' })
+        expect(parse('Mozilla Public License 2.0', { strictSyntax: false })).toStrictEqual({ license: 'MPL-2.0' })
+        expect(parse('The Unlicense', { strictSyntax: false })).toStrictEqual({ license: 'Unlicense' })
     })
 
     it('are not accepted/corrected in strict mode', () => {
-        expect(() => parse('Mozilla Public License 2.0', true)).toThrow()
-        expect(() => parse('The Unlicense', true)).toThrow()
+        expect(() => parse('Mozilla Public License 2.0', { strictSyntax: true })).toThrow()
+        expect(() => parse('The Unlicense', { strictSyntax: true })).toThrow()
     })
 })
 
@@ -57,79 +57,115 @@ describe('GPL family of expressions with a "+" suffix', () => {
     })
 })
 
-describe('Deprecated "default" GPL versions are coerced into their non-deprecated, explicit alias', () => {
+describe('Deprecated "default" GPL versions are coerced into their non-deprecated, explicit alias when {upgradeGPLVariants: true}', () => {
     describe('LGPL', () => {
-        describe('LGPL-2.0', () => {
+        it('LGPL-2.0 with upgrade option enabled', () => {
+            expect(parse('LGPL-2.0-only', { upgradeGPLVariants: true })).toStrictEqual({ license: 'LGPL-2.0-only' })
+            expect(parse('LGPL-2.0', { upgradeGPLVariants: true })).toStrictEqual({ license: 'LGPL-2.0-only' })
+            expect(parse('LGPL-2.0-or-later', { upgradeGPLVariants: true })).toStrictEqual({ license: 'LGPL-2.0-or-later' })
+            expect(parse('LGPL-2.0+', { upgradeGPLVariants: true })).toStrictEqual({ license: 'LGPL-2.0-or-later' })
+        })
+
+        it('LGPL-2.0 with upgrade option implicitly disabled', () => {
             expect(parse('LGPL-2.0-only')).toStrictEqual({ license: 'LGPL-2.0-only' })
-            expect(parse('LGPL-2.0')).toStrictEqual({ license: 'LGPL-2.0-only' })
+            expect(parse('LGPL-2.0')).toStrictEqual({ license: 'LGPL-2.0' })
             expect(parse('LGPL-2.0-or-later')).toStrictEqual({ license: 'LGPL-2.0-or-later' })
             expect(parse('LGPL-2.0+')).toStrictEqual({ license: 'LGPL-2.0-or-later' })
         })
 
-        describe('LGPL-2.1', () => {
-            expect(parse('LGPL-2.1-only')).toStrictEqual({ license: 'LGPL-2.1-only' })
-            expect(parse('LGPL-2.1')).toStrictEqual({ license: 'LGPL-2.1-only' })
-            expect(parse('LGPL-2.1-or-later')).toStrictEqual({ license: 'LGPL-2.1-or-later' })
-            expect(parse('LGPL-2.1+')).toStrictEqual({ license: 'LGPL-2.1-or-later' })
+        it('LGPL-2.0 with upgrade option explicitly disabled', () => {
+            expect(parse('LGPL-2.0-only', { upgradeGPLVariants: false })).toStrictEqual({ license: 'LGPL-2.0-only' })
+            expect(parse('LGPL-2.0', { upgradeGPLVariants: false })).toStrictEqual({ license: 'LGPL-2.0' })
+            expect(parse('LGPL-2.0-or-later', { upgradeGPLVariants: false })).toStrictEqual({ license: 'LGPL-2.0-or-later' })
+            expect(parse('LGPL-2.0+', { upgradeGPLVariants: false })).toStrictEqual({ license: 'LGPL-2.0-or-later' })
         })
 
-        describe('LGPL-3.0', () => {
-            expect(parse('LGPL-3.0-only')).toStrictEqual({ license: 'LGPL-3.0-only' })
-            expect(parse('LGPL-3.0')).toStrictEqual({ license: 'LGPL-3.0-only' })
-            expect(parse('LGPL-3.0-or-later')).toStrictEqual({ license: 'LGPL-3.0-or-later' })
-            expect(parse('LGPL-3.0+')).toStrictEqual({ license: 'LGPL-3.0-or-later' })
-            expect(parse('LGPLv3+')).toStrictEqual({ license: 'LGPL-3.0-or-later' })
+        it('LGPL-2.1', () => {
+            expect(parse('LGPL-2.1', { upgradeGPLVariants: false })).toStrictEqual({ license: 'LGPL-2.1' })
+            expect(parse('LGPL-2.1-only', { upgradeGPLVariants: false })).toStrictEqual({ license: 'LGPL-2.1-only' })
+            expect(parse('LGPL-2.1-or-later', { upgradeGPLVariants: false })).toStrictEqual({ license: 'LGPL-2.1-or-later' })
+            expect(parse('LGPL-2.1+', { upgradeGPLVariants: false })).toStrictEqual({ license: 'LGPL-2.1-or-later' })
+            expect(parse('LGPL-2.1', { upgradeGPLVariants: true })).toStrictEqual({ license: 'LGPL-2.1-only' })
+            expect(parse('LGPL-2.1-only', { upgradeGPLVariants: true })).toStrictEqual({ license: 'LGPL-2.1-only' })
+            expect(parse('LGPL-2.1-or-later', { upgradeGPLVariants: true })).toStrictEqual({ license: 'LGPL-2.1-or-later' })
+            expect(parse('LGPL-2.1+', { upgradeGPLVariants: true })).toStrictEqual({ license: 'LGPL-2.1-or-later' })
+        })
+
+        it('LGPL-3.0', () => {
+            expect(parse('LGPL-3.0', { upgradeGPLVariants: false })).toStrictEqual({ license: 'LGPL-3.0' })
+            expect(parse('LGPL-3.0', { upgradeGPLVariants: true })).toStrictEqual({ license: 'LGPL-3.0-only' })
+            expect(parse('LGPL-3.0-only', { upgradeGPLVariants: false })).toStrictEqual({ license: 'LGPL-3.0-only' })
+            expect(parse('LGPL-3.0-only', { upgradeGPLVariants: true })).toStrictEqual({ license: 'LGPL-3.0-only' })
+            expect(parse('LGPL-3.0-or-later', { upgradeGPLVariants: false })).toStrictEqual({ license: 'LGPL-3.0-or-later' })
+            expect(parse('LGPL-3.0-or-later', { upgradeGPLVariants: true })).toStrictEqual({ license: 'LGPL-3.0-or-later' })
+            expect(parse('LGPL-3.0+', { upgradeGPLVariants: false })).toStrictEqual({ license: 'LGPL-3.0-or-later' })
+            expect(parse('LGPL-3.0+', { upgradeGPLVariants: true })).toStrictEqual({ license: 'LGPL-3.0-or-later' })
+            expect(parse('LGPLv3+', { upgradeGPLVariants: false })).toStrictEqual({ license: 'LGPL-3.0-or-later' })
+            expect(parse('LGPLv3+', { upgradeGPLVariants: true })).toStrictEqual({ license: 'LGPL-3.0-or-later' })
         })
     })
 
     describe('AGPL', () => {
         it('AGPL-1.0', () => {
             expect(parse('AGPL-1.0-only')).toStrictEqual({ license: 'AGPL-1.0-only' })
-            expect(parse('AGPL-1.0')).toStrictEqual({ license: 'AGPL-1.0-only' })
             expect(parse('AGPL-1.0-or-later')).toStrictEqual({ license: 'AGPL-1.0-or-later' })
+            expect(parse('AGPL-1.0')).toStrictEqual({ license: 'AGPL-1.0' })
+            expect(parse('AGPL-1.0', { upgradeGPLVariants: false })).toStrictEqual({ license: 'AGPL-1.0' })
+            expect(parse('AGPL-1.0', { upgradeGPLVariants: true })).toStrictEqual({ license: 'AGPL-1.0-only' })
         })
 
         it('AGPL-3.0', () => {
             expect(parse('AGPL-3.0-only')).toStrictEqual({ license: 'AGPL-3.0-only' })
-            expect(parse('AGPL-3.0')).toStrictEqual({ license: 'AGPL-3.0-only' })
             expect(parse('AGPL-3.0-or-later')).toStrictEqual({ license: 'AGPL-3.0-or-later' })
+            expect(parse('AGPL-3.0')).toStrictEqual({ license: 'AGPL-3.0' })
+            expect(parse('AGPL-3.0', { upgradeGPLVariants: false })).toStrictEqual({ license: 'AGPL-3.0' })
+            expect(parse('AGPL-3.0', { upgradeGPLVariants: true })).toStrictEqual({ license: 'AGPL-3.0-only' })
         })
     })
 
     describe('GPL', () => {
         it('GPL-1.0', () => {
             expect(parse('GPL-1.0-only')).toStrictEqual({ license: 'GPL-1.0-only' })
-            expect(parse('GPL-1.0')).toStrictEqual({ license: 'GPL-1.0-only' })
             expect(parse('GPL-1.0-or-later')).toStrictEqual({ license: 'GPL-1.0-or-later' })
             expect(parse('GPL-1.0+')).toStrictEqual({ license: 'GPL-1.0-or-later' })
+            expect(parse('GPL-1.0')).toStrictEqual({ license: 'GPL-1.0' })
+            expect(parse('GPL-1.0', { upgradeGPLVariants: false })).toStrictEqual({ license: 'GPL-1.0' })
+            expect(parse('GPL-1.0', { upgradeGPLVariants: true })).toStrictEqual({ license: 'GPL-1.0-only' })
         })
 
         it('GPL-2.0', () => {
             expect(parse('GPL-2.0-only')).toStrictEqual({ license: 'GPL-2.0-only' })
-            expect(parse('GPL-2.0')).toStrictEqual({ license: 'GPL-2.0-only' })
             expect(parse('GPL-2.0-or-later')).toStrictEqual({ license: 'GPL-2.0-or-later' })
             expect(parse('GPL-2.0+')).toStrictEqual({ license: 'GPL-2.0-or-later' })
+            expect(parse('GPL-2.0')).toStrictEqual({ license: 'GPL-2.0' })
+            expect(parse('GPL-2.0', { upgradeGPLVariants: false })).toStrictEqual({ license: 'GPL-2.0' })
+            expect(parse('GPL-2.0', { upgradeGPLVariants: true })).toStrictEqual({ license: 'GPL-2.0-only' })
         })
 
         it('GPL-3.0', () => {
             expect(parse('GPL-3.0-only')).toStrictEqual({ license: 'GPL-3.0-only' })
-            expect(parse('GPL-3.0')).toStrictEqual({ license: 'GPL-3.0-only' })
             expect(parse('GPL-3.0-or-later')).toStrictEqual({ license: 'GPL-3.0-or-later' })
             expect(parse('GPL-3.0+')).toStrictEqual({ license: 'GPL-3.0-or-later' })
+            expect(parse('GPL-3.0')).toStrictEqual({ license: 'GPL-3.0' })
+            expect(parse('GPL-3.0', { upgradeGPLVariants: false })).toStrictEqual({ license: 'GPL-3.0' })
+            expect(parse('GPL-3.0', { upgradeGPLVariants: true })).toStrictEqual({ license: 'GPL-3.0-only' })
         })
     })
 
     describe('"LGPL-2.0" is interpreted as "LGPL-2.0-only"', () => {
 
         it('in a simple expression', () => {
-            expect(parse('LGPL-2.0')).toStrictEqual({ license: 'LGPL-2.0-only' })
+            expect(parse('LGPL-2.0')).toStrictEqual({ license: 'LGPL-2.0' })
+            expect(parse('LGPL-2.0', { upgradeGPLVariants: false })).toStrictEqual({ license: 'LGPL-2.0' })
+            expect(parse('LGPL-2.0', { upgradeGPLVariants: true })).toStrictEqual({ license: 'LGPL-2.0-only' })
         })
 
         it('in a compound expression', () => {
-            expect(parse('LGPL-2.0 OR MIT')).toStrictEqual({
-                conjunction: 'or',
-                left: { license: 'LGPL-2.0-only' },
-                right: { license:'MIT' }
+            expect(parse('LGPL-2.0 OR MIT', { upgradeGPLVariants: true })).toStrictEqual({
+                conjunction: 'or', left: { license: 'LGPL-2.0-only' }, right: { license:'MIT' }
+            })
+            expect(parse('LGPL-2.0 OR MIT', { upgradeGPLVariants: false })).toStrictEqual({
+                conjunction: 'or', left: { license: 'LGPL-2.0' }, right: { license:'MIT' }
             })
         })
     })
@@ -256,21 +292,27 @@ describe('Common shorthands or forms for Apache-2.0', () => {
 
 describe('Common shorthands for GPL versions', () => {
 
-    const testForVariationsOf = (expectedLicenseId: string, variations: string[]) => {
+    const testForVariationsOf = (options: { upgradeGPLVariants?: boolean }, expectedLicenseId: string, variations: string[]) => {
         variations.forEach(id => {
             it(`"${id}" is interpreted as ${expectedLicenseId}`, () => {
-                expect(parse(id)).toStrictEqual({ license: expectedLicenseId })
+                expect(parse(id, options)).toStrictEqual({ license: expectedLicenseId })
             })
         })
     }
 
-    testForVariationsOf('GPL-2.0-only', ["GPLv2", "GPL2", "GPL-2"])
-    testForVariationsOf('GPL-2.0-or-later', ["GPLv2+", "GPL2+", "GPL-2+", "GPL-2.0-and-later", "GPLv2-and-later"])
-    testForVariationsOf('GPL-3.0-only', ["GPL", "GPL3", "GPL-3", "GPLv3"])
-    testForVariationsOf('GPL-3.0-or-later', ["GPLv3+", "GPL3+", "GPL-3+", "GPL-3.0-and-later", "GPL3-and-later"])
+    testForVariationsOf({ upgradeGPLVariants: true }, 'GPL-2.0-only', ["GPLv2", "GPL2", "GPL-2"])
+    testForVariationsOf({ upgradeGPLVariants: true }, 'GPL-3.0-only', ["GPL", "GPL3", "GPL-3", "GPLv3"])
+    testForVariationsOf({}, 'GPL-2.0', ["GPLv2", "GPL2", "GPL-2"])
+    testForVariationsOf({}, 'GPL-3.0', ["GPL", "GPL3", "GPL-3", "GPLv3"])
+    testForVariationsOf({}, 'GPL-2.0-or-later', ["GPLv2+", "GPL2+", "GPL-2+", "GPL-2.0-and-later", "GPLv2-and-later"])
+    testForVariationsOf({}, 'GPL-3.0-or-later', ["GPLv3+", "GPL3+", "GPL-3+", "GPL-3.0-and-later", "GPL3-and-later"])
 
-    it('"LGPL-3" is interpreted as "LGPL-3.0-only"', () => {
-        expect(parse('LGPL-3')).toStrictEqual({ license: 'LGPL-3.0-only' })
+    it('"LGPL-3" is interpreted as "LGPL-3.0" unless upgrading is enabled', () => {
+        expect(parse('LGPL-3')).toStrictEqual({ license: 'LGPL-3.0' })
+    })
+
+    it('"LGPL-3" is interpreted as "LGPL-3.0-only when upgrading is enabled"', () => {
+        expect(parse('LGPL-3', { upgradeGPLVariants: true })).toStrictEqual({ license: 'LGPL-3.0-only' })
     })
 
     it('"LGPL-2+" is interpreted as "LGPL-2.0-or-later"', () => {
@@ -296,6 +338,18 @@ describe('Expressions with slight errors', () => {
         }))
 
         it('Mit Or Gpl', () => expect(parse('Mit Or Gpl')).toStrictEqual({
+            conjunction: 'or',
+            left: { license: 'MIT' },
+            right: { license: 'GPL-3.0'}
+        }))
+
+        it('Mit Or Gpl', () => expect(parse('Mit Or Gpl', { upgradeGPLVariants: false })).toStrictEqual({
+            conjunction: 'or',
+            left: { license: 'MIT' },
+            right: { license: 'GPL-3.0'}
+        }))
+
+        it('Mit Or Gpl', () => expect(parse('Mit Or Gpl', { upgradeGPLVariants: true })).toStrictEqual({
             conjunction: 'or',
             left: { license: 'MIT' },
             right: { license: 'GPL-3.0-only'}
@@ -393,9 +447,9 @@ describe('Expressions with slight errors', () => {
 
             describe('alone', () => {
                 // baseline: the "only" versions that don't have the OR keyword in them:
-                scenario('GFDL-1.1-only', 'GNU Free Documentation License v1.1')
-                scenario('GFDL-1.2-only', 'GNU Free Documentation License v1.2')
-                scenario('GFDL-1.3-only', 'GNU Free Documentation License v1.3')
+                scenario('GFDL-1.1', 'GNU Free Documentation License v1.1')
+                scenario('GFDL-1.2', 'GNU Free Documentation License v1.2')
+                scenario('GFDL-1.3', 'GNU Free Documentation License v1.3')
                 // test set 1: the "or later" versions without additional text afterwards
                 scenario('GFDL-1.1-or-later', 'GNU Free Documentation License v1.1 or later')
                 scenario('GFDL-1.2-or-later', 'GNU Free Documentation License v1.2 or later')
@@ -426,7 +480,7 @@ describe('Expressions with slight errors', () => {
         describe('of "or later"', () => {
 
             const scenario = (expectedId: string, text: string) => {
-                it(JSON.stringify(text), () => expect(parse(text, false)).toMatchObject({license: expectedId}))
+                it(JSON.stringify(text), () => expect(parse(text, { strictSyntax: false })).toMatchObject({license: expectedId}))
             }
 
             describe('Variations of GNU Lesser General Public License', () => {
@@ -449,22 +503,22 @@ describe('Expressions with slight errors', () => {
 
                 it('GNU General Public License v3.0 or greater', () => {
                     const expression = 'GNU General Public License, version 3 or greater'
-                    expect(parse(expression, false)).toMatchObject({license: 'GPL-3.0-or-later'})
+                    expect(parse(expression, { strictSyntax: false })).toMatchObject({license: 'GPL-3.0-or-later'})
                 })
 
                 it('GNU General Public License, v3.0 or newer', () => {
                     const expression = 'GNU General Public License, version 3 or newer'
-                    expect(parse(expression, false)).toMatchObject({license: 'GPL-3.0-or-later'})
+                    expect(parse(expression, { strictSyntax: false })).toMatchObject({license: 'GPL-3.0-or-later'})
                 })
 
                 it('General Public License v3.0 or greater', () => {
                     const expression = 'General Public License, version 3 or greater'
-                    expect(parse(expression, false)).toMatchObject({license: 'GPL-3.0-or-later'})
+                    expect(parse(expression, { strictSyntax: false })).toMatchObject({license: 'GPL-3.0-or-later'})
                 })
 
                 it('General Public License v3.0 or newer', () => {
                     const expression = 'General Public License, version 3 or newer'
-                    expect(parse(expression, false)).toMatchObject({license: 'GPL-3.0-or-later'})
+                    expect(parse(expression, { strictSyntax: false })).toMatchObject({license: 'GPL-3.0-or-later'})
                 })
             })
 
@@ -472,22 +526,22 @@ describe('Expressions with slight errors', () => {
 
                 it('GNU Affero General Public License v3.0 or greater', () => {
                     const expression = 'GNU Affero General Public License, version 3 or greater'
-                    expect(parse(expression, false)).toMatchObject({license: 'AGPL-3.0-or-later'})
+                    expect(parse(expression, { strictSyntax: false })).toMatchObject({license: 'AGPL-3.0-or-later'})
                 })
 
                 it('GNU Affero General Public License v3.0 or newer', () => {
                     const expression = 'GNU Affero General Public License, version 3 or newer'
-                    expect(parse(expression, false)).toMatchObject({license: 'AGPL-3.0-or-later'})
+                    expect(parse(expression, { strictSyntax: false })).toMatchObject({license: 'AGPL-3.0-or-later'})
                 })
 
                 it('Affero General Public License v3.0 or greater', () => {
                     const expression = 'Affero General Public License, version 3 or greater'
-                    expect(parse(expression, false)).toMatchObject({license: 'AGPL-3.0-or-later'})
+                    expect(parse(expression, { strictSyntax: false })).toMatchObject({license: 'AGPL-3.0-or-later'})
                 })
 
                 it('Affero General Public License v3.0 or newer', () => {
                     const expression = 'Affero General Public License, version 3 or newer'
-                    expect(parse(expression, false)).toMatchObject({license: 'AGPL-3.0-or-later'})
+                    expect(parse(expression, { strictSyntax: false })).toMatchObject({license: 'AGPL-3.0-or-later'})
                 })
             })
         })
@@ -496,8 +550,8 @@ describe('Expressions with slight errors', () => {
 
             it('"w/" is corrected when strictSyntax = false', () => {
                 const expression = 'GPL-3.0-only w/ Autoconf-exception-2.0'
-                expect(() => parse(expression, true)).toThrowError()
-                expect(parse(expression, false)).toMatchObject({
+                expect(() => parse(expression, { strictSyntax: true })).toThrowError()
+                expect(parse(expression, { strictSyntax: false })).toMatchObject({
                     license: 'GPL-3.0-only',
                     exception: 'Autoconf-exception-2.0'
                 })
@@ -505,8 +559,8 @@ describe('Expressions with slight errors', () => {
 
             it('"W/" is corrected when strictSyntax = false', () => {
                 const expression = 'GPLv3+ W/ autoconf-exception-2.0'
-                expect(() => parse(expression, true)).toThrowError()
-                expect(parse(expression, false)).toMatchObject({
+                expect(() => parse(expression, { strictSyntax: true })).toThrowError()
+                expect(parse(expression, { strictSyntax: false })).toMatchObject({
                     license: 'GPL-3.0-or-later',
                     exception: 'Autoconf-exception-2.0'
                 })
@@ -514,8 +568,8 @@ describe('Expressions with slight errors', () => {
 
             it('"w/" is corrected even when there is no whitespace before a valid exception', () => {
                 const expression = 'GPL-3.0-only w/autoconf-exception-2.0'
-                expect(() => parse(expression, true)).toThrowError()
-                expect(parse(expression, false)).toMatchObject({
+                expect(() => parse(expression, { strictSyntax: true })).toThrowError()
+                expect(parse(expression, { strictSyntax: false })).toMatchObject({
                     license: 'GPL-3.0-only',
                     exception: 'Autoconf-exception-2.0'
                 })
@@ -523,20 +577,29 @@ describe('Expressions with slight errors', () => {
 
             it('"w/" is corrected even when there is no whitespace before an unknown exception', () => {
                 const expression = 'GPL-3.0-only w/not an exception'
-                expect(() => parse(expression, true)).toThrowError()
-                expect(parse(expression, false)).toMatchObject({
+                expect(() => parse(expression, { strictSyntax: true })).toThrowError()
+                expect(parse(expression, { strictSyntax: false })).toMatchObject({
                     license: 'GPL-3.0-only',
                     exception: 'not an exception'
                 })
             })
 
+            it("BSD 3-clause License w/nuclear disclaimer", () => {
+                const expression = "BSD 3-clause License w/nuclear disclaimer"
+                expect(() => parse(expression, { strictSyntax: true })).toThrowError()
+                expect(parse(expression, { strictSyntax: false })).toMatchObject({
+                    license: 'BSD-3-Clause',
+                    exception: 'nuclear disclaimer'
+                })
+            })
+
             it('"w/" is not corrected even in liberal mode when there is no license identifier before it', () => {
-                expect(() => parse('w/whatever', true)).toThrowError()
-                expect(() => parse('w/whatever', false)).toThrowError()
-                expect(() => parse(' w/ whatever', true)).toThrowError()
-                expect(() => parse(' w/ whatever', false)).toThrowError()
-                expect(() => parse('XXXw/whatever', true)).toThrowError()
-                expect(() => parse('XXXw/whatever', false)).toThrowError()
+                expect(() => parse('w/whatever', { strictSyntax: true })).toThrowError()
+                expect(() => parse('w/whatever', { strictSyntax: false })).toThrowError()
+                expect(() => parse(' w/ whatever', { strictSyntax: true })).toThrowError()
+                expect(() => parse(' w/ whatever', { strictSyntax: false })).toThrowError()
+                expect(() => parse('XXXw/whatever', { strictSyntax: true })).toThrowError()
+                expect(() => parse('XXXw/whatever', { strictSyntax: false })).toThrowError()
             })
         })
 
@@ -562,8 +625,8 @@ describe('Expressions with slight errors', () => {
 
             it('fail parsing if strictSyntax = true', () => {
                 const expression = 'GPL-3.0-only WITH autoconf exception 2.0'
-                expect(() => parse(expression, false)).not.toThrowError()
-                expect(() => parse(expression, true)).toThrowError()
+                expect(() => parse(expression, { strictSyntax: false })).not.toThrowError()
+                expect(() => parse(expression, { strictSyntax: true })).toThrowError()
             })
 
             it('"Qwt License 1.0" is corrected to "Qwt-exception-1.0"', () => {
@@ -681,6 +744,13 @@ describe('Special cases', () => {
 
             scenario('GPL-3.0-with-bison-exception', (expression) => {
                 expect(parse(expression)).toStrictEqual({
+                    license: 'GPL-3.0',
+                    exception: 'Bison-exception-2.2'
+                })
+            })
+
+            scenario('GPL-3.0-with-bison-exception', (expression) => {
+                expect(parse(expression, { upgradeGPLVariants: true })).toStrictEqual({
                     license: 'GPL-3.0-only',
                     exception: 'Bison-exception-2.2'
                 })
@@ -721,24 +791,24 @@ describe('Parenthesized scenarios', () => {
     describe('Text ending with a parenthesized license name or identifier', () => {
 
         it('detects parenthesized identifier in liberal mode', () => {
-            expect(() => parse('Mozilla Public License 2.0 (MPL-2.0)', true)).toThrow()
-            expect(() => parse('Something something something (MPL 2.0)', true)).toThrow()
-            expect(parse('Mozilla Public License 2.0 (MPL 2.0)', false)).toStrictEqual({ license: 'MPL-2.0' })
-            expect(parse('GNU Lesser General Public License (LGPLv3+)', false)).toStrictEqual({ license: 'LGPL-3.0-or-later' })
-            expect(parse('Does not have to be valid name here (Apache-2.0)', false)).toStrictEqual({ license: 'Apache-2.0' })
+            expect(() => parse('Mozilla Public License 2.0 (MPL-2.0)', { strictSyntax: true })).toThrow()
+            expect(() => parse('Something something something (MPL 2.0)', { strictSyntax: true })).toThrow()
+            expect(parse('Mozilla Public License 2.0 (MPL 2.0)', { strictSyntax: false })).toStrictEqual({ license: 'MPL-2.0' })
+            expect(parse('GNU Lesser General Public License (LGPLv3+)', { strictSyntax: false })).toStrictEqual({ license: 'LGPL-3.0-or-later' })
+            expect(parse('Does not have to be valid name here (Apache-2.0)', { strictSyntax: false })).toStrictEqual({ license: 'Apache-2.0' })
         })
 
         it('detects parenthesized exact name match in liberal mode', () => {
-            expect(() => parse('It will throw in strict mode (Mozilla Public License 2.0)', true)).toThrow()
-            expect(() => parse('It will throw unless there is an exact match (This is not an exact match)', false)).toThrow()
-            expect(parse('Some freeform text here (Mozilla Public License 2.0)', false)).toStrictEqual({ license: 'MPL-2.0' })
-            expect(parse('Blah blah blah blah (GNU Lesser General Public License v3.0 or later)', false)).toStrictEqual({ license: 'LGPL-3.0-or-later' })
+            expect(() => parse('It will throw in strict mode (Mozilla Public License 2.0)', { strictSyntax: true })).toThrow()
+            expect(() => parse('It will throw unless there is an exact match (This is not an exact match)', { strictSyntax: false })).toThrow()
+            expect(parse('Some freeform text here (Mozilla Public License 2.0)', { strictSyntax: false })).toStrictEqual({ license: 'MPL-2.0' })
+            expect(parse('Blah blah blah blah (GNU Lesser General Public License v3.0 or later)', { strictSyntax: false })).toStrictEqual({ license: 'LGPL-3.0-or-later' })
         })
 
         it('ignores multiple parenthesized identifiers even in liberal mode', () => {
-            expect(() => parse('Licensed the GPL (GPLv3+) or the Modified BSD License (BSD-3-Clause)', false)).toThrow()
-            expect(parse('Licensed under the GPL (GPLv3+)', false)).toStrictEqual({ license: 'GPL-3.0-or-later' })
-            expect(parse('Licensed under the Modified BSD License (BSD-3-Clause)', false)).toStrictEqual({ license: 'BSD-3-Clause' })
+            expect(() => parse('Licensed the GPL (GPLv3+) or the Modified BSD License (BSD-3-Clause)', { strictSyntax: false })).toThrow()
+            expect(parse('Licensed under the GPL (GPLv3+)', { strictSyntax: false })).toStrictEqual({ license: 'GPL-3.0-or-later' })
+            expect(parse('Licensed under the Modified BSD License (BSD-3-Clause)', { strictSyntax: false })).toStrictEqual({ license: 'BSD-3-Clause' })
         })
 
         describe('ignores the parenthesized pattern for texts clearly longer than the longest license name', () => {
@@ -752,11 +822,11 @@ describe('Parenthesized scenarios', () => {
             assert(slightlyTooLongPretext.length > THRESHOLD_LENGTH, `Our "slightly too long" pretext isn't long enough!`)
 
             it(`liberal mode accepts the parenthesized pattern for text short enough to be a license name`, () => {
-                expect(parse(`${justShortEnoughPretext} (Apache-2.0)`, false)).toStrictEqual({ license: 'Apache-2.0' })
+                expect(parse(`${justShortEnoughPretext} (Apache-2.0)`, { strictSyntax: false })).toStrictEqual({ license: 'Apache-2.0' })
             })
 
             it(`liberal mode ignores the parenthesized pattern for too long text preceding the parenthesis`, () => {
-                expect(() => parse(`${slightlyTooLongPretext} (Apache-2.0)`, false)).toThrow()
+                expect(() => parse(`${slightlyTooLongPretext} (Apache-2.0)`, { strictSyntax: false })).toThrow()
             })
         })
     })
