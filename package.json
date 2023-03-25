@@ -58,7 +58,7 @@
   },
   "scripts": {
     "test": "npm run build && npx jest --verbose --silent=false",
-    "build": "npm run codegen && tsc",
+    "build": "npm run codegen && tsc && chmod a+x build/cli/index.js",
     "eval": "npm run build && node build/cli.js",
     "prepack": "scripts/clean_build_dir.sh && npm run build",
     "prepublish": "scripts/clean_build_dir.sh && npm run build",
