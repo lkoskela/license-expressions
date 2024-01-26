@@ -1,5 +1,5 @@
 {
-  "licenseListVersion": "8f47f84",
+  "licenseListVersion": "db6f092",
   "exceptions": [
     {
       "licenseExceptionId": "389-exception",
@@ -13,6 +13,16 @@
       "relatedLicenses": [
         "GPL-2.0-only"
       ]
+    },
+    {
+      "licenseExceptionId": "Asterisk-exception",
+      "isDeprecatedLicenseId": false,
+      "name": "Asterisk exception",
+      "seeAlso": [
+        "https://github.com/asterisk/libpri/blob/7f91151e6bd10957c746c031c1f4a030e8146e9a/pri.c#L22",
+        "https://github.com/asterisk/libss7/blob/03e81bcd0d28ff25d4c77c78351ddadc82ff5c3f/ss7.c#L24"
+      ],
+      "relatedLicenses": []
     },
     {
       "licenseExceptionId": "Autoconf-exception-2.0",
@@ -53,6 +63,18 @@
       "relatedLicenses": []
     },
     {
+      "licenseExceptionId": "Autoconf-exception-generic-3.0",
+      "isDeprecatedLicenseId": false,
+      "name": "Autoconf generic exception for GPL-3.0",
+      "seeAlso": [
+        "https://src.fedoraproject.org/rpms/redhat-rpm-config/blob/rawhide/f/config.guess"
+      ],
+      "licenseComments": "This exception is the same as Autoconf-exception-generic, but it adds a sentence related to GPL-3.0.",
+      "relatedLicenses": [
+        "GPL-3.0"
+      ]
+    },
+    {
       "licenseExceptionId": "Autoconf-exception-macro",
       "isDeprecatedLicenseId": false,
       "name": "Autoconf macro exception",
@@ -60,6 +82,15 @@
         "https://github.com/freedesktop/xorg-macros/blob/39f07f7db58ebbf3dcb64a2bf9098ed5cf3d1223/xorg-macros.m4.in",
         "https://www.gnu.org/software/autoconf-archive/ax_pthread.html",
         "https://launchpad.net/ubuntu/precise/+source/xmltooling/+copyright"
+      ],
+      "relatedLicenses": []
+    },
+    {
+      "licenseExceptionId": "Bison-exception-1.24",
+      "isDeprecatedLicenseId": false,
+      "name": "Bison exception 1.24",
+      "seeAlso": [
+        "https://github.com/arineng/rwhoisd/blob/master/rwhoisd/mkdb/y.tab.c#L180"
       ],
       "relatedLicenses": []
     },
@@ -111,6 +142,18 @@
       ]
     },
     {
+      "licenseExceptionId": "cryptsetup-OpenSSL-exception",
+      "isDeprecatedLicenseId": false,
+      "name": "cryptsetup OpenSSL exception",
+      "seeAlso": [
+        "https://gitlab.com/cryptsetup/cryptsetup/-/blob/main/COPYING",
+        "https://gitlab.nic.cz/datovka/datovka/-/blob/develop/COPYING",
+        "https://github.com/nbs-system/naxsi/blob/951123ad456bdf5ac94e8d8819342fe3d49bc002/naxsi_src/naxsi_raw.c",
+        "http://web.mit.edu/jgross/arch/amd64_deb60/bin/mosh"
+      ],
+      "relatedLicenses": []
+    },
+    {
       "licenseExceptionId": "DigiRule-FOSS-exception",
       "isDeprecatedLicenseId": false,
       "name": "DigiRule FOSS License Exception",
@@ -159,6 +202,19 @@
       ]
     },
     {
+      "licenseExceptionId": "fmt-exception",
+      "isDeprecatedLicenseId": false,
+      "name": "fmt exception",
+      "seeAlso": [
+        "https://github.com/fmtlib/fmt/blob/master/LICENSE",
+        "https://github.com/fmtlib/fmt/blob/2eb363297b24cd71a68ccfb20ff755430f17e60f/LICENSE#L22C1-L27C62"
+      ],
+      "licenseComments": "Typically used with MIT.",
+      "relatedLicenses": [
+        "MIT"
+      ]
+    },
+    {
       "licenseExceptionId": "Font-exception-2.0",
       "isDeprecatedLicenseId": false,
       "name": "Font exception 2.0",
@@ -189,12 +245,23 @@
       "isDeprecatedLicenseId": false,
       "name": "GCC Runtime Library exception 2.0",
       "seeAlso": [
-        "https://gcc.gnu.org/git/?p=gcc.git;a=blob;f=gcc/libgcc1.c;h=762f5143fc6eed57b6797c82710f3538aa52b40b;hb=cb143a3ce4fb417c68f5fa2691a1b1b1053dfba9#l10"
+        "https://gcc.gnu.org/git/?p=gcc.git;a=blob;f=gcc/libgcc1.c;h=762f5143fc6eed57b6797c82710f3538aa52b40b;hb=cb143a3ce4fb417c68f5fa2691a1b1b1053dfba9#l10",
+        "https://sourceware.org/git/?p=glibc.git;a=blob;f=csu/abi-note.c;h=c2ec208e94fbe91f63d3c375bd254b884695d190;hb=HEAD"
       ],
       "licenseComments": "Typically used with GPL-2.0-or-later. Sometimes also referred to as \"linking exception.\"",
       "relatedLicenses": [
         "GPL-2.0-or-later"
       ]
+    },
+    {
+      "licenseExceptionId": "GCC-exception-2.0-note",
+      "isDeprecatedLicenseId": false,
+      "name": "GCC    Runtime Library exception 2.0 - note variant",
+      "seeAlso": [
+        "https://sourceware.org/git/?p=glibc.git;a=blob;f=sysdeps/x86_64/start.S"
+      ],
+      "licenseComments": "This is the same as GCC-exception-2.0 but adds a second paragraph.",
+      "relatedLicenses": []
     },
     {
       "licenseExceptionId": "GCC-exception-3.1",
@@ -222,6 +289,16 @@
       ]
     },
     {
+      "licenseExceptionId": "GNU-compiler-exception",
+      "isDeprecatedLicenseId": false,
+      "name": "GNU Compiler Exception",
+      "seeAlso": [
+        "https://sourceware.org/git?p=binutils-gdb.git;a=blob;f=libiberty/unlink-if-ordinary.c;h=e49f2f2f67bfdb10d6b2bd579b0e01cad0fd708e;hb=HEAD#l19"
+      ],
+      "licenseComments": "This exception is the same as SWI-exception but delineates that the library is compiled with a GNU compiler, which is narrower than a or any free software compiler.",
+      "relatedLicenses": []
+    },
+    {
       "licenseExceptionId": "gnu-javamail-exception",
       "isDeprecatedLicenseId": false,
       "name": "GNU JavaMail exception",
@@ -231,6 +308,18 @@
       "licenseComments": "Typically used with GPL (any version)",
       "relatedLicenses": [
         "GPL-2.0",
+        "GPL-3.0"
+      ]
+    },
+    {
+      "licenseExceptionId": "GPL-3.0-interface-exception",
+      "isDeprecatedLicenseId": false,
+      "name": "GPL-3.0 Interface Exception",
+      "seeAlso": [
+        "https://www.gnu.org/licenses/gpl-faq.en.html#LinkingOverControlledInterface"
+      ],
+      "licenseComments": "This exception is based on the suggested template from the Free Software Foundation's FAQ about the GPL. This exception enables linking with differently licensed modules over the specified interface, while ensuring that users would still receive source code as they normally would under the GPL.",
+      "relatedLicenses": [
         "GPL-3.0"
       ]
     },
@@ -333,11 +422,21 @@
       ]
     },
     {
+      "licenseExceptionId": "libpri-OpenH323-exception",
+      "isDeprecatedLicenseId": false,
+      "name": "libpri OpenH323 exception",
+      "seeAlso": [
+        "https://github.com/asterisk/libpri/blob/1.6.0/README#L19-L22"
+      ],
+      "relatedLicenses": []
+    },
+    {
       "licenseExceptionId": "Libtool-exception",
       "isDeprecatedLicenseId": false,
       "name": "Libtool Exception",
       "seeAlso": [
-        "http://git.savannah.gnu.org/cgit/libtool.git/tree/m4/libtool.m4"
+        "http://git.savannah.gnu.org/cgit/libtool.git/tree/m4/libtool.m4",
+        "https://git.savannah.gnu.org/cgit/libtool.git/tree/libltdl/lt__alloc.c#n15"
       ],
       "relatedLicenses": []
     },
@@ -350,6 +449,18 @@
       ],
       "licenseComments": "This note is used with the Linux kernel to clarify how user space API files should be treated.",
       "relatedLicenses": []
+    },
+    {
+      "licenseExceptionId": "LLGPL",
+      "isDeprecatedLicenseId": false,
+      "name": "LLGPL Preamble",
+      "seeAlso": [
+        "http://opensource.franz.com/preamble.html"
+      ],
+      "licenseComments": "Typically used with LGPL-2.1",
+      "relatedLicenses": [
+        "LGPL-2.1"
+      ]
     },
     {
       "licenseExceptionId": "LLVM-exception",
@@ -445,7 +556,8 @@
       "isDeprecatedLicenseId": false,
       "name": "OpenVPN OpenSSL Exception",
       "seeAlso": [
-        "http://openvpn.net/index.php/license.html"
+        "http://openvpn.net/index.php/license.html",
+        "https://github.com/psycopg/psycopg2/blob/2_9_3/LICENSE#L14"
       ],
       "licenseComments": "Typically used with GPL 2.0",
       "relatedLicenses": [
@@ -514,6 +626,17 @@
       ]
     },
     {
+      "licenseExceptionId": "SANE-exception",
+      "isDeprecatedLicenseId": false,
+      "name": "SANE Exception",
+      "seeAlso": [
+        "https://github.com/alexpevzner/sane-airscan/blob/master/LICENSE",
+        "https://gitlab.com/sane-project/backends/-/blob/master/sanei/sanei_pp.c?ref_type=heads",
+        "https://gitlab.com/sane-project/frontends/-/blob/master/sanei/sanei_codec_ascii.c?ref_type=heads"
+      ],
+      "relatedLicenses": []
+    },
+    {
       "licenseExceptionId": "SHL-2.0",
       "isDeprecatedLicenseId": false,
       "name": "Solderpad Hardware License v2.0",
@@ -538,12 +661,22 @@
       ]
     },
     {
+      "licenseExceptionId": "stunnel-exception",
+      "isDeprecatedLicenseId": false,
+      "name": "stunnel Exception",
+      "seeAlso": [
+        "https://github.com/mtrojnar/stunnel/blob/master/COPYING.md"
+      ],
+      "relatedLicenses": []
+    },
+    {
       "licenseExceptionId": "SWI-exception",
       "isDeprecatedLicenseId": false,
       "name": "SWI exception",
       "seeAlso": [
         "https://github.com/SWI-Prolog/packages-clpqr/blob/bfa80b9270274f0800120d5b8e6fef42ac2dc6a5/clpqr/class.pl"
       ],
+      "licenseComments": "This exception is closely similar to GNU-compiler-exception but delineates that the library is compiled with a Free Software compiler, which is slightly broader than a GNU compiler.",
       "relatedLicenses": []
     },
     {
@@ -560,6 +693,15 @@
       ]
     },
     {
+      "licenseExceptionId": "Texinfo-exception",
+      "isDeprecatedLicenseId": false,
+      "name": "Texinfo exception",
+      "seeAlso": [
+        "https://git.savannah.gnu.org/cgit/automake.git/tree/lib/texinfo.tex?h=v1.16.5#n23"
+      ],
+      "relatedLicenses": []
+    },
+    {
       "licenseExceptionId": "u-boot-exception-2.0",
       "isDeprecatedLicenseId": false,
       "name": "U-Boot exception 2.0",
@@ -573,11 +715,34 @@
       ]
     },
     {
+      "licenseExceptionId": "UBDL-exception",
+      "isDeprecatedLicenseId": false,
+      "name": "Unmodified Binary Distribution exception",
+      "seeAlso": [
+        "https://github.com/ipxe/ipxe/blob/master/COPYING.UBDL"
+      ],
+      "licenseComments": "Typically used with GPL-2.0-or-later",
+      "relatedLicenses": [
+        "GPL-2.0-or-later"
+      ]
+    },
+    {
       "licenseExceptionId": "Universal-FOSS-exception-1.0",
       "isDeprecatedLicenseId": false,
       "name": "Universal FOSS Exception, Version 1.0",
       "seeAlso": [
         "https://oss.oracle.com/licenses/universal-foss-exception/"
+      ],
+      "relatedLicenses": []
+    },
+    {
+      "licenseExceptionId": "vsftpd-openssl-exception",
+      "isDeprecatedLicenseId": false,
+      "name": "vsftpd OpenSSL exception",
+      "seeAlso": [
+        "https://git.stg.centos.org/source-git/vsftpd/blob/f727873674d9c9cd7afcae6677aa782eb54c8362/f/LICENSE",
+        "https://launchpad.net/debian/squeeze/+source/vsftpd/+copyright",
+        "https://github.com/richardcochran/vsftpd/blob/master/COPYING"
       ],
       "relatedLicenses": []
     },
@@ -605,5 +770,5 @@
       "relatedLicenses": []
     }
   ],
-  "releaseDate": "2023-03-09"
+  "releaseDate": "2024-01-25"
 }

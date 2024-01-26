@@ -1,5 +1,5 @@
 {
-  "licenseListVersion": "8f47f84",
+  "licenseListVersion": "db6f092",
   "licenses": [
     {
       "name": "BSD Zero Clause License",
@@ -62,6 +62,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://fedoraproject.org/wiki/Licensing/MIT#AdobeGlyph"
+      ]
+    },
+    {
+      "name": "Adobe Utopia Font License",
+      "licenseId": "Adobe-Utopia",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://gitlab.freedesktop.org/xorg/font/adobe-utopia-100dpi/-/blob/master/COPYING?ref_type=heads"
       ]
     },
     {
@@ -415,6 +425,26 @@
       ]
     },
     {
+      "name": "ASWF Digital Assets License version 1.0",
+      "licenseId": "ASWF-Digital-Assets-1.0",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/AcademySoftwareFoundation/foundation/blob/main/digital_assets/aswf_digital_assets_license_v1.0.txt"
+      ]
+    },
+    {
+      "name": "ASWF Digital Assets License 1.1",
+      "licenseId": "ASWF-Digital-Assets-1.1",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/AcademySoftwareFoundation/foundation/blob/main/digital_assets/aswf_digital_assets_license_v1.1.txt"
+      ]
+    },
+    {
       "name": "Baekmuk License",
       "licenseId": "Baekmuk",
       "isDeprecatedLicenseId": false,
@@ -516,6 +546,18 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://blueoakcouncil.org/license/1.0.0"
+      ]
+    },
+    {
+      "name": "Boehm-Demers-Weiser GC License",
+      "licenseId": "Boehm-GC",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://fedoraproject.org/wiki/Licensing:MIT#Another_Minimal_variant_(found_in_libatomic_ops)",
+        "https://github.com/uim/libgcroots/blob/master/COPYING",
+        "https://github.com/ivmai/libatomic_ops/blob/master/LICENSE"
       ]
     },
     {
@@ -632,6 +674,26 @@
       ]
     },
     {
+      "name": "BSD 3-Clause Flex variant",
+      "licenseId": "BSD-3-Clause-flex",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/westes/flex/blob/master/COPYING"
+      ]
+    },
+    {
+      "name": "Hewlett-Packard BSD variant license",
+      "licenseId": "BSD-3-Clause-HP",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/zdohnal/hplip/blob/master/COPYING#L939"
+      ]
+    },
+    {
       "name": "Lawrence Berkeley National Labs BSD variant license",
       "licenseId": "BSD-3-Clause-LBNL",
       "isDeprecatedLicenseId": false,
@@ -704,6 +766,16 @@
       ]
     },
     {
+      "name": "BSD 3-Clause Sun Microsystems",
+      "licenseId": "BSD-3-Clause-Sun",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/xmlark/msv/blob/b9316e2f2270bc1606952ea4939ec87fbba157f3/xsdlib/src/main/java/com/sun/msv/datatype/regexp/InternalImpl.java"
+      ]
+    },
+    {
       "name": "BSD 4-Clause \"Original\" or \"Old\" License",
       "licenseId": "BSD-4-Clause",
       "isDeprecatedLicenseId": false,
@@ -740,7 +812,8 @@
       "isOsiApproved": false,
       "isFsfLibre": false,
       "seeAlso": [
-        "https://sourceware.org/git/?p=binutils-gdb.git;a=blob;f=libiberty/strcasecmp.c;h=131d81c2ce7881fa48c363dc5bf5fb302c61ce0b;hb=HEAD"
+        "https://sourceware.org/git/?p=binutils-gdb.git;a=blob;f=libiberty/strcasecmp.c;h=131d81c2ce7881fa48c363dc5bf5fb302c61ce0b;hb=HEAD",
+        "https://git.openldap.org/openldap/openldap/-/blob/master/COPYRIGHT#L55-63"
       ]
     },
     {
@@ -750,7 +823,8 @@
       "isOsiApproved": false,
       "isFsfLibre": false,
       "seeAlso": [
-        "https://github.com/389ds/389-ds-base/blob/main/ldap/include/sysexits-compat.h#L15"
+        "https://github.com/389ds/389-ds-base/blob/main/ldap/include/sysexits-compat.h#L15",
+        "https://git.savannah.gnu.org/cgit/indent.git/tree/doc/indent.texi?id=a74c6b4ee49397cf330b333da1042bffa60ed14f#n1788"
       ]
     },
     {
@@ -774,6 +848,16 @@
       ]
     },
     {
+      "name": "BSD-Inferno-Nettverk",
+      "licenseId": "BSD-Inferno-Nettverk",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://www.inet.no/dante/LICENSE"
+      ]
+    },
+    {
       "name": "BSD Protection License",
       "licenseId": "BSD-Protection",
       "isDeprecatedLicenseId": false,
@@ -791,6 +875,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://github.com/robbiehanson/CocoaHTTPServer/blob/master/LICENSE.txt"
+      ]
+    },
+    {
+      "name": "Systemics BSD variant license",
+      "licenseId": "BSD-Systemics",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://metacpan.org/release/DPARIS/Crypt-DES-2.07/source/COPYRIGHT"
       ]
     },
     {
@@ -1370,6 +1464,16 @@
       ]
     },
     {
+      "name": "Creative Commons Attribution-ShareAlike 3.0 IGO",
+      "licenseId": "CC-BY-SA-3.0-IGO",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://creativecommons.org/licenses/by-sa/3.0/igo/legalcode"
+      ]
+    },
+    {
       "name": "Creative Commons Attribution Share Alike 4.0 International",
       "licenseId": "CC-BY-SA-4.0",
       "isDeprecatedLicenseId": false,
@@ -1579,7 +1683,18 @@
       "isOsiApproved": false,
       "isFsfLibre": false,
       "seeAlso": [
-        "https://heasarc.gsfc.nasa.gov/docs/software/fitsio/c/f_user/node9.html"
+        "https://heasarc.gsfc.nasa.gov/docs/software/fitsio/c/f_user/node9.html",
+        "https://heasarc.gsfc.nasa.gov/docs/software/ftools/fv/doc/license.html"
+      ]
+    },
+    {
+      "name": "check-cvs License",
+      "licenseId": "check-cvs",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "http://cvs.savannah.gnu.org/viewvc/cvs/ccvs/contrib/check_cvs.in?revision=1.1.4.3&view=markup&pathrev=cvs1-11-23#l2"
       ]
     },
     {
@@ -1747,6 +1862,19 @@
       ]
     },
     {
+      "name": "Cronyx License",
+      "licenseId": "Cronyx",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://gitlab.freedesktop.org/xorg/font/alias/-/blob/master/COPYING",
+        "https://gitlab.freedesktop.org/xorg/font/cronyx-cyrillic/-/blob/master/COPYING",
+        "https://gitlab.freedesktop.org/xorg/font/misc-cyrillic/-/blob/master/COPYING",
+        "https://gitlab.freedesktop.org/xorg/font/screen-cyrillic/-/blob/master/COPYING"
+      ]
+    },
+    {
       "name": "Crossword License",
       "licenseId": "Crossword",
       "isDeprecatedLicenseId": false,
@@ -1834,6 +1962,16 @@
       ]
     },
     {
+      "name": "Data licence Germany – zero – version 2.0",
+      "licenseId": "DL-DE-ZERO-2.0",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://www.govdata.de/dl-de/zero-2-0"
+      ]
+    },
+    {
       "name": "DOC License",
       "licenseId": "DOC",
       "isDeprecatedLicenseId": false,
@@ -1872,6 +2010,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://fedoraproject.org/wiki/Licensing/DSDP"
+      ]
+    },
+    {
+      "name": "David M. Gay dtoa License",
+      "licenseId": "dtoa",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/SWI-Prolog/swipl-devel/blob/master/src/os/dtoa.c"
       ]
     },
     {
@@ -2092,6 +2240,16 @@
       ]
     },
     {
+      "name": "Fuzzy Bitmap License",
+      "licenseId": "FBM",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/SWI-Prolog/packages-xpce/blob/161a40cd82004f731ba48024f9d30af388a7edf5/src/img/gifwrite.c#L21-L26"
+      ]
+    },
+    {
       "name": "Fraunhofer FDK AAC Codec Library",
       "licenseId": "FDK-AAC",
       "isDeprecatedLicenseId": false,
@@ -2100,6 +2258,16 @@
       "seeAlso": [
         "https://fedoraproject.org/wiki/Licensing/FDK-AAC",
         "https://directory.fsf.org/wiki/License:Fdk"
+      ]
+    },
+    {
+      "name": "Ferguson Twofish License",
+      "licenseId": "Ferguson-Twofish",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/wernerd/ZRTPCPP/blob/6b3cd8e6783642292bad0c21e3e5e5ce45ff3e03/cryptcommon/twofish.c#L113C3-L127"
       ]
     },
     {
@@ -2163,7 +2331,7 @@
       ]
     },
     {
-      "name": "FSF Unlimited License (With License Retention    and Warranty Disclaimer)",
+      "name": "FSF Unlimited License (With License Retention and Warranty Disclaimer)",
       "licenseId": "FSFULLRWD",
       "isDeprecatedLicenseId": false,
       "isOsiApproved": false,
@@ -2182,6 +2350,26 @@
         "http://freetype.fis.uniroma2.it/FTL.TXT",
         "http://git.savannah.gnu.org/cgit/freetype/freetype2.git/tree/docs/FTL.TXT",
         "http://gitlab.freedesktop.org/freetype/freetype/-/raw/master/docs/FTL.TXT"
+      ]
+    },
+    {
+      "name": "Furuseth License",
+      "licenseId": "Furuseth",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://git.openldap.org/openldap/openldap/-/blob/master/COPYRIGHT?ref_type=heads#L39-51"
+      ]
+    },
+    {
+      "name": "fwlw License",
+      "licenseId": "fwlw",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://mirrors.nic.cz/tex-archive/macros/latex/contrib/fwlw/README"
       ]
     },
     {
@@ -2714,13 +2902,56 @@
       ]
     },
     {
+      "name": "Hewlett-Packard 1989 License",
+      "licenseId": "HP-1989",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/bleargh45/Data-UUID/blob/master/LICENSE"
+      ]
+    },
+    {
       "name": "Historical Permission Notice and Disclaimer",
       "licenseId": "HPND",
       "isDeprecatedLicenseId": false,
       "isOsiApproved": true,
       "isFsfLibre": true,
       "seeAlso": [
-        "https://opensource.org/licenses/HPND"
+        "https://opensource.org/licenses/HPND",
+        "http://lists.opensource.org/pipermail/license-discuss_lists.opensource.org/2002-November/006304.html"
+      ]
+    },
+    {
+      "name": "Historical Permission Notice and Disclaimer - DEC variant",
+      "licenseId": "HPND-DEC",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://gitlab.freedesktop.org/xorg/app/xkbcomp/-/blob/master/COPYING?ref_type=heads#L69"
+      ]
+    },
+    {
+      "name": "Historical Permission Notice and Disclaimer - documentation variant",
+      "licenseId": "HPND-doc",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://gitlab.freedesktop.org/xorg/lib/libxext/-/blob/master/COPYING?ref_type=heads#L185-197",
+        "https://gitlab.freedesktop.org/xorg/lib/libxtst/-/blob/master/COPYING?ref_type=heads#L70-77"
+      ]
+    },
+    {
+      "name": "Historical Permission Notice and Disclaimer - documentation sell variant",
+      "licenseId": "HPND-doc-sell",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://gitlab.freedesktop.org/xorg/lib/libxtst/-/blob/master/COPYING?ref_type=heads#L108-117",
+        "https://gitlab.freedesktop.org/xorg/lib/libxext/-/blob/master/COPYING?ref_type=heads#L153-162"
       ]
     },
     {
@@ -2734,6 +2965,17 @@
       ]
     },
     {
+      "name": "HPND with US Government export control warning and modification rqmt",
+      "licenseId": "HPND-export-US-modify",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/krb5/krb5/blob/krb5-1.21.2-final/NOTICE#L1157-L1182",
+        "https://github.com/pythongssapi/k5test/blob/v0.10.3/K5TEST-LICENSE.txt"
+      ]
+    },
+    {
       "name": "Historical Permission Notice and Disclaimer - Markus Kuhn variant",
       "licenseId": "HPND-Markus-Kuhn",
       "isDeprecatedLicenseId": false,
@@ -2742,6 +2984,26 @@
       "seeAlso": [
         "https://www.cl.cam.ac.uk/~mgk25/ucs/wcwidth.c",
         "https://sourceware.org/git/?p=binutils-gdb.git;a=blob;f=readline/readline/support/wcwidth.c;h=0f5ec995796f4813abbcf4972aec0378ab74722a;hb=HEAD#l55"
+      ]
+    },
+    {
+      "name": "Historical Permission Notice and Disclaimer - Pbmplus variant",
+      "licenseId": "HPND-Pbmplus",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://sourceforge.net/p/netpbm/code/HEAD/tree/super_stable/netpbm.c#l8"
+      ]
+    },
+    {
+      "name": "Historical Permission Notice and Disclaimer - sell regexpr variant",
+      "licenseId": "HPND-sell-regexpr",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://gitlab.com/bacula-org/bacula/-/blob/Branch-11.0/bacula/LICENSE-FOSS?ref_type=heads#L245"
       ]
     },
     {
@@ -2762,6 +3024,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://github.com/sigmavirus24/x11-ssh-askpass/blob/master/README"
+      ]
+    },
+    {
+      "name": "Historical Permission Notice and Disclaimer - University of California variant",
+      "licenseId": "HPND-UC",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://core.tcl-lang.org/tk/file?name=compat/unistd.h"
       ]
     },
     {
@@ -2865,6 +3137,17 @@
       "isFsfLibre": false,
       "seeAlso": [
         "http://www.info-zip.org/license.html"
+      ]
+    },
+    {
+      "name": "Inner Net License v2.0",
+      "licenseId": "Inner-Net-2.0",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://fedoraproject.org/wiki/Licensing/Inner_Net_License",
+        "https://sourceware.org/git/?p=glibc.git;a=blob;f=LICENSES;h=530893b1dc9ea00755603c68fb36bd4fc38a7be8;hb=HEAD#l207"
       ]
     },
     {
@@ -2981,6 +3264,16 @@
       ]
     },
     {
+      "name": "Kastrup License",
+      "licenseId": "Kastrup",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://ctan.math.utah.edu/ctan/tex-archive/macros/generic/kastrup/binhex.dtx"
+      ]
+    },
+    {
       "name": "Kazlib License",
       "licenseId": "Kazlib",
       "isDeprecatedLicenseId": false,
@@ -3028,6 +3321,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://fedoraproject.org/wiki/Licensing/Latex2e"
+      ]
+    },
+    {
+      "name": "Latex2e with translated notice permission",
+      "licenseId": "Latex2e-translated-notice",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://git.savannah.gnu.org/cgit/indent.git/tree/doc/indent.texi?id=a74c6b4ee49397cf330b333da1042bffa60ed14f#n74"
       ]
     },
     {
@@ -3267,6 +3570,16 @@
       ]
     },
     {
+      "name": "Linux man-pages - 1 paragraph",
+      "licenseId": "Linux-man-pages-1-para",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://git.kernel.org/pub/scm/docs/man-pages/man-pages.git/tree/man2/getcpu.2#n4"
+      ]
+    },
+    {
       "name": "Linux man-pages Copyleft",
       "licenseId": "Linux-man-pages-copyleft",
       "isDeprecatedLicenseId": false,
@@ -3274,6 +3587,27 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://www.kernel.org/doc/man-pages/licenses.html"
+      ]
+    },
+    {
+      "name": "Linux man-pages Copyleft - 2 paragraphs",
+      "licenseId": "Linux-man-pages-copyleft-2-para",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://git.kernel.org/pub/scm/docs/man-pages/man-pages.git/tree/man2/move_pages.2#n5",
+        "https://git.kernel.org/pub/scm/docs/man-pages/man-pages.git/tree/man2/migrate_pages.2#n8"
+      ]
+    },
+    {
+      "name": "Linux man-pages Copyleft Variant",
+      "licenseId": "Linux-man-pages-copyleft-var",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://git.kernel.org/pub/scm/docs/man-pages/man-pages.git/tree/man2/set_mempolicy.2#n5"
       ]
     },
     {
@@ -3374,6 +3708,26 @@
       ]
     },
     {
+      "name": "lsof License",
+      "licenseId": "lsof",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/lsof-org/lsof/blob/master/COPYING"
+      ]
+    },
+    {
+      "name": "Lucida Bitmap Fonts License",
+      "licenseId": "Lucida-Bitmap-Fonts",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://gitlab.freedesktop.org/xorg/font/bh-100dpi/-/blob/master/COPYING?ref_type=heads"
+      ]
+    },
+    {
       "name": "LZMA SDK License (versions 9.11 to 9.20)",
       "licenseId": "LZMA-SDK-9.11-to-9.20",
       "isDeprecatedLicenseId": false,
@@ -3396,6 +3750,16 @@
       ]
     },
     {
+      "name": "magaz License",
+      "licenseId": "magaz",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://mirrors.nic.cz/tex-archive/macros/latex/contrib/magaz/magaz.tex"
+      ]
+    },
+    {
       "name": "MakeIndex License",
       "licenseId": "MakeIndex",
       "isDeprecatedLicenseId": false,
@@ -3413,6 +3777,26 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://github.com/Perl/perl5/blob/blead/util.c#L6136"
+      ]
+    },
+    {
+      "name": "McPhee Slideshow License",
+      "licenseId": "McPhee-slideshow",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://mirror.las.iastate.edu/tex-archive/graphics/metapost/contrib/macros/slideshow/slideshow.mp"
+      ]
+    },
+    {
+      "name": "metamail License",
+      "licenseId": "metamail",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/Dual-Life/mime-base64/blob/master/Base64.xs#L12"
       ]
     },
     {
@@ -3500,6 +3884,17 @@
       ]
     },
     {
+      "name": "MIT Festival Variant",
+      "licenseId": "MIT-Festival",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/festvox/flite/blob/master/COPYING",
+        "https://github.com/festvox/speech_tools/blob/master/COPYING"
+      ]
+    },
+    {
       "name": "MIT License Modern Variant",
       "licenseId": "MIT-Modern-Variant",
       "isDeprecatedLicenseId": false,
@@ -3525,6 +3920,16 @@
       ]
     },
     {
+      "name": "MIT testregex Variant",
+      "licenseId": "MIT-testregex",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/dotnet/runtime/blob/55e1ac7c07df62c4108d4acedf78f77574470ce5/src/libraries/System.Text.RegularExpressions/tests/FunctionalTests/AttRegexTests.cs#L12-L28"
+      ]
+    },
+    {
       "name": "MIT Tom Wu Variant",
       "licenseId": "MIT-Wu",
       "isDeprecatedLicenseId": false,
@@ -3545,6 +3950,16 @@
       ]
     },
     {
+      "name": "MMIXware License",
+      "licenseId": "MMIXware",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://gitlab.lrz.de/mmix/mmixware/-/blob/master/boilerplate.w"
+      ]
+    },
+    {
       "name": "Motosoto License",
       "licenseId": "Motosoto",
       "isDeprecatedLicenseId": false,
@@ -3552,6 +3967,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://opensource.org/licenses/Motosoto"
+      ]
+    },
+    {
+      "name": "MPEG Software Simulation",
+      "licenseId": "MPEG-SSG",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://sourceforge.net/p/netpbm/code/HEAD/tree/super_stable/converter/ppm/ppmtompeg/jrevdct.c#l1189"
       ]
     },
     {
@@ -3846,6 +4271,16 @@
       "seeAlso": [
         "https://github.com/usnistgov/jsip/blob/59700e6926cbe96c5cdae897d9a7d2656b42abe3/LICENSE",
         "https://github.com/usnistgov/fipy/blob/86aaa5c2ba2c6f1be19593c5986071cf6568cc34/LICENSE.rst"
+      ]
+    },
+    {
+      "name": "NIST Software License",
+      "licenseId": "NIST-Software",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/open-quantum-safe/liboqs/blob/40b01fdbb270f8614fde30e65d30e9da18c02393/src/common/rand/rand_nist.c#L1-L15"
       ]
     },
     {
@@ -4336,6 +4771,17 @@
       ]
     },
     {
+      "name": "Open Logistics Foundation License Version 1.3",
+      "licenseId": "OLFL-1.3",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": true,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://openlogisticsfoundation.org/licenses/",
+        "https://opensource.org/license/olfl-1-3/"
+      ]
+    },
+    {
       "name": "Open Market License",
       "licenseId": "OML",
       "isDeprecatedLicenseId": false,
@@ -4375,6 +4821,16 @@
       "seeAlso": [
         "http://old.koalateam.com/jackaroo/OPL_1_0.TXT",
         "https://fedoraproject.org/wiki/Licensing/Open_Public_License"
+      ]
+    },
+    {
+      "name": "United    Kingdom Open Parliament Licence v3.0",
+      "licenseId": "OPL-UK-3.0",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://www.parliament.uk/site-information/copyright-parliament/open-parliament-licence/"
       ]
     },
     {
@@ -4453,6 +4909,16 @@
       ]
     },
     {
+      "name": "PADL License",
+      "licenseId": "PADL",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://git.openldap.org/openldap/openldap/-/blob/master/libraries/libldap/os-local.c?ref_type=heads#L19-23"
+      ]
+    },
+    {
       "name": "The Parity Public License 6.0.0",
       "licenseId": "Parity-6.0.0",
       "isDeprecatedLicenseId": false,
@@ -4512,6 +4978,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://fedoraproject.org/wiki/Licensing/Plexus_Classworlds_License"
+      ]
+    },
+    {
+      "name": "pnmstitch License",
+      "licenseId": "pnmstitch",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://sourceforge.net/p/netpbm/code/HEAD/tree/super_stable/editor/pnmstitch.c#l2"
       ]
     },
     {
@@ -4595,6 +5071,17 @@
         "https://www.python.org/download/releases/2.0.1/license/",
         "https://docs.python.org/3/license.html",
         "https://github.com/python/cpython/blob/main/LICENSE"
+      ]
+    },
+    {
+      "name": "Python ldap License",
+      "licenseId": "python-ldap",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/zdohnal/hplip/blob/master/base/ldif.py",
+        "https://sourceforge.net/projects/hplip/files/hplip/3.23.5/hplip-3.23.5.tar.gz/download"
       ]
     },
     {
@@ -4708,7 +5195,7 @@
       "isOsiApproved": false,
       "isFsfLibre": true,
       "seeAlso": [
-        "http://www.ruby-lang.org/en/LICENSE.txt"
+        "https://www.ruby-lang.org/en/about/license.txt"
       ]
     },
     {
@@ -4802,6 +5289,26 @@
       ]
     },
     {
+      "name": "SGI OpenGL License",
+      "licenseId": "SGI-OpenGL",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://gitlab.freedesktop.org/mesa/glw/-/blob/master/README?ref_type=heads"
+      ]
+    },
+    {
+      "name": "SGP4 Permission Notice",
+      "licenseId": "SGP4",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://celestrak.org/publications/AIAA/2006-6753/faq.php"
+      ]
+    },
+    {
       "name": "Solderpad Hardware License v0.5",
       "licenseId": "SHL-0.5",
       "isDeprecatedLicenseId": false,
@@ -4850,6 +5357,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "http://gridscheduler.sourceforge.net/Gridengine_SISSL_license.html"
+      ]
+    },
+    {
+      "name": "SL License",
+      "licenseId": "SL",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/mtoyoda/sl/blob/master/LICENSE"
       ]
     },
     {
@@ -4903,6 +5420,16 @@
       ]
     },
     {
+      "name": "Soundex License",
+      "licenseId": "Soundex",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://metacpan.org/release/RJBS/Text-Soundex-3.05/source/Soundex.pm#L3-11"
+      ]
+    },
+    {
       "name": "Spencer License 86",
       "licenseId": "Spencer-86",
       "isDeprecatedLicenseId": false,
@@ -4919,7 +5446,8 @@
       "isOsiApproved": false,
       "isFsfLibre": false,
       "seeAlso": [
-        "https://fedoraproject.org/wiki/Licensing/Henry_Spencer_Reg-Ex_Library_License"
+        "https://fedoraproject.org/wiki/Licensing/Henry_Spencer_Reg-Ex_Library_License",
+        "https://metacpan.org/release/KNOK/File-MMagic-1.30/source/COPYING#L28"
       ]
     },
     {
@@ -4940,6 +5468,16 @@
       "isFsfLibre": true,
       "seeAlso": [
         "https://opensource.org/licenses/SPL-1.0"
+      ]
+    },
+    {
+      "name": "ssh-keyscan License",
+      "licenseId": "ssh-keyscan",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/openssh/openssh-portable/blob/master/LICENCE#L82"
       ]
     },
     {
@@ -5016,6 +5554,16 @@
       ]
     },
     {
+      "name": "swrule License",
+      "licenseId": "swrule",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://ctan.math.utah.edu/ctan/tex-archive/macros/generic/misc/swrule.sty"
+      ]
+    },
+    {
       "name": "Symlinks License",
       "licenseId": "Symlinks",
       "isDeprecatedLicenseId": false,
@@ -5054,6 +5602,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "http://rc.quest.com/topics/openssh/license.php#tcpwrappers"
+      ]
+    },
+    {
+      "name": "TermReadKey License",
+      "licenseId": "TermReadKey",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/jonathanstowe/TermReadKey/blob/master/README#L9-L10"
       ]
     },
     {
@@ -5118,6 +5676,16 @@
       ]
     },
     {
+      "name": "TTYP0 License",
+      "licenseId": "TTYP0",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://people.mpi-inf.mpg.de/~uwe/misc/uw-ttyp0/"
+      ]
+    },
+    {
       "name": "Technische Universitaet Berlin License 1.0",
       "licenseId": "TU-Berlin-1.0",
       "isDeprecatedLicenseId": false,
@@ -5158,6 +5726,16 @@
       ]
     },
     {
+      "name": "ulem License",
+      "licenseId": "ulem",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://mirrors.ctan.org/macros/latex/contrib/ulem/README"
+      ]
+    },
+    {
       "name": "Unicode License Agreement - Data Files and Software (2015)",
       "licenseId": "Unicode-DFS-2015",
       "isDeprecatedLicenseId": false,
@@ -5174,6 +5752,8 @@
       "isOsiApproved": true,
       "isFsfLibre": false,
       "seeAlso": [
+        "https://www.unicode.org/license.txt",
+        "http://web.archive.org/web/20160823201924/http://www.unicode.org/copyright.html#License",
         "http://www.unicode.org/copyright.html"
       ]
     },
@@ -5184,7 +5764,20 @@
       "isOsiApproved": false,
       "isFsfLibre": false,
       "seeAlso": [
+        "http://web.archive.org/web/20140704074106/http://www.unicode.org/copyright.html",
         "http://www.unicode.org/copyright.html"
+      ]
+    },
+    {
+      "name": "UnixCrypt License",
+      "licenseId": "UnixCrypt",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://foss.heptapod.net/python-libs/passlib/-/blob/branch/stable/LICENSE#L70",
+        "https://opensource.apple.com/source/JBoss/JBoss-737/jboss-all/jetty/src/main/org/mortbay/util/UnixCrypt.java.auto.html",
+        "https://archive.eclipse.org/jetty/8.0.1.v20110908/xref/org/eclipse/jetty/http/security/UnixCrypt.html"
       ]
     },
     {
@@ -5205,6 +5798,17 @@
       "isFsfLibre": true,
       "seeAlso": [
         "https://opensource.org/licenses/UPL"
+      ]
+    },
+    {
+      "name": "Utah Raster Toolkit Run Length Encoded License",
+      "licenseId": "URT-RLE",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://sourceforge.net/p/netpbm/code/HEAD/tree/super_stable/converter/other/pnmtorle.c",
+        "https://sourceforge.net/p/netpbm/code/HEAD/tree/super_stable/converter/other/rletopnm.c"
       ]
     },
     {
@@ -5289,6 +5893,16 @@
       ]
     },
     {
+      "name": "Widget Workshop License",
+      "licenseId": "Widget-Workshop",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/novnc/noVNC/blob/master/core/crypto/des.js#L24"
+      ]
+    },
+    {
       "name": "Wsuipa License",
       "licenseId": "Wsuipa",
       "isDeprecatedLicenseId": false,
@@ -5340,6 +5954,16 @@
       ]
     },
     {
+      "name": "Xdebug License v 1.03",
+      "licenseId": "Xdebug-1.03",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/xdebug/xdebug/blob/master/LICENSE"
+      ]
+    },
+    {
       "name": "Xerox License",
       "licenseId": "Xerox",
       "isDeprecatedLicenseId": false,
@@ -5347,6 +5971,18 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://fedoraproject.org/wiki/Licensing/Xerox"
+      ]
+    },
+    {
+      "name": "Xfig License",
+      "licenseId": "Xfig",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/Distrotech/transfig/blob/master/transfig/transfig.c",
+        "https://fedoraproject.org/wiki/Licensing:MIT#Xfig_Variant",
+        "https://sourceforge.net/p/mcj/xfig/ci/master/tree/src/Makefile.am"
       ]
     },
     {
@@ -5440,6 +6076,16 @@
       ]
     },
     {
+      "name": "Zeeff License",
+      "licenseId": "Zeeff",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "ftp://ftp.tin.org/pub/news/utils/newsx/newsx-1.6.tar.gz"
+      ]
+    },
+    {
       "name": "Zend License v2.0",
       "licenseId": "Zend-2.0",
       "isDeprecatedLicenseId": false,
@@ -5522,5 +6168,5 @@
       ]
     }
   ],
-  "releaseDate": "2023-03-09"
+  "releaseDate": "2024-01-25"
 }
