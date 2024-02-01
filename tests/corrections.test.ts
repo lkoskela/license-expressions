@@ -546,6 +546,44 @@ describe('Expressions with slight errors', () => {
             })
         })
 
+        describe('of "AND" as "plus"', () => {
+            describe('"plus" is not corrected when strictSyntax = true', () => {
+                const examples = [
+                    'Apache-2.0 plus MIT', 'CDDL-1.1 plus GPL-2.0-with-classpath-exception', 'CDDL-1.1 plus GPL-2.0-with-classpath-exception'
+                ]
+                examples.forEach(expression => {
+                    it(JSON.stringify(expression), () => expect(() => parse(expression, { strictSyntax: true })).toThrowError())
+                })
+            })
+
+            describe('"plus" is corrected when strictSyntax = false', () => {
+
+                it('Apache-2.0 plus MIT', () => {
+                    expect(parse('Apache-2.0 plus MIT', { strictSyntax: false })).toMatchObject({
+                        conjunction: 'and',
+                        left: { license: 'Apache-2.0' },
+                        right: { license: 'MIT' },
+                    })
+                })
+
+                it('CDDL-1.1 plus GPL-2.0 WITH Classpath-exception-2.0', () => {
+                    expect(parse('CDDL-1.1 plus GPL-2.0 WITH Classpath-exception-2.0', { strictSyntax: false })).toMatchObject({
+                        conjunction: 'and',
+                        left: { license: 'CDDL-1.1' },
+                        right: { license: 'GPL-2.0', exception: 'Classpath-exception-2.0' },
+                    })
+                })
+
+                it('CDDL-1.1 plus GPL-2.0-with-classpath-exception', () => {
+                    expect(parse('CDDL-1.1 plus GPL-2.0-with-classpath-exception', { strictSyntax: false })).toMatchObject({
+                        conjunction: 'and',
+                        left: { license: 'CDDL-1.1' },
+                        right: { license: 'GPL-2.0-with-classpath-exception' },
+                    })
+                })
+            })
+        })
+
         describe('of "WITH" as "w/"', () => {
 
             it('"w/" is corrected when strictSyntax = false', () => {
