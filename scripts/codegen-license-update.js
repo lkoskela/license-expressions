@@ -28,10 +28,15 @@ const downloadJSON = async (url) => {
                 if (err) {
                     console.warn(`Could not download JSON from ${url} - ${err}`)
                     resolve('{}')
+                } else {
+                    resolve(fs.readFileSync(tmpFilePath))
                 }
-                else { resolve(fs.readFileSync(tmpFilePath)) }
             }
-            pipeline(response, fs.createWriteStream(tmpFilePath), errorHandler)
+            if (response.statusCode === 200) {
+                pipeline(response, fs.createWriteStream(tmpFilePath), errorHandler)
+            } else {
+                errorHandler(`HTTP ${response.statusCode} ${response.statusMessage ? response.statusMessage : ''}`.trimEnd())
+            }
         })
     })
     try {
