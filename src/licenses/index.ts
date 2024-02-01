@@ -159,24 +159,14 @@ const fixExceptionid = (id: string, associatedLicense?: string|undefined): strin
         return combo.slice(1).reduce((prev, curr) => curr(prev), initialValue)
     }))]
     const matchedIds = [ ...new Set(potentialIdentifiers.map(mapExceptionId).filter(id => !!id)) ]
-    if (matchedIds.length > 1) console.warn(`fixExceptionId(${JSON.stringify(id)}) found ${matchedIds.length} matches through mutations: ${JSON.stringify(matchedIds)}`)
 
     if (matchedIds.length === 0 && !id.match(/\d+(\.\d+)*$/)) {
-        // TODO: if the identifier to fix looks like "autoconf exception" without a "2.0" or "-2.0" suffix,
+        // If the identifier to fix looks like "autoconf exception" without a "2.0" or "-2.0" suffix,
         // try to look for partial matches in the list of known exceptions (e.g. "autoconf-exception-2.0" and "autoconf-exception-3.0")
         const prefixMatchedIds = [ ...new Set(potentialIdentifiers.flatMap(knownExceptionIdentifiersStartingWith)) ]
-        if (id === 'Autoconf exception' || id === 'Autoconf-exception') console.warn(`fixExceptionId(${JSON.stringify(id)}) found no matches through mutations, trying prefix matching with potentialIdentifiers: ${JSON.stringify(potentialIdentifiers)} => ${JSON.stringify(prefixMatchedIds)}`)
-        // if (prefixMatchedIds.length > 1) console.warn(`fixExceptionId(${JSON.stringify(id)}) found ${prefixMatchedIds.length} matches through prefix matching: ${JSON.stringify(prefixMatchedIds)}`)
         if (prefixMatchedIds.length > 1 && associatedLicense) {
-            const selected = selectBestMatchByAssociation(prefixMatchedIds, associatedLicense)
-            if (id === 'Autoconf exception' || id === 'Autoconf-exception') {
-                console.warn(`fixExceptionId(${JSON.stringify(id)}, ${JSON.stringify(associatedLicense)}) selected best match by association as ${JSON.stringify(selected)} from ${JSON.stringify(prefixMatchedIds)}`)
-            }
-            return selected
+            return selectBestMatchByAssociation(prefixMatchedIds, associatedLicense)
         } else {
-            if (id === 'Autoconf exception' || id === 'Autoconf-exception') {
-                console.warn(`fixExceptionId(${JSON.stringify(id)}, ${JSON.stringify(associatedLicense)}) got ${prefixMatchedIds.length} prefix-matched identifiers. Returning ${JSON.stringify(prefixMatchedIds[0])}`)
-            }
             return prefixMatchedIds[0]
         }
     }
