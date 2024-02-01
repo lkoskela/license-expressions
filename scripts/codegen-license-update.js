@@ -28,10 +28,15 @@ const downloadJSON = async (url) => {
                 if (err) {
                     console.warn(`Could not download JSON from ${url} - ${err}`)
                     resolve('{}')
+                } else {
+                    resolve(fs.readFileSync(tmpFilePath))
                 }
-                else { resolve(fs.readFileSync(tmpFilePath)) }
             }
-            pipeline(response, fs.createWriteStream(tmpFilePath), errorHandler)
+            if (response.statusCode === 200) {
+                pipeline(response, fs.createWriteStream(tmpFilePath), errorHandler)
+            } else {
+                errorHandler(`HTTP ${response.statusCode} ${response.statusMessage ? response.statusMessage : ''}`.trimEnd())
+            }
         })
     })
     try {
@@ -95,11 +100,16 @@ const updateFileFromURL = async (destinationFilePath, sourceUrl, entryListKey, d
         console.log(`${destinationFilePath} already has version ${latestVersion} from ${sourceUrl} --> skip update`)
     } else {
         console.log(`Update available (from ${localVersion} to ${latestVersion}) --> updating ${entryListKey}`)
-        const urls = json[entryListKey].map(detailsUrlMapper)
+        const licensesInMainDocument = json[entryListKey]
+        const urls = licensesInMainDocument.map(detailsUrlMapper)
         const details = await downloadManyJSONFiles(urls)
-        json[entryListKey] = details.filter(x => !!x && !x.error).map(detailsObjectMapper)
+        json[entryListKey] = details.filter(x => !!x && !x.error).map(detailsObjectMapper).filter(x => !!x)
         fs.writeFileSync(destinationFilePath, JSON.stringify(json, null, 2))
         console.log(`Updated ${destinationFilePath} with version ${latestVersion} from ${sourceUrl}`)
+        const entriesWithMissingDetails = licensesInMainDocument.filter(x => !details.find(d => d.licenseId === x.licenseId))
+        if (entriesWithMissingDetails.length > 0) {
+            console.warn(`Some entries (${entriesWithMissingDetails.length}) were missing from the details files. Got ${json[entryListKey].length} out of ${licensesInMainDocument.length} but failed on the following entries:\n${JSON.stringify(entriesWithMissingDetails, null, 2)}`)
+        }
     }
 }
 

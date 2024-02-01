@@ -8,6 +8,7 @@ export { licenses, Licenses, License, exceptions, Exceptions, Exception }
 
 type MapOfIds = {
     get: (id: string) => string | undefined,
+    list: () => string[]
 }
 
 const idEndsWithVersionNumber = (id: string): boolean => {
@@ -50,7 +51,8 @@ const createMapOfIds = (ids: string[]): MapOfIds => {
     const get = (id: string): string | undefined => {
         return getExactMatch(id) || getCaseInsensitiveMatch(id) || getFuzzyMatch(id) || getSingleVersionMatch(id)
     }
-    return { get } as MapOfIds
+    const list = (): string[] => listOfOfficialIds
+    return { get, list } as MapOfIds
 }
 
 const mapOfKnownLicenses: MapOfIds = createMapOfIds(licenses.licenses.map(lic => lic.licenseId))
@@ -92,7 +94,9 @@ const aliasesForLicenseIds: Map<string, string> = ((): Map<string, string> => {
 const aliasesForExceptions: Map<string, string> = ((): Map<string, string> => {
     const mapOfAliases = new Map<string, string>()
     mapOfAliases.set('qwt license 1.0', 'Qwt-exception-1.0')
+    mapOfAliases.set('qwt license 1', 'Qwt-exception-1.0')
     mapOfAliases.set('cpe', 'Classpath-exception-2.0')
+    mapOfAliases.set('gnu cpe', 'Classpath-exception-2.0')
     return mapOfAliases
 })()
 
@@ -132,7 +136,14 @@ const mapExceptionId = (id: string): string | undefined => {
     return mapOfKnownExceptions.get(id.toLowerCase())
 }
 
-const fixExceptionid = (id: string): string | undefined => {
+const knownExceptionIdentifiersStartingWith = (prefix: string): string[] => {
+    const lowercasedPrefix = prefix.toLowerCase()
+    return mapOfKnownExceptions.list()
+        .filter(id => id.toLowerCase().startsWith(lowercasedPrefix))                    // Must start with the prefix (ignoring case)
+        .filter(id => id.substring(lowercasedPrefix.length).match(/^\-?\d+(\.\d+)*$/))  // The suffix must be strictly a version number like "[prefix]-2.0" or "[prefix]3.0"
+}
+
+const fixExceptionid = (id: string, associatedLicense?: string|undefined): string | undefined => {
     type Mutation = (s: string) => string
 
     const mutations: Mutation[] = [
@@ -143,49 +154,94 @@ const fixExceptionid = (id: string): string | undefined => {
         (id: string): string => id.replace(/(.+)\s+\(.+?\)((v|version )?\d\.\d)?/gi, '$1$2'),
     ]
     const permutations = permutationsOf<Mutation>(mutations, 3)
-    const potentialIdentifiers = permutations.map((combo: Mutation[]): string => {
+    const potentialIdentifiers = [...new Set(permutations.map((combo: Mutation[]): string => {
         const initialValue = combo[0](id)
         return combo.slice(1).reduce((prev, curr) => curr(prev), initialValue)
-    })
+    }))]
     const matchedIds = [ ...new Set(potentialIdentifiers.map(mapExceptionId).filter(id => !!id)) ]
-    if (matchedIds.length > 1) console.warn(`fixExceptionId(${JSON.stringify(id)}) found ${matchedIds.length} matches through mutations: ${JSON.stringify(matchedIds)}`)
+
+    if (matchedIds.length === 0 && !id.match(/\d+(\.\d+)*$/)) {
+        // If the identifier to fix looks like "autoconf exception" without a "2.0" or "-2.0" suffix,
+        // try to look for partial matches in the list of known exceptions (e.g. "autoconf-exception-2.0" and "autoconf-exception-3.0")
+        const prefixMatchedIds = [ ...new Set(potentialIdentifiers.flatMap(knownExceptionIdentifiersStartingWith)) ]
+        if (prefixMatchedIds.length > 1 && associatedLicense) {
+            return selectBestMatchByAssociation(prefixMatchedIds, associatedLicense)
+        } else {
+            return prefixMatchedIds[0]
+        }
+    }
+
     return matchedIds[0]
 }
 
-const mapExceptionIdByAssociatedLicense = (id: string, associatedLicense?: string): string|undefined => {
-    const expandLicenses = (identifiers: string[]): string[] => {
-        const expandedList = [...identifiers]
-        identifiers.forEach(id => {
-            if (id.match(/[^\+]\+$/)) {
-                expandedList.push(id.replace(/\+$/, '-or-later'))
-                expandedList.push(id.replace(/\+$/, ''))
-            } else if (id.match(/-or-later$/)) {
-                expandedList.push(id.replace(/-or-later$/, ''))
-            } else if (id.match(/-only$/)) {
+type PartialExpandLicenseOptions = {
+    expandScope?: boolean
+}
+
+type FullExpandLicenseOptions = {
+    expandScope: boolean
+}
+
+export const expandLicenses = (identifiers: string[], providedOptions?: PartialExpandLicenseOptions): string[] => {
+    const defaultOptions: FullExpandLicenseOptions = { expandScope: false }
+    const effectiveOptions: FullExpandLicenseOptions = { ...defaultOptions, ...providedOptions }
+    const expandedList = [...identifiers]
+    identifiers.forEach(id => {
+        if (id.match(/[^\+]\+$/)) {
+            expandedList.push(id.replace(/\+$/, '-or-later'))
+            expandedList.push(id.replace(/\+$/, '-and-later'))
+            expandedList.push(id.replace(/\+$/, ''))
+        } else if (id.match(/-(or|and)-later$/)) {
+            expandedList.push(id.replace(/-or-later$/, '-and-later'))
+            expandedList.push(id.replace(/-and-later$/, '-or-later'))
+            expandedList.push(id.replace(/-(or|and)-later$/, ''))
+        } else if (id.match(/-only$/)) {
+            if (effectiveOptions.expandScope) {
                 expandedList.push(id.replace(/-only$/, ''))
-            } else if (id.match(/[AL]?GPL\-\d\.\d$/)) {
-                expandedList.push(`${id}-only`)
-                expandedList.push(`${id}-or-later`)
             }
-        })
-        return expandedList
-    }
-    if (associatedLicense) {
-        const possibleMatches = exceptions.exceptions.filter(e => {
-            const hasRelation = () => {
-                const relatedLicenses = expandLicenses(e.relatedLicenses)
-                return relatedLicenses.length === 0 || relatedLicenses.includes(associatedLicense)
-            }
-            const looksSimilar = () => {
-                return e.licenseExceptionId.toLowerCase().startsWith(id.toLowerCase())
-            }
-            return looksSimilar() && hasRelation()
-        }).map(e => e.licenseExceptionId).sort()
-        if (possibleMatches.length > 0) {
-            return possibleMatches[0]
+        } else if (id.match(/[AL]?GPL\-\d\.\d$/)) {
+            expandedList.push(`${id}-only`)
+            expandedList.push(`${id}-or-later`)
+            expandedList.push(`${id}-and-later`)
         }
+    })
+    return [...new Set(expandedList)].sort()
+}
+
+const selectBestMatchByAssociation = (candidateExceptionIds: string[], associatedLicense: string): string => {
+    type StrengthOfRelation = { strength: number, exception: Exception }
+
+    const strengthOfRelation = (exception: Exception, license?: string): StrengthOfRelation => {
+        if (license) {
+            const stronglyRelatedLicenses = expandLicenses(exception.relatedLicenses, { expandScope: false })
+            if (stronglyRelatedLicenses.includes(license)) return { strength: 2, exception }
+
+            const weaklyRelatedLicenses = expandLicenses(exception.relatedLicenses, { expandScope: true })
+            if (weaklyRelatedLicenses.includes(license)) return { strength: 1, exception }
+        }
+        return { strength: 0, exception }
     }
-    return undefined
+
+    const possibleMatches = candidateExceptionIds
+        .map(id => exceptions.exceptions.find(e => e.licenseExceptionId === id))
+        .filter(e => !!e).map(e => e as Exception)
+        .map(e => strengthOfRelation(e, associatedLicense))
+        .sort((a: StrengthOfRelation, b: StrengthOfRelation) => b.strength - a.strength)
+        .map(match => match.exception)
+
+    if (possibleMatches.length > 0) {
+        // In case there are multiple possible matches - typically because there are multiple
+        // versions of a given exception (e.g. "Bison-exception-1.24" and "Bison-exception-2.2")
+        // - we'll pick the last one, i.e. the most recent one:
+        if (possibleMatches.length > 1) {
+            const matchesAssociatedToLicense = possibleMatches.filter(e => expandLicenses(e.relatedLicenses).includes(associatedLicense))
+            if (matchesAssociatedToLicense.length > 0) {
+                return matchesAssociatedToLicense[0]?.licenseExceptionId
+            }
+        }
+        return possibleMatches[0]?.licenseExceptionId
+    }
+    return candidateExceptionIds[0]
 }
 
 /**
@@ -267,7 +323,11 @@ export function correctLicenseId(identifier: string, upgradeGPLVariants: boolean
 export function correctExceptionId(identifier: string, associatedLicense?: string): string {
 
     const removeExtras = (id: string): string => {
-        return id.replace(/^the\s+/i, '').replace(/\s+/, ' ')
+        return id.trim()
+            .replace(/^the\s+/i, '')
+            .replace(/\s+/, ' ')
+            .replace(/^gnu/, '')
+            .trim()
     }
 
     const applyAliases = (id: string): string => {
@@ -277,7 +337,7 @@ export function correctExceptionId(identifier: string, associatedLicense?: strin
     }
 
     const id = applyAliases(removeExtras(identifier))
-    return mapExceptionId(id) || fixExceptionid(id) || mapExceptionIdByAssociatedLicense(id, associatedLicense) || id
+    return mapExceptionId(id) || fixExceptionid(id, associatedLicense) || id
 }
 
 export function isKnownLicenseId(id: string): boolean {
