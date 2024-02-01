@@ -370,11 +370,11 @@ export class Parser {
                 let $scope$value: Nullable<wrapped_expression_$0>;
                 let $$res: Nullable<wrapped_expression> = null;
                 if (true
-                    && this.regexAccept(String.raw`(?:\()`, $$dpth + 1, $$cr) !== null
+                    && this.regexAccept(String.raw`(?:\()`, "", $$dpth + 1, $$cr) !== null
                     && ((this.matchwhitespace($$dpth + 1, $$cr)) || true)
                     && ($scope$value = this.matchwrapped_expression_$0($$dpth + 1, $$cr)) !== null
                     && ((this.matchwhitespace($$dpth + 1, $$cr)) || true)
-                    && this.regexAccept(String.raw`(?:\))`, $$dpth + 1, $$cr) !== null
+                    && this.regexAccept(String.raw`(?:\))`, "", $$dpth + 1, $$cr) !== null
                 ) {
                     $$res = {kind: ASTKinds.wrapped_expression, value: $scope$value};
                 }
@@ -419,7 +419,7 @@ export class Parser {
                 let $$res: Nullable<words_expression> = null;
                 if (true
                     && ($scope$prefix = this.matchwords($$dpth + 1, $$cr)) !== null
-                    && ($scope$suffix = this.regexAccept(String.raw`(?:\+?\+?)`, $$dpth + 1, $$cr)) !== null
+                    && ($scope$suffix = this.regexAccept(String.raw`(?:\+?\+?)`, "", $$dpth + 1, $$cr)) !== null
                 ) {
                     $$res = new words_expression($scope$prefix, $scope$suffix);
                 }
@@ -432,7 +432,7 @@ export class Parser {
                 let $$res: Nullable<WITH> = null;
                 if (true
                     && this.matchwhitespace($$dpth + 1, $$cr) !== null
-                    && this.regexAccept(String.raw`(?:WITH)`, $$dpth + 1, $$cr) !== null
+                    && this.regexAccept(String.raw`(?:WITH)`, "", $$dpth + 1, $$cr) !== null
                     && this.matchwhitespace($$dpth + 1, $$cr) !== null
                 ) {
                     $$res = {kind: ASTKinds.WITH, };
@@ -446,7 +446,7 @@ export class Parser {
                 let $$res: Nullable<AND> = null;
                 if (true
                     && this.matchwhitespace($$dpth + 1, $$cr) !== null
-                    && this.regexAccept(String.raw`(?:AND)`, $$dpth + 1, $$cr) !== null
+                    && this.regexAccept(String.raw`(?:AND)`, "", $$dpth + 1, $$cr) !== null
                     && this.matchwhitespace($$dpth + 1, $$cr) !== null
                 ) {
                     $$res = {kind: ASTKinds.AND, };
@@ -460,7 +460,7 @@ export class Parser {
                 let $$res: Nullable<OR> = null;
                 if (true
                     && this.matchwhitespace($$dpth + 1, $$cr) !== null
-                    && this.regexAccept(String.raw`(?:OR)`, $$dpth + 1, $$cr) !== null
+                    && this.regexAccept(String.raw`(?:OR)`, "", $$dpth + 1, $$cr) !== null
                     && this.matchwhitespace($$dpth + 1, $$cr) !== null
                 ) {
                     $$res = {kind: ASTKinds.OR, };
@@ -469,7 +469,7 @@ export class Parser {
             });
     }
     public matchwhitespace($$dpth: number, $$cr?: ErrorTracker): Nullable<whitespace> {
-        return this.regexAccept(String.raw`(?:[\s\t\n]+)`, $$dpth + 1, $$cr);
+        return this.regexAccept(String.raw`(?:[\s\t\n]+)`, "", $$dpth + 1, $$cr);
     }
     public matchwords($$dpth: number, $$cr?: ErrorTracker): Nullable<words> {
         return this.run<words>($$dpth,
@@ -514,7 +514,7 @@ export class Parser {
             () => {
                 let $$res: Nullable<words_$0_$0_2> = null;
                 if (true
-                    && this.regexAccept(String.raw`(?:,)`, $$dpth + 1, $$cr) !== null
+                    && this.regexAccept(String.raw`(?:,)`, "", $$dpth + 1, $$cr) !== null
                     && ((this.matchwhitespace($$dpth + 1, $$cr)) || true)
                 ) {
                     $$res = {kind: ASTKinds.words_$0_$0_2, };
@@ -528,12 +528,12 @@ export class Parser {
                 let $scope$value: Nullable<string>;
                 let $$res: Nullable<word> = null;
                 if (true
-                    && this.negate(() => this.regexAccept(String.raw`(?:WITH)`, $$dpth + 1, $$cr)) !== null
-                    && this.negate(() => this.regexAccept(String.raw`(?:AND)`, $$dpth + 1, $$cr)) !== null
-                    && this.negate(() => this.regexAccept(String.raw`(?:OR)`, $$dpth + 1, $$cr)) !== null
-                    && this.negate(() => this.regexAccept(String.raw`(?:\()`, $$dpth + 1, $$cr)) !== null
-                    && this.negate(() => this.regexAccept(String.raw`(?:\))`, $$dpth + 1, $$cr)) !== null
-                    && ($scope$value = this.regexAccept(String.raw`(?:[a-zA-Z0-9\.\-:\+]+)`, $$dpth + 1, $$cr)) !== null
+                    && this.negate(() => this.regexAccept(String.raw`(?:WITH)`, "", $$dpth + 1, $$cr)) !== null
+                    && this.negate(() => this.regexAccept(String.raw`(?:AND)`, "", $$dpth + 1, $$cr)) !== null
+                    && this.negate(() => this.regexAccept(String.raw`(?:OR)`, "", $$dpth + 1, $$cr)) !== null
+                    && this.negate(() => this.regexAccept(String.raw`(?:\()`, "", $$dpth + 1, $$cr)) !== null
+                    && this.negate(() => this.regexAccept(String.raw`(?:\))`, "", $$dpth + 1, $$cr)) !== null
+                    && ($scope$value = this.regexAccept(String.raw`(?:[a-zA-Z0-9\.\-:\+]+)`, "", $$dpth + 1, $$cr)) !== null
                 ) {
                     $$res = {kind: ASTKinds.word, value: $scope$value};
                 }
@@ -562,10 +562,14 @@ export class Parser {
     public mark(): PosInfo {
         return this.pos;
     }
-    private loop<T>(func: $$RuleType<T>, star: boolean = false): Nullable<T[]> {
+    // @ts-ignore: loopPlus may not be called
+    private loopPlus<T>(func: $$RuleType<T>): Nullable<[T, ...T[]]> {
+        return this.loop(func, 1, -1) as Nullable<[T, ...T[]]>;
+    }
+    private loop<T>(func: $$RuleType<T>, lb: number, ub: number): Nullable<T[]> {
         const mrk = this.mark();
         const res: T[] = [];
-        for (;;) {
+        while (ub === -1 || res.length < ub) {
             const preMrk = this.mark();
             const t = func();
             if (t === null || this.pos.overallPos === preMrk.overallPos) {
@@ -573,7 +577,7 @@ export class Parser {
             }
             res.push(t);
         }
-        if (star || res.length > 0) {
+        if (res.length >= lb) {
             return res;
         }
         this.reset(mrk);
@@ -587,6 +591,7 @@ export class Parser {
         this.reset(mrk);
         return null;
     }
+    // @ts-ignore: choice may not be called
     private choice<T>(fns: Array<$$RuleType<T>>): Nullable<T> {
         for (const f of fns) {
             const res = f();
@@ -596,10 +601,10 @@ export class Parser {
         }
         return null;
     }
-    private regexAccept(match: string, dpth: number, cr?: ErrorTracker): Nullable<string> {
+    private regexAccept(match: string, mods: string, dpth: number, cr?: ErrorTracker): Nullable<string> {
         return this.run<string>(dpth,
             () => {
-                const reg = new RegExp(match, "y");
+                const reg = new RegExp(match, "y" + mods);
                 const mrk = this.mark();
                 reg.lastIndex = mrk.overallPos;
                 const res = this.tryConsume(reg);
@@ -635,12 +640,14 @@ export class Parser {
         }
         return null;
     }
+    // @ts-ignore: noConsume may not be called
     private noConsume<T>(fn: $$RuleType<T>): Nullable<T> {
         const mrk = this.mark();
         const res = fn();
         this.reset(mrk);
         return res;
     }
+    // @ts-ignore: negate may not be called
     private negate<T>(fn: $$RuleType<T>): Nullable<boolean> {
         const mrk = this.mark();
         const oneg = this.negating;
@@ -650,6 +657,7 @@ export class Parser {
         this.reset(mrk);
         return res === null ? true : null;
     }
+    // @ts-ignore: Memoise may not be used
     private memoise<K>(rule: $$RuleType<K>, memo: Map<number, [Nullable<K>, PosInfo]>): Nullable<K> {
         const $scope$pos = this.mark();
         const $scope$memoRes = memo.get($scope$pos.overallPos);
