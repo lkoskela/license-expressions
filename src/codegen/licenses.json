@@ -1,5 +1,5 @@
 {
-  "licenseListVersion": "9ec9145",
+  "licenseListVersion": "3.23",
   "licenses": [
     {
       "name": "BSD Zero Clause License",
@@ -52,6 +52,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://fedoraproject.org/wiki/Licensing/AdobeLicense"
+      ]
+    },
+    {
+      "name": "Adobe Display PostScript License",
+      "licenseId": "Adobe-Display-PostScript",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://gitlab.freedesktop.org/xorg/xserver/-/blob/master/COPYING?ref_type=heads#L752"
       ]
     },
     {
@@ -238,6 +248,17 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://fedoraproject.org/wiki/Licensing/Apple_MIT_License"
+      ]
+    },
+    {
+      "name": "AML glslang variant License",
+      "licenseId": "AML-glslang",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/KhronosGroup/glslang/blob/main/LICENSE.txt#L949",
+        "https://docs.omniverse.nvidia.com/install-guide/latest/common/licenses.html"
       ]
     },
     {
@@ -475,6 +496,16 @@
       ]
     },
     {
+      "name": "bcrypt Solar Designer License",
+      "licenseId": "bcrypt-Solar-Designer",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/bcrypt-ruby/bcrypt-ruby/blob/master/ext/mri/crypt_blowfish.c"
+      ]
+    },
+    {
       "name": "Beerware License",
       "licenseId": "Beerware",
       "isDeprecatedLicenseId": false,
@@ -542,7 +573,7 @@
       "name": "Blue Oak Model License 1.0.0",
       "licenseId": "BlueOak-1.0.0",
       "isDeprecatedLicenseId": false,
-      "isOsiApproved": false,
+      "isOsiApproved": true,
       "isFsfLibre": false,
       "seeAlso": [
         "https://blueoakcouncil.org/license/1.0.0"
@@ -568,6 +599,17 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://fedoraproject.org/wiki/Licensing/Borceux"
+      ]
+    },
+    {
+      "name": "Brian Gladman 2-Clause License",
+      "licenseId": "Brian-Gladman-2-Clause",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/krb5/krb5/blob/krb5-1.21.2-final/NOTICE#L140-L156",
+        "https://web.mit.edu/kerberos/krb5-1.21/doc/mitK5license.html"
       ]
     },
     {
@@ -598,6 +640,16 @@
       "isFsfLibre": true,
       "seeAlso": [
         "https://opensource.org/licenses/BSD-2-Clause"
+      ]
+    },
+    {
+      "name": "BSD 2-Clause - Ian Darwin variant",
+      "licenseId": "BSD-2-Clause-Darwin",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/file/file/blob/master/COPYING"
       ]
     },
     {
@@ -651,6 +703,16 @@
       "seeAlso": [
         "https://opensource.org/licenses/BSD-3-Clause",
         "https://www.eclipse.org/org/documents/edl-v10.php"
+      ]
+    },
+    {
+      "name": "BSD 3-Clause acpica variant",
+      "licenseId": "BSD-3-Clause-acpica",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/acpica/acpica/blob/master/source/common/acfileio.c#L119"
       ]
     },
     {
@@ -868,6 +930,16 @@
       ]
     },
     {
+      "name": "BSD Source Code Attribution - beginning of file variant",
+      "licenseId": "BSD-Source-beginning-file",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/lattera/freebsd/blob/master/sys/cam/cam.c#L4"
+      ]
+    },
+    {
       "name": "BSD Source Code Attribution",
       "licenseId": "BSD-Source-Code",
       "isDeprecatedLicenseId": false,
@@ -885,6 +957,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://metacpan.org/release/DPARIS/Crypt-DES-2.07/source/COPYRIGHT"
+      ]
+    },
+    {
+      "name": "Systemics W3Works BSD variant license",
+      "licenseId": "BSD-Systemics-W3Works",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://metacpan.org/release/DPARIS/Crypt-Blowfish-2.14/source/COPYRIGHT#L7"
       ]
     },
     {
@@ -927,7 +1009,8 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://sourceware.org/git/?p=bzip2.git;a=blob;f=LICENSE;hb=bzip2-1.0.6",
-        "http://bzip.org/1.0.5/bzip2-manual-1.0.5.html"
+        "http://bzip.org/1.0.5/bzip2-manual-1.0.5.html",
+        "https://sourceware.org/cgit/valgrind/tree/mpi/libmpiwrap.c"
       ]
     },
     {
@@ -971,6 +1054,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "http://www.lemis.com/grog/UNIX/ancient-source-all.pdf"
+      ]
+    },
+    {
+      "name": "Caldera License (without preamble)",
+      "licenseId": "Caldera-no-preamble",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/apache/apr/blob/trunk/LICENSE#L298C6-L298C29"
       ]
     },
     {
@@ -1041,6 +1134,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://creativecommons.org/licenses/by/3.0/at/legalcode"
+      ]
+    },
+    {
+      "name": "Creative Commons Attribution 3.0 Australia",
+      "licenseId": "CC-BY-3.0-AU",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://creativecommons.org/licenses/by/3.0/au/legalcode"
       ]
     },
     {
@@ -1739,6 +1842,17 @@
       ]
     },
     {
+      "name": "CMU    Mach - no notices-in-documentation variant",
+      "licenseId": "CMU-Mach-nodoc",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/krb5/krb5/blob/krb5-1.21.2-final/NOTICE#L718-L728",
+        "https://web.mit.edu/kerberos/krb5-1.21/doc/mitK5license.html"
+      ]
+    },
+    {
       "name": "CNRI Jython License",
       "licenseId": "CNRI-Jython",
       "isDeprecatedLicenseId": false,
@@ -1942,6 +2056,16 @@
       ]
     },
     {
+      "name": "DEC 3-Clause License",
+      "licenseId": "DEC-3-Clause",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://gitlab.freedesktop.org/xorg/xserver/-/blob/master/COPYING?ref_type=heads#L239"
+      ]
+    },
+    {
       "name": "diffmark license",
       "licenseId": "diffmark",
       "isDeprecatedLicenseId": false,
@@ -2000,6 +2124,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://github.com/Neo23x0/sigma/blob/master/LICENSE.Detection.Rules.md"
+      ]
+    },
+    {
+      "name": "Detection Rule License 1.1",
+      "licenseId": "DRL-1.1",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/SigmaHQ/Detection-Rule-License/blob/6ec7fbde6101d101b5b5d1fcb8f9b69fbc76c04a/LICENSE.Detection.Rules.md"
       ]
     },
     {
@@ -2235,7 +2369,7 @@
       "isOsiApproved": true,
       "isFsfLibre": false,
       "seeAlso": [
-        "http://fairlicense.org/",
+        "https://web.archive.org/web/20150926120323/http://fairlicense.org/",
         "https://opensource.org/licenses/Fair"
       ]
     },
@@ -2311,6 +2445,16 @@
       ]
     },
     {
+      "name": "FSF All Permissive License (without Warranty)",
+      "licenseId": "FSFAP-no-warranty-disclaimer",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://git.savannah.gnu.org/cgit/wget.git/tree/util/trunc.c?h=v1.21.3&id=40747a11e44ced5a8ac628a41f879ced3e2ebce9#n6"
+      ]
+    },
+    {
       "name": "FSF Unlimited License",
       "licenseId": "FSFUL",
       "isDeprecatedLicenseId": false,
@@ -2370,6 +2514,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://mirrors.nic.cz/tex-archive/macros/latex/contrib/fwlw/README"
+      ]
+    },
+    {
+      "name": "Gnome GCR Documentation License",
+      "licenseId": "GCR-docs",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/GNOME/gcr/blob/master/docs/COPYING"
       ]
     },
     {
@@ -2722,6 +2876,7 @@
       "isFsfLibre": true,
       "seeAlso": [
         "https://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+        "https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt",
         "https://opensource.org/licenses/GPL-2.0"
       ]
     },
@@ -2871,6 +3026,17 @@
       ]
     },
     {
+      "name": "gtkbook License",
+      "licenseId": "gtkbook",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/slogan621/gtkbook",
+        "https://github.com/oetiker/rrdtool-1.x/blob/master/src/plbasename.c#L8-L11"
+      ]
+    },
+    {
       "name": "Haskell Language Report License",
       "licenseId": "HaskellReport",
       "isDeprecatedLicenseId": false,
@@ -2878,6 +3044,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://fedoraproject.org/wiki/Licensing/Haskell_Language_Report_License"
+      ]
+    },
+    {
+      "name": "hdparm License",
+      "licenseId": "hdparm",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/Distrotech/hdparm/blob/4517550db29a91420fb2b020349523b1b4512df2/LICENSE.TXT"
       ]
     },
     {
@@ -2976,6 +3152,37 @@
       ]
     },
     {
+      "name": "Historical Permission Notice and Disclaimer - Fenneberg-Livingston variant",
+      "licenseId": "HPND-Fenneberg-Livingston",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/FreeRADIUS/freeradius-client/blob/master/COPYRIGHT#L32",
+        "https://github.com/radcli/radcli/blob/master/COPYRIGHT#L34"
+      ]
+    },
+    {
+      "name": "Historical Permission Notice and Disclaimer    - INRIA-IMAG variant",
+      "licenseId": "HPND-INRIA-IMAG",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/ppp-project/ppp/blob/master/pppd/ipv6cp.c#L75-L83"
+      ]
+    },
+    {
+      "name": "Historical Permission Notice and Disclaimer - Kevlin Henney variant",
+      "licenseId": "HPND-Kevlin-Henney",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/mruby/mruby/blob/83d12f8d52522cdb7c8cc46fad34821359f453e6/mrbgems/mruby-dir/src/Win/dirent.c#L127-L140"
+      ]
+    },
+    {
       "name": "Historical Permission Notice and Disclaimer - Markus Kuhn variant",
       "licenseId": "HPND-Markus-Kuhn",
       "isDeprecatedLicenseId": false,
@@ -2987,6 +3194,16 @@
       ]
     },
     {
+      "name": "Historical Permission Notice and Disclaimer with MIT disclaimer",
+      "licenseId": "HPND-MIT-disclaimer",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://metacpan.org/release/NLNETLABS/Net-DNS-SEC-1.22/source/LICENSE"
+      ]
+    },
+    {
       "name": "Historical Permission Notice and Disclaimer - Pbmplus variant",
       "licenseId": "HPND-Pbmplus",
       "isDeprecatedLicenseId": false,
@@ -2994,6 +3211,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://sourceforge.net/p/netpbm/code/HEAD/tree/super_stable/netpbm.c#l8"
+      ]
+    },
+    {
+      "name": "Historical Permission Notice and Disclaimer - sell xserver variant with MIT disclaimer",
+      "licenseId": "HPND-sell-MIT-disclaimer-xserver",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://gitlab.freedesktop.org/xorg/xserver/-/blob/master/COPYING?ref_type=heads#L1781"
       ]
     },
     {
@@ -3060,7 +3287,7 @@
       "name": "ICU License",
       "licenseId": "ICU",
       "isDeprecatedLicenseId": false,
-      "isOsiApproved": false,
+      "isOsiApproved": true,
       "isFsfLibre": false,
       "seeAlso": [
         "http://source.icu-project.org/repos/icu/icu/trunk/license.html"
@@ -3210,6 +3437,17 @@
         "https://www.isc.org/licenses/",
         "https://www.isc.org/downloads/software-support-policy/isc-license/",
         "https://opensource.org/licenses/ISC"
+      ]
+    },
+    {
+      "name": "ISC Veillard variant",
+      "licenseId": "ISC-Veillard",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://raw.githubusercontent.com/GNOME/libxml2/4c2e7c651f6c2f0d1a74f350cbda95f7df3e7017/hash.c",
+        "https://github.com/GNOME/libxml2/blob/master/dict.c"
       ]
     },
     {
@@ -3636,6 +3874,17 @@
       ]
     },
     {
+      "name": "LPD Documentation License",
+      "licenseId": "LPD-document",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/Cyan4973/xxHash/blob/dev/doc/xxhash_spec.md",
+        "https://www.ietf.org/rfc/rfc1952.txt"
+      ]
+    },
+    {
       "name": "Lucent Public License Version 1.0",
       "licenseId": "LPL-1.0",
       "isDeprecatedLicenseId": false,
@@ -3750,6 +3999,26 @@
       ]
     },
     {
+      "name": "Mackerras 3-Clause License",
+      "licenseId": "Mackerras-3-Clause",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/ppp-project/ppp/blob/master/pppd/chap_ms.c#L6-L28"
+      ]
+    },
+    {
+      "name": "Mackerras 3-Clause - acknowledgment variant",
+      "licenseId": "Mackerras-3-Clause-acknowledgment",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/ppp-project/ppp/blob/master/pppd/auth.c#L6-L28"
+      ]
+    },
+    {
       "name": "magaz License",
       "licenseId": "magaz",
       "isDeprecatedLicenseId": false,
@@ -3757,6 +4026,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://mirrors.nic.cz/tex-archive/macros/latex/contrib/magaz/magaz.tex"
+      ]
+    },
+    {
+      "name": "mailprio License",
+      "licenseId": "mailprio",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://fossies.org/linux/sendmail/contrib/mailprio"
       ]
     },
     {
@@ -3827,7 +4106,7 @@
       "isOsiApproved": true,
       "isFsfLibre": true,
       "seeAlso": [
-        "https://opensource.org/licenses/MIT"
+        "https://opensource.org/license/mit/"
       ]
     },
     {
@@ -4115,7 +4394,7 @@
       "isOsiApproved": true,
       "isFsfLibre": false,
       "seeAlso": [
-        "https://license.coscl.org.cn/MulanPSL2/"
+        "https://license.coscl.org.cn/MulanPSL2"
       ]
     },
     {
@@ -4813,6 +5092,29 @@
       ]
     },
     {
+      "name": "OpenSSL License - standalone",
+      "licenseId": "OpenSSL-standalone",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://library.netapp.com/ecm/ecm_download_file/ECMP1196395",
+        "https://hstechdocs.helpsystems.com/manuals/globalscape/archive/cuteftp6/open_ssl_license_agreement.htm"
+      ]
+    },
+    {
+      "name": "OpenVision License",
+      "licenseId": "OpenVision",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/krb5/krb5/blob/krb5-1.21.2-final/NOTICE#L66-L98",
+        "https://web.mit.edu/kerberos/krb5-1.21/doc/mitK5license.html",
+        "https://fedoraproject.org/wiki/Licensing:MIT#OpenVision_Variant"
+      ]
+    },
+    {
       "name": "Open Public License v1.0",
       "licenseId": "OPL-1.0",
       "isDeprecatedLicenseId": false,
@@ -4971,6 +5273,18 @@
       ]
     },
     {
+      "name": "Pixar License",
+      "licenseId": "Pixar",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/PixarAnimationStudios/OpenSubdiv/raw/v3_5_0/LICENSE.txt",
+        "https://graphics.pixar.com/opensubdiv/docs/license.html",
+        "https://github.com/PixarAnimationStudios/OpenSubdiv/blob/v3_5_0/opensubdiv/version.cpp#L2-L22"
+      ]
+    },
+    {
       "name": "Plexus Classworlds License",
       "licenseId": "Plexus",
       "isDeprecatedLicenseId": false,
@@ -5080,8 +5394,7 @@
       "isOsiApproved": false,
       "isFsfLibre": false,
       "seeAlso": [
-        "https://github.com/zdohnal/hplip/blob/master/base/ldif.py",
-        "https://sourceforge.net/projects/hplip/files/hplip/3.23.5/hplip-3.23.5.tar.gz/download"
+        "https://github.com/python-ldap/python-ldap/blob/main/LICENCE"
       ]
     },
     {
@@ -5114,6 +5427,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://github.com/maranget/hevea/blob/master/LICENSE"
+      ]
+    },
+    {
+      "name": "radvd License",
+      "licenseId": "radvd",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/radvd-project/radvd/blob/master/COPYRIGHT"
       ]
     },
     {
@@ -5201,6 +5524,16 @@
     {
       "name": "Sax Public Domain Notice",
       "licenseId": "SAX-PD",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "http://www.saxproject.org/copying.html"
+      ]
+    },
+    {
+      "name": "Sax Public Domain Notice 2.0",
+      "licenseId": "SAX-PD-2.0",
       "isDeprecatedLicenseId": false,
       "isOsiApproved": false,
       "isFsfLibre": false,
@@ -5420,6 +5753,17 @@
       ]
     },
     {
+      "name": "softSurfer License",
+      "licenseId": "softSurfer",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/mm2/Little-CMS/blob/master/src/cmssm.c#L207",
+        "https://fedoraproject.org/wiki/Licensing/softSurfer"
+      ]
+    },
+    {
       "name": "Soundex License",
       "licenseId": "Soundex",
       "isDeprecatedLicenseId": false,
@@ -5503,6 +5847,16 @@
       ]
     },
     {
+      "name": "SSLeay License - standalone",
+      "licenseId": "SSLeay-standalone",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://www.tq-group.com/filedownloads/files/software-license-conditions/OriginalSSLeay/OriginalSSLeay.pdf"
+      ]
+    },
+    {
       "name": "Server Side Public License, v 1",
       "licenseId": "SSPL-1.0",
       "isDeprecatedLicenseId": false,
@@ -5530,6 +5884,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "http://www.sugarcrm.com/crm/SPL"
+      ]
+    },
+    {
+      "name": "Sun PPP License",
+      "licenseId": "Sun-PPP",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/ppp-project/ppp/blob/master/pppd/eap.c#L7-L16"
       ]
     },
     {
@@ -5612,6 +5976,17 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://github.com/jonathanstowe/TermReadKey/blob/master/README#L9-L10"
+      ]
+    },
+    {
+      "name": "Transitive Grace Period Public Licence 1.0",
+      "licenseId": "TGPPL-1.0",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://fedoraproject.org/wiki/Licensing/TGPPL",
+        "https://tahoe-lafs.org/trac/tahoe-lafs/browser/trunk/COPYING.TGPPL.rst"
       ]
     },
     {
@@ -5733,6 +6108,26 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://mirrors.ctan.org/macros/latex/contrib/ulem/README"
+      ]
+    },
+    {
+      "name": "Michigan/Merit Networks License",
+      "licenseId": "UMich-Merit",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/radcli/radcli/blob/master/COPYRIGHT#L64"
+      ]
+    },
+    {
+      "name": "Unicode License v3",
+      "licenseId": "Unicode-3.0",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": true,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://www.unicode.org/license.txt"
       ]
     },
     {
@@ -6006,6 +6401,16 @@
       ]
     },
     {
+      "name": "xkeyboard-config Zinoviev License",
+      "licenseId": "xkeyboard-config-Zinoviev",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://gitlab.freedesktop.org/xkeyboard-config/xkeyboard-config/-/blob/master/COPYING?ref_type=heads#L178"
+      ]
+    },
+    {
       "name": "xlock License",
       "licenseId": "xlock",
       "isDeprecatedLicenseId": false,
@@ -6168,5 +6573,5 @@
       ]
     }
   ],
-  "releaseDate": "2024-02-01"
+  "releaseDate": "2024-02-08"
 }

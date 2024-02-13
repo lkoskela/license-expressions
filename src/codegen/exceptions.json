@@ -1,5 +1,5 @@
 {
-  "licenseListVersion": "9ec9145",
+  "licenseListVersion": "3.23",
   "exceptions": [
     {
       "licenseExceptionId": "389-exception",
@@ -58,8 +58,10 @@
       "seeAlso": [
         "https://launchpad.net/ubuntu/precise/+source/xmltooling/+copyright",
         "https://tracker.debian.org/media/packages/s/sipwitch/copyright-1.9.15-3",
-        "https://opensource.apple.com/source/launchd/launchd-258.1/launchd/compile.auto.html"
+        "https://opensource.apple.com/source/launchd/launchd-258.1/launchd/compile.auto.html",
+        "https://git.savannah.gnu.org/gitweb/?p=gnulib.git;a=blob;f=gnulib-tool;h=029a8cf377ad8d8f2d9e54061bf2f20496ad2eef;hb=73c74ba0197e6566da6882c87b1adee63e24d75c#l407"
       ],
+      "licenseComments": "Gnulib uses a variant wording of this exception.",
       "relatedLicenses": []
     },
     {
@@ -276,6 +278,18 @@
       ]
     },
     {
+      "licenseExceptionId": "Gmsh-exception",
+      "isDeprecatedLicenseId": false,
+      "name": "Gmsh exception>",
+      "seeAlso": [
+        "https://gitlab.onelab.info/gmsh/gmsh/-/raw/master/LICENSE.txt"
+      ],
+      "licenseComments": "This exception has been used with GPL-2.0",
+      "relatedLicenses": [
+        "GPL-2.0"
+      ]
+    },
+    {
       "licenseExceptionId": "GNAT-exception",
       "isDeprecatedLicenseId": false,
       "name": "GNAT exception",
@@ -286,6 +300,19 @@
       "relatedLicenses": [
         "GPL-2.0",
         "GPL-3.0"
+      ]
+    },
+    {
+      "licenseExceptionId": "GNOME-examples-exception",
+      "isDeprecatedLicenseId": false,
+      "name": "GNOME examples exception",
+      "seeAlso": [
+        "https://gitlab.gnome.org/Archive/gnome-devel-docs/-/blob/master/platform-demos/C/legal.xml?ref_type=heads",
+        "http://meldmerge.org/help/"
+      ],
+      "licenseComments": "This exception has been used with CC-BY-SA-3.0.",
+      "relatedLicenses": [
+        "CC-BY-SA-3.0"
       ]
     },
     {
@@ -770,5 +797,5 @@
       "relatedLicenses": []
     }
   ],
-  "releaseDate": "2024-02-01"
+  "releaseDate": "2024-02-08"
 }
