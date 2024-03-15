@@ -1,5 +1,5 @@
 {
-  "licenseListVersion": "3.23",
+  "licenseListVersion": "dbed02c",
   "exceptions": [
     {
       "licenseExceptionId": "389-exception",
@@ -797,5 +797,5 @@
       "relatedLicenses": []
     }
   ],
-  "releaseDate": "2024-02-08"
+  "releaseDate": "2024-03-15"
 }

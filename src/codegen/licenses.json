@@ -1,5 +1,5 @@
 {
-  "licenseListVersion": "3.23",
+  "licenseListVersion": "dbed02c",
   "licenses": [
     {
       "name": "BSD Zero Clause License",
@@ -6573,5 +6573,5 @@
       ]
     }
   ],
-  "releaseDate": "2024-02-08"
+  "releaseDate": "2024-03-15"
 }
