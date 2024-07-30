@@ -1,5 +1,5 @@
 {
-  "licenseListVersion": "dbed02c",
+  "licenseListVersion": "5f885e8",
   "licenses": [
     {
       "name": "BSD Zero Clause License",
@@ -10,6 +10,17 @@
       "seeAlso": [
         "http://landley.net/toybox/license.html",
         "https://opensource.org/licenses/0BSD"
+      ]
+    },
+    {
+      "name": "3D Slicer License v1.0",
+      "licenseId": "3D-Slicer-1.0",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://slicer.org/LICENSE",
+        "https://github.com/Slicer/Slicer/blob/main/License.txt"
       ]
     },
     {
@@ -231,6 +242,16 @@
       ]
     },
     {
+      "name": "AMD newlib License",
+      "licenseId": "AMD-newlib",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://sourceware.org/git/?p=newlib-cygwin.git;a=blob;f=newlib/libc/sys/a29khif/_close.S;h=04f52ae00de1dafbd9055ad8d73c5c697a3aae7f;hb=HEAD"
+      ]
+    },
+    {
       "name": "AMD's plpa_map.c License",
       "licenseId": "AMDPLPA",
       "isDeprecatedLicenseId": false,
@@ -289,6 +310,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "http://www.antlr2.org/license.html"
+      ]
+    },
+    {
+      "name": "Any OSI License",
+      "licenseId": "any-OSI",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://metacpan.org/pod/Exporter::Tidy#LICENSE"
       ]
     },
     {
@@ -653,6 +684,17 @@
       ]
     },
     {
+      "name": "BSD 2-Clause - first lines requirement",
+      "licenseId": "BSD-2-Clause-first-lines",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/krb5/krb5/blob/krb5-1.21.2-final/NOTICE#L664-L690",
+        "https://web.mit.edu/kerberos/krb5-1.21/doc/mitK5license.html"
+      ]
+    },
+    {
       "name": "BSD 2-Clause FreeBSD License",
       "licenseId": "BSD-2-Clause-FreeBSD",
       "isDeprecatedLicenseId": true,
@@ -793,7 +835,7 @@
       "isOsiApproved": false,
       "isFsfLibre": false,
       "seeAlso": [
-        "http://download.oracle.com/otn-pub/java/licenses/bsd.txt?AuthParam=1467140197_43d516ce1776bd08a58235a7785be1cc"
+        "http://download.oracle.com/otn-pub/java/licenses/bsd.txt"
       ]
     },
     {
@@ -1064,6 +1106,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://github.com/apache/apr/blob/trunk/LICENSE#L298C6-L298C29"
+      ]
+    },
+    {
+      "name": "Catharon License",
+      "licenseId": "Catharon",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/scummvm/scummvm/blob/v2.8.0/LICENSES/CatharonLicense.txt"
       ]
     },
     {
@@ -2039,6 +2091,16 @@
       ]
     },
     {
+      "name": "Common Vulnerability Enumeration ToU License",
+      "licenseId": "cve-tou",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://www.cve.org/Legal/TermsOfUse"
+      ]
+    },
+    {
       "name": "Deutsche Freie Software Lizenz",
       "licenseId": "D-FSL-1.0",
       "isDeprecatedLicenseId": false,
@@ -2153,7 +2215,8 @@
       "isOsiApproved": false,
       "isFsfLibre": false,
       "seeAlso": [
-        "https://github.com/SWI-Prolog/swipl-devel/blob/master/src/os/dtoa.c"
+        "https://github.com/SWI-Prolog/swipl-devel/blob/master/src/os/dtoa.c",
+        "https://sourceware.org/git/?p=newlib-cygwin.git;a=blob;f=newlib/libc/stdlib/mprec.h;hb=HEAD"
       ]
     },
     {
@@ -3037,6 +3100,16 @@
       ]
     },
     {
+      "name": "Gutmann License",
+      "licenseId": "Gutmann",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://www.cs.auckland.ac.nz/~pgut001/dumpasn1.c"
+      ]
+    },
+    {
       "name": "Haskell Language Report License",
       "licenseId": "HaskellReport",
       "isDeprecatedLicenseId": false,
@@ -3141,6 +3214,17 @@
       ]
     },
     {
+      "name": "HPND with US Government export control warning and acknowledgment",
+      "licenseId": "HPND-export-US-acknowledgement",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/krb5/krb5/blob/krb5-1.21.2-final/NOTICE#L831-L852",
+        "https://web.mit.edu/kerberos/krb5-1.21/doc/mitK5license.html"
+      ]
+    },
+    {
       "name": "HPND with US Government export control warning and modification rqmt",
       "licenseId": "HPND-export-US-modify",
       "isDeprecatedLicenseId": false,
@@ -3149,6 +3233,17 @@
       "seeAlso": [
         "https://github.com/krb5/krb5/blob/krb5-1.21.2-final/NOTICE#L1157-L1182",
         "https://github.com/pythongssapi/k5test/blob/v0.10.3/K5TEST-LICENSE.txt"
+      ]
+    },
+    {
+      "name": "HPND with US Government export control and 2 disclaimers",
+      "licenseId": "HPND-export2-US",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/krb5/krb5/blob/krb5-1.21.2-final/NOTICE#L111-L133",
+        "https://web.mit.edu/kerberos/krb5-1.21/doc/mitK5license.html"
       ]
     },
     {
@@ -3173,6 +3268,16 @@
       ]
     },
     {
+      "name": "Historical Permission Notice and Disclaimer - Intel variant",
+      "licenseId": "HPND-Intel",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://sourceware.org/git/?p=newlib-cygwin.git;a=blob;f=newlib/libc/machine/i960/memcpy.S;hb=HEAD"
+      ]
+    },
+    {
       "name": "Historical Permission Notice and Disclaimer - Kevlin Henney variant",
       "licenseId": "HPND-Kevlin-Henney",
       "isDeprecatedLicenseId": false,
@@ -3191,6 +3296,16 @@
       "seeAlso": [
         "https://www.cl.cam.ac.uk/~mgk25/ucs/wcwidth.c",
         "https://sourceware.org/git/?p=binutils-gdb.git;a=blob;f=readline/readline/support/wcwidth.c;h=0f5ec995796f4813abbcf4972aec0378ab74722a;hb=HEAD#l55"
+      ]
+    },
+    {
+      "name": "Historical Permission Notice and Disclaimer - merchantability variant",
+      "licenseId": "HPND-merchantability-variant",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://sourceware.org/git/?p=newlib-cygwin.git;a=blob;f=newlib/libc/misc/fini.c;hb=HEAD"
       ]
     },
     {
@@ -3254,6 +3369,16 @@
       ]
     },
     {
+      "name": "HPND sell variant with MIT disclaimer - reverse",
+      "licenseId": "HPND-sell-variant-MIT-disclaimer-rev",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/sigmavirus24/x11-ssh-askpass/blob/master/dynlist.c"
+      ]
+    },
+    {
       "name": "Historical Permission Notice and Disclaimer - University of California variant",
       "licenseId": "HPND-UC",
       "isDeprecatedLicenseId": false,
@@ -3261,6 +3386,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://core.tcl-lang.org/tk/file?name=compat/unistd.h"
+      ]
+    },
+    {
+      "name": "Historical Permission Notice and Disclaimer - University of California, US export warning",
+      "licenseId": "HPND-UC-export-US",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/RTimothyEdwards/magic/blob/master/LICENSE"
       ]
     },
     {
@@ -3447,7 +3582,8 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://raw.githubusercontent.com/GNOME/libxml2/4c2e7c651f6c2f0d1a74f350cbda95f7df3e7017/hash.c",
-        "https://github.com/GNOME/libxml2/blob/master/dict.c"
+        "https://github.com/GNOME/libxml2/blob/master/dict.c",
+        "https://sourceforge.net/p/ctrio/git/ci/master/tree/README"
       ]
     },
     {
@@ -4174,6 +4310,16 @@
       ]
     },
     {
+      "name": "MIT Khronos - old variant",
+      "licenseId": "MIT-Khronos-old",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/KhronosGroup/SPIRV-Cross/blob/main/LICENSES/LicenseRef-KhronosFreeUse.txt"
+      ]
+    },
+    {
       "name": "MIT License Modern Variant",
       "licenseId": "MIT-Modern-Variant",
       "isDeprecatedLicenseId": false,
@@ -4460,6 +4606,20 @@
       ]
     },
     {
+      "name": "NCBI Public Domain Notice",
+      "licenseId": "NCBI-PD",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/ncbi/sra-tools/blob/e8e5b6af4edc460156ad9ce5902d0779cffbf685/LICENSE",
+        "https://github.com/ncbi/datasets/blob/0ea4cd16b61e5b799d9cc55aecfa016d6c9bd2bf/LICENSE.md",
+        "https://github.com/ncbi/gprobe/blob/de64d30fee8b4c4013094d7d3139ea89b5dd1ace/LICENSE",
+        "https://github.com/ncbi/egapx/blob/08930b9dec0c69b2d1a05e5153c7b95ef0a3eb0f/LICENSE",
+        "https://github.com/ncbi/datasets/blob/master/LICENSE.md"
+      ]
+    },
+    {
       "name": "Non-Commercial Government Licence",
       "licenseId": "NCGL-UK-2.0",
       "isDeprecatedLicenseId": false,
@@ -4467,6 +4627,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "http://www.nationalarchives.gov.uk/doc/non-commercial-government-licence/version/2/"
+      ]
+    },
+    {
+      "name": "NCL Source Code License",
+      "licenseId": "NCL",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://gitlab.freedesktop.org/pipewire/pipewire/-/blob/master/src/modules/module-filter-chain/pffft.c?ref_type=heads#L1-52"
       ]
     },
     {
@@ -4701,6 +4871,16 @@
       "seeAlso": [
         "https://github.com/microsoft/Open-Use-of-Data-Agreement/blob/v1.0/O-UDA-1.0.md",
         "https://cdla.dev/open-use-of-data-agreement-v1-0/"
+      ]
+    },
+    {
+      "name": "OAR License",
+      "licenseId": "OAR",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://sourceware.org/git/?p=newlib-cygwin.git;a=blob;f=newlib/libc/string/strsignal.c;hb=HEAD#l35"
       ]
     },
     {
@@ -5285,6 +5465,16 @@
       ]
     },
     {
+      "name": "pkgconf License",
+      "licenseId": "pkgconf",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/pkgconf/pkgconf/blob/master/cli/main.c#L8"
+      ]
+    },
+    {
       "name": "Plexus Classworlds License",
       "licenseId": "Plexus",
       "isDeprecatedLicenseId": false,
@@ -5333,6 +5523,17 @@
       "seeAlso": [
         "http://www.postgresql.org/about/licence",
         "https://opensource.org/licenses/PostgreSQL"
+      ]
+    },
+    {
+      "name": "Peer Production License",
+      "licenseId": "PPL",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://wiki.p2pfoundation.net/Peer_Production_License",
+        "http://www.networkcultures.org/_uploads/%233notebook_telekommunist.pdf"
       ]
     },
     {
@@ -5897,6 +6098,16 @@
       ]
     },
     {
+      "name": "Sun PPP License (2000)",
+      "licenseId": "Sun-PPP-2000",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/ppp-project/ppp/blob/master/modules/ppp_ahdlc.c#L7-L19"
+      ]
+    },
+    {
       "name": "SunPro License",
       "licenseId": "SunPro",
       "isDeprecatedLicenseId": false,
@@ -5987,6 +6198,16 @@
       "seeAlso": [
         "https://fedoraproject.org/wiki/Licensing/TGPPL",
         "https://tahoe-lafs.org/trac/tahoe-lafs/browser/trunk/COPYING.TGPPL.rst"
+      ]
+    },
+    {
+      "name": "threeparttable License",
+      "licenseId": "threeparttable",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://fedoraproject.org/wiki/Licensing/Threeparttable"
       ]
     },
     {
@@ -6264,7 +6485,9 @@
       "isOsiApproved": false,
       "isFsfLibre": false,
       "seeAlso": [
-        "https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document"
+        "https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document",
+        "https://www.w3.org/copyright/software-license-2015/",
+        "https://www.w3.org/copyright/software-license-2023/"
       ]
     },
     {
@@ -6451,6 +6674,16 @@
       ]
     },
     {
+      "name": "xzoom License",
+      "licenseId": "xzoom",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://metadata.ftp-master.debian.org/changelogs//main/x/xzoom/xzoom_0.3-27_copyright"
+      ]
+    },
+    {
       "name": "Yahoo! Public License v1.0",
       "licenseId": "YPL-1.0",
       "isDeprecatedLicenseId": false,
@@ -6573,5 +6806,5 @@
       ]
     }
   ],
-  "releaseDate": "2024-03-15"
+  "releaseDate": "2024-07-29"
 }

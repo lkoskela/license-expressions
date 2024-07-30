@@ -1,5 +1,5 @@
 {
-  "licenseListVersion": "dbed02c",
+  "licenseListVersion": "5f885e8",
   "exceptions": [
     {
       "licenseExceptionId": "389-exception",
@@ -21,6 +21,15 @@
       "seeAlso": [
         "https://github.com/asterisk/libpri/blob/7f91151e6bd10957c746c031c1f4a030e8146e9a/pri.c#L22",
         "https://github.com/asterisk/libss7/blob/03e81bcd0d28ff25d4c77c78351ddadc82ff5c3f/ss7.c#L24"
+      ],
+      "relatedLicenses": []
+    },
+    {
+      "licenseExceptionId": "Asterisk-linking-protocols-exception",
+      "isDeprecatedLicenseId": false,
+      "name": "Asterisk linking protocols exception",
+      "seeAlso": [
+        "https://github.com/asterisk/asterisk/blob/115d7c01e32ccf4566a99e9d74e2b88830985a0b/LICENSE#L27"
       ],
       "relatedLicenses": []
     },
@@ -151,7 +160,8 @@
         "https://gitlab.com/cryptsetup/cryptsetup/-/blob/main/COPYING",
         "https://gitlab.nic.cz/datovka/datovka/-/blob/develop/COPYING",
         "https://github.com/nbs-system/naxsi/blob/951123ad456bdf5ac94e8d8819342fe3d49bc002/naxsi_src/naxsi_raw.c",
-        "http://web.mit.edu/jgross/arch/amd64_deb60/bin/mosh"
+        "http://web.mit.edu/jgross/arch/amd64_deb60/bin/mosh",
+        "https://sourceforge.net/p/linux-ima/ima-evm-utils/ci/master/tree/src/evmctl.c#l30"
       ],
       "relatedLicenses": []
     },
@@ -592,6 +602,18 @@
       ]
     },
     {
+      "licenseExceptionId": "PCRE2-exception",
+      "isDeprecatedLicenseId": false,
+      "name": "PCRE2 exception",
+      "seeAlso": [
+        "https://www.pcre.org/licence.txt"
+      ],
+      "licenseComments": "This exception has been used with BSD-3-Clause.",
+      "relatedLicenses": [
+        "BSD-3-Clause"
+      ]
+    },
+    {
       "licenseExceptionId": "PS-or-PDF-font-exception-20170817",
       "isDeprecatedLicenseId": false,
       "name": "PS/PDF font exception (2017-08-17)",
@@ -650,6 +672,33 @@
       "licenseComments": "Specified to be associated with LGPL-2.1. On Fedora List as \"Qwt License 1.0\".",
       "relatedLicenses": [
         "LGPL-2.1"
+      ]
+    },
+    {
+      "licenseExceptionId": "romic-exception",
+      "isDeprecatedLicenseId": false,
+      "name": "Romic Exception",
+      "seeAlso": [
+        "https://web.archive.org/web/20210124015834/http://mo.morsi.org/blog/2009/08/13/lesser_affero_gplv3/",
+        "https://sourceforge.net/p/romic/code/ci/3ab2856180cf0d8b007609af53154cf092efc58f/tree/COPYING",
+        "https://github.com/moll/node-mitm/blob/bbf24b8bd7596dc6e091e625363161ce91984fc7/LICENSE#L8-L11",
+        "https://github.com/zenbones/SmallMind/blob/3c62b5995fe7f27c453f140ff9b60560a0893f2a/COPYRIGHT#L25-L30",
+        "https://github.com/CubeArtisan/cubeartisan/blob/2c6ab53455237b88a3ea07be02a838a135c4ab79/LICENSE.LESSER#L10-L15",
+        "https://github.com/savearray2/py.js/blob/b781273c08c8afa89f4954de4ecf42ec01429bae/README.md#license"
+      ],
+      "relatedLicenses": []
+    },
+    {
+      "licenseExceptionId": "RRDtool-FLOSS-exception-2.0",
+      "isDeprecatedLicenseId": false,
+      "name": "RRDtool FLOSS exception 2.0",
+      "seeAlso": [
+        "https://github.com/oetiker/rrdtool-1.x/blob/master/COPYRIGHT#L25-L90",
+        "https://oss.oetiker.ch/rrdtool/license.en.html"
+      ],
+      "licenseComments": "This exception is generally used with GPL-2.0",
+      "relatedLicenses": [
+        "GPL-2.0"
       ]
     },
     {
@@ -797,5 +846,5 @@
       "relatedLicenses": []
     }
   ],
-  "releaseDate": "2024-03-15"
+  "releaseDate": "2024-07-29"
 }
