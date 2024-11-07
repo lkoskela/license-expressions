@@ -1,5 +1,5 @@
 {
-  "licenseListVersion": "5f885e8",
+  "licenseListVersion": "7f39cae",
   "licenses": [
     {
       "name": "BSD Zero Clause License",
@@ -2169,6 +2169,26 @@
       ]
     },
     {
+      "name": "DocBook Schema License",
+      "licenseId": "DocBook-Schema",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/docbook/xslt10-stylesheets/blob/efd62655c11cc8773708df7a843613fa1e932bf8/xsl/assembly/schema/docbook51b7.rnc"
+      ]
+    },
+    {
+      "name": "DocBook XML License",
+      "licenseId": "DocBook-XML",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/docbook/xslt10-stylesheets/blob/efd62655c11cc8773708df7a843613fa1e932bf8/xsl/COPYING#L27"
+      ]
+    },
+    {
       "name": "Dotseqn License",
       "licenseId": "Dotseqn",
       "isDeprecatedLicenseId": false,
@@ -3130,6 +3150,16 @@
       ]
     },
     {
+      "name": "HIDAPI License",
+      "licenseId": "HIDAPI",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/signal11/hidapi/blob/master/LICENSE-orig.txt"
+      ]
+    },
+    {
       "name": "Hippocratic License 2.1",
       "licenseId": "Hippocratic-2.1",
       "isDeprecatedLicenseId": false,
@@ -3317,6 +3347,14 @@
       "seeAlso": [
         "https://metacpan.org/release/NLNETLABS/Net-DNS-SEC-1.22/source/LICENSE"
       ]
+    },
+    {
+      "name": "Historical Permission Notice and Disclaimer - Netrek variant",
+      "licenseId": "HPND-Netrek",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": []
     },
     {
       "name": "Historical Permission Notice and Disclaimer - Pbmplus variant",
@@ -4653,7 +4691,7 @@
     {
       "name": "Net-SNMP License",
       "licenseId": "Net-SNMP",
-      "isDeprecatedLicenseId": false,
+      "isDeprecatedLicenseId": true,
       "isOsiApproved": false,
       "isFsfLibre": false,
       "seeAlso": [
@@ -5723,6 +5761,18 @@
       ]
     },
     {
+      "name": "Ruby pty extension license",
+      "licenseId": "Ruby-pty",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/ruby/ruby/blob/9f6deaa6888a423720b4b127b5314f0ad26cc2e6/ext/pty/pty.c#L775-L786",
+        "https://github.com/ruby/ruby/commit/0a64817fb80016030c03518fb9459f63c11605ea#diff-ef5fa30838d6d0cecad9e675cc50b24628cfe2cb277c346053fafcc36c91c204",
+        "https://github.com/ruby/ruby/commit/0a64817fb80016030c03518fb9459f63c11605ea#diff-fedf217c1ce44bda01f0a678d3ff8b198bed478754d699c527a698ad933979a0"
+      ]
+    },
+    {
       "name": "Sax Public Domain Notice",
       "licenseId": "SAX-PD",
       "isDeprecatedLicenseId": false,
@@ -6302,6 +6352,17 @@
       ]
     },
     {
+      "name": "Ubuntu Font Licence v1.0",
+      "licenseId": "Ubuntu-font-1.0",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://ubuntu.com/legal/font-licence",
+        "https://assets.ubuntu.com/v1/81e5605d-ubuntu-font-licence-1.0.txt"
+      ]
+    },
+    {
       "name": "UCAR License",
       "licenseId": "UCAR",
       "isDeprecatedLicenseId": false,
@@ -6482,7 +6543,7 @@
       "name": "W3C Software Notice and Document License (2015-05-13)",
       "licenseId": "W3C-20150513",
       "isDeprecatedLicenseId": false,
-      "isOsiApproved": false,
+      "isOsiApproved": true,
       "isFsfLibre": false,
       "seeAlso": [
         "https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document",
@@ -6569,6 +6630,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://github.com/mirror/ncurses/blob/master/COPYING"
+      ]
+    },
+    {
+      "name": "X11 swapped final paragraphs",
+      "licenseId": "X11-swapped",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/fedeinthemix/chez-srfi/blob/master/srfi/LICENSE"
       ]
     },
     {
@@ -6806,5 +6877,5 @@
       ]
     }
   ],
-  "releaseDate": "2024-07-29"
+  "releaseDate": "2024-11-05"
 }

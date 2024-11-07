@@ -1,5 +1,5 @@
 {
-  "licenseListVersion": "5f885e8",
+  "licenseListVersion": "7f39cae",
   "exceptions": [
     {
       "licenseExceptionId": "389-exception",
@@ -137,7 +137,12 @@
         "http://www.gnu.org/software/classpath/license.html",
         "https://fedoraproject.org/wiki/Licensing/GPL_Classpath_Exception"
       ],
-      "relatedLicenses": []
+      "licenseComments": "This is an exception from the FSF for Classpath. Independent-modules-exception is very similar, but has a separate id due to it being used with LGPL and a different lead-in that Classpath-exception-2.0.",
+      "relatedLicenses": [
+        "LGPL-2.0",
+        "LGPL-2.1",
+        "LGPL-3.0"
+      ]
     },
     {
       "licenseExceptionId": "CLISP-exception-2.0",
@@ -189,6 +194,21 @@
       "relatedLicenses": [
         "GPL-2.0-only",
         "GPL-2.0-and-later"
+      ]
+    },
+    {
+      "licenseExceptionId": "erlang-otp-linking-exception",
+      "isDeprecatedLicenseId": false,
+      "name": "Erlang/OTP Linking Exception",
+      "seeAlso": [
+        "https://www.gnu.org/licenses/gpl-faq.en.html#GPLIncompatibleLibs",
+        "https://erlang.org/pipermail/erlang-questions/2012-May/066355.html",
+        "https://gitea.osmocom.org/erlang/osmo_ss7/src/commit/2286c1b8738d715950026650bf53f19a69d6ed0e/src/ss7_links.erl#L20"
+      ],
+      "licenseComments": "This exception is based on the suggested template from the Free Software Foundation's FAQ about the GPL.",
+      "relatedLicenses": [
+        "GPL-2.0",
+        "GPL-3.0"
       ]
     },
     {
@@ -290,7 +310,7 @@
     {
       "licenseExceptionId": "Gmsh-exception",
       "isDeprecatedLicenseId": false,
-      "name": "Gmsh exception>",
+      "name": "Gmsh exception",
       "seeAlso": [
         "https://gitlab.onelab.info/gmsh/gmsh/-/raw/master/LICENSE.txt"
       ],
@@ -345,6 +365,16 @@
       "licenseComments": "Typically used with GPL (any version)",
       "relatedLicenses": [
         "GPL-2.0",
+        "GPL-3.0"
+      ]
+    },
+    {
+      "licenseExceptionId": "GPL-3.0-389-ds-base-exception",
+      "isDeprecatedLicenseId": false,
+      "name": "GPL-3.0 389 DS Base Exception",
+      "seeAlso": [],
+      "licenseComments": "This exception is similar to GPL-3.0-linking-source-exception but applies to the \"licensed\" work, rather than the library.",
+      "relatedLicenses": [
         "GPL-3.0"
       ]
     },
@@ -420,6 +450,19 @@
       "relatedLicenses": []
     },
     {
+      "licenseExceptionId": "harbour-exception",
+      "isDeprecatedLicenseId": false,
+      "name": "harbour exception",
+      "seeAlso": [
+        "https://github.com/harbour/core/blob/master/LICENSE.txt#L44-L66"
+      ],
+      "licenseComments": "This exception has some similarities to SANE-exception. It is written to be used with GPL.",
+      "relatedLicenses": [
+        "GPL-2.0",
+        "GPL-3.0"
+      ]
+    },
+    {
       "licenseExceptionId": "i2p-gpl-java-exception",
       "isDeprecatedLicenseId": false,
       "name": "i2p GPL+Java Exception",
@@ -430,6 +473,20 @@
       "relatedLicenses": [
         "GPL-2.0-only",
         "GPL-2.0-and-later"
+      ]
+    },
+    {
+      "licenseExceptionId": "Independent-modules-exception",
+      "isDeprecatedLicenseId": false,
+      "name": "Independent Module Linking exception",
+      "seeAlso": [
+        "https://gitlab.com/freepascal.org/fpc/source/-/blob/release_3_2_2/rtl/COPYING.FPC"
+      ],
+      "licenseComments": "The main part of this exception is essentially the same as Classpath-exception-2.0. However, due to it being used with LGPL and a different lead-in that Classpath-exception-2.0, it has its own id.",
+      "relatedLicenses": [
+        "LGPL-2.0",
+        "LGPL-2.1",
+        "LGPL-3.0"
       ]
     },
     {
@@ -537,6 +594,17 @@
         "GPL-2.0-only",
         "GPL-2.0-and-later"
       ]
+    },
+    {
+      "licenseExceptionId": "mxml-exception",
+      "isDeprecatedLicenseId": false,
+      "name": "mxml Exception",
+      "seeAlso": [
+        "https://github.com/michaelrsweet/mxml/blob/master/NOTICE",
+        "https://github.com/michaelrsweet/mxml/blob/master/LICENSE"
+      ],
+      "licenseComments": "This is similar to the LLVM-exception, but omits the first paragraph.",
+      "relatedLicenses": []
     },
     {
       "licenseExceptionId": "Nokia-Qt-exception-1.1",
@@ -846,5 +914,5 @@
       "relatedLicenses": []
     }
   ],
-  "releaseDate": "2024-07-29"
+  "releaseDate": "2024-11-05"
 }
