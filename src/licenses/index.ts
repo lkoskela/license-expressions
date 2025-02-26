@@ -213,10 +213,10 @@ const selectBestMatchByAssociation = (candidateExceptionIds: string[], associate
 
     const strengthOfRelation = (exception: Exception, license?: string): StrengthOfRelation => {
         if (license) {
-            const stronglyRelatedLicenses = expandLicenses(exception.relatedLicenses, { expandScope: false })
+            const stronglyRelatedLicenses = expandLicenses(exception.relatedLicenses || [], { expandScope: false })
             if (stronglyRelatedLicenses.includes(license)) return { strength: 2, exception }
 
-            const weaklyRelatedLicenses = expandLicenses(exception.relatedLicenses, { expandScope: true })
+            const weaklyRelatedLicenses = expandLicenses(exception.relatedLicenses || [], { expandScope: true })
             if (weaklyRelatedLicenses.includes(license)) return { strength: 1, exception }
         }
         return { strength: 0, exception }
@@ -234,7 +234,7 @@ const selectBestMatchByAssociation = (candidateExceptionIds: string[], associate
         // versions of a given exception (e.g. "Bison-exception-1.24" and "Bison-exception-2.2")
         // - we'll pick the last one, i.e. the most recent one:
         if (possibleMatches.length > 1) {
-            const matchesAssociatedToLicense = possibleMatches.filter(e => expandLicenses(e.relatedLicenses).includes(associatedLicense))
+            const matchesAssociatedToLicense = possibleMatches.filter(e => expandLicenses(e.relatedLicenses || []).includes(associatedLicense))
             if (matchesAssociatedToLicense.length > 0) {
                 return matchesAssociatedToLicense[0]?.licenseExceptionId
             }

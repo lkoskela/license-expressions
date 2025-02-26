@@ -4,17 +4,17 @@ import exceptions from '../codegen/exceptions.json'
 
 export type Exception = {
     licenseExceptionId: string,
-    isDeprecatedLicenseId: boolean,
+    isDeprecatedLicenseId?: boolean,
     name: string,
-    licenseComments: string,
-    relatedLicenses: string[]
+    licenseComments?: string,
+    relatedLicenses?: string[]
 }
 
 export type License = {
     licenseId: string,
-    isDeprecatedLicenseId: boolean,
+    isDeprecatedLicenseId?: boolean,
     name: string,
-    isOsiApproved: boolean,
+    isOsiApproved?: boolean,
     seeAlso: string[]
 }
 
