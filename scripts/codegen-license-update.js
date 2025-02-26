@@ -101,7 +101,7 @@ const updateFileFromURL = async (destinationFilePath, sourceUrl, entryListKey, d
     } else {
         console.log(`Update available (from ${localVersion} to ${latestVersion}) --> updating ${entryListKey}`)
         const licensesInMainDocument = json[entryListKey]
-        const urls = licensesInMainDocument.map(detailsUrlMapper)
+        const urls = licensesInMainDocument.map(detailsUrlMapper).filter(url => !!url)
         const details = await downloadManyJSONFiles(urls)
         json[entryListKey] = details.filter(x => !!x && !x.error).map(detailsObjectMapper).filter(x => !!x)
         fs.writeFileSync(destinationFilePath, JSON.stringify(json, null, 2))
@@ -195,14 +195,25 @@ const extractLicenseIdentifiersReferredTo = (licenses, entry) => {
         () => findLicensesMentionedInExceptionName(licenses, entry, false)
     ]
     let mentions = []
-    for (let i=0; mentions.length === 0 && i < methods.length; i++) {
-        mentions = methods[i]()
-    }
-    return mentions
+    methods.forEach(method => {
+        if (mentions.length === 0) {
+            mentions = method()
+        }
+    })
+    return mentions.flat()
 }
 
 const updateExceptionsFileAt = async (exceptionsFilePath, licensesFilePath) => {
-    const exceptionDetailsUrlMapper = (entry) => EXCEPTION_DETAILS_FILE_BASEURL + entry.reference.replace(/^.\//, '')
+    const exceptionDetailsUrlMapper = (entry) => {
+        if (entry.detailsUrl?.startsWith('http') && entry.detailsUrl?.endsWith('.json')) {
+            return entry.detailsUrl
+        }
+        if (entry.licenseExceptionId) {
+            return EXCEPTION_DETAILS_FILE_BASEURL + entry.licenseExceptionId + '.json'
+        }
+        console.warn(`Unexpected entry structure: ${JSON.stringify(entry, null, 2)}`)
+        return undefined
+    }
     const exceptionDetailsObjectMapper = (licenses) => {
         return (entry) => {
             let licensesMentionedInComments = extractLicenseIdentifiersReferredTo(licenses, entry)
