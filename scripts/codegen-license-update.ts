@@ -1,11 +1,9 @@
-#!/usr/bin/env node
-
-const https = require('https')
-const fs = require('fs')
-const os = require('os')
-const path = require('path')
-const crypto = require('crypto')
-const { pipeline } = require('stream')
+import https from 'https'
+import fs from 'fs'
+import os from 'os'
+import path from 'path'
+import crypto from 'crypto'
+import { pipeline } from 'stream'
 
 
 const LICENSE_FILE_URL = "https://raw.githubusercontent.com/spdx/license-list-data/master/json/licenses.json"
@@ -20,16 +18,16 @@ const hash = (str) => {
     return shasum.digest('hex')
 }
 
-const downloadJSON = async (url) => {
-    const rawJson = await new Promise((resolve, reject) => {
+const downloadJSON = async (url: string): Promise<object> => {
+    const rawJson = await new Promise<string>((resolve, _reject) => {
         const tmpFilePath = path.join(os.tmpdir(), hash(url))
-        https.get(url, (response) => {
+        https.get(url, { agent: false }, (response) => {
             const errorHandler = (err) => {
                 if (err) {
                     console.warn(`Could not download JSON from ${url} - ${err}`)
                     resolve('{}')
                 } else {
-                    resolve(fs.readFileSync(tmpFilePath))
+                    resolve(fs.readFileSync(tmpFilePath).toString())
                 }
             }
             if (response.statusCode === 200) {
@@ -50,8 +48,8 @@ const downloadJSON = async (url) => {
     }
 }
 
-const sliceIntoChunks = (arr, chunkSize) => {
-    const res = []
+function sliceIntoChunks<T>(arr: Array<T>, chunkSize: number): Array<Array<T>> {
+    const res: Array<Array<T>> = []
     for (let i = 0; i < arr.length; i += chunkSize) {
         const chunk = arr.slice(i, i + chunkSize)
         res.push(chunk)
@@ -59,9 +57,9 @@ const sliceIntoChunks = (arr, chunkSize) => {
     return res
 }
 
-const downloadManyJSONFiles = async (arrayOfURLs) => {
+const downloadManyJSONFiles = async (arrayOfURLs: string[]): Promise<object[]> => {
     const batches = sliceIntoChunks(arrayOfURLs, DETAILS_DOWNLOAD_BATCH_SIZE)
-    const results = []
+    const results: object[] = []
     for (let b = 0; b < batches.length; b++) {
         const batch = batches[b]
         console.log(`Downloading batch ${b+1} (${batch.length} entries)`)
@@ -77,7 +75,7 @@ const readLicenseListVersionFromJsonObject = (jsonObj) => {
 
 const readLicensesFromFile = (file_path) => {
     if (fs.existsSync(file_path)) {
-        const jsonObj = JSON.parse(fs.readFileSync(file_path))
+        const jsonObj = JSON.parse(fs.readFileSync(file_path).toString())
         return jsonObj.licenses.filter(x => !!x)
     }
     console.warn(`File ${file_path} does not exist - can't read licenses from it`)
@@ -86,7 +84,7 @@ const readLicensesFromFile = (file_path) => {
 
 const readLicenseListVersionFromFile = (file_path) => {
     if (fs.existsSync(file_path)) {
-        const jsonObj = JSON.parse(fs.readFileSync(file_path))
+        const jsonObj = JSON.parse(fs.readFileSync(file_path).toString())
         return readLicenseListVersionFromJsonObject(jsonObj)
     }
     return ''
@@ -103,10 +101,10 @@ const updateFileFromURL = async (destinationFilePath, sourceUrl, entryListKey, d
         const licensesInMainDocument = json[entryListKey]
         const urls = licensesInMainDocument.map(detailsUrlMapper).filter(url => !!url)
         const details = await downloadManyJSONFiles(urls)
-        json[entryListKey] = details.filter(x => !!x && !x.error).map(detailsObjectMapper).filter(x => !!x)
+        json[entryListKey] = details.filter(x => !!x && !(x as any).error).map(detailsObjectMapper).filter(x => !!x && (!!(x as any).licenseExceptionId || !!(x as any).licenseId))
         fs.writeFileSync(destinationFilePath, JSON.stringify(json, null, 2))
         console.log(`Updated ${destinationFilePath} with version ${latestVersion} from ${sourceUrl}`)
-        const entriesWithMissingDetails = licensesInMainDocument.filter(x => !details.find(d => d.licenseId === x.licenseId))
+        const entriesWithMissingDetails = licensesInMainDocument.filter(x => !details.find(d => (d as any).licenseId === x.licenseId))
         if (entriesWithMissingDetails.length > 0) {
             console.warn(`Some entries (${entriesWithMissingDetails.length}) were missing from the details files. Got ${json[entryListKey].length} out of ${licensesInMainDocument.length} but failed on the following entries:\n${JSON.stringify(entriesWithMissingDetails, null, 2)}`)
         }
@@ -135,8 +133,8 @@ const updateLicenseFileAt = async (destinationFilePath) => {
     }
 }
 
-const unique = (listOfWords) => {
-    return [...new Set(listOfWords)]
+function unique<T>(items: T[]): T[] {
+    return [...new Set(items)]
 }
 
 const expandListOfKnownLicenses = (ids) => {
@@ -163,7 +161,7 @@ const expandListOfMentionedLicenses = (words) => {
     return words
 }
 
-const sanitizeSpecialCharacters = (text) => {
+const sanitizeSpecialCharacters = (text: string): string => {
     return text.replace(/[^a-zA-Z0-9\.\-\+]/g, ' ').replace(/\s+/g, ' ')
 }
 
@@ -200,6 +198,9 @@ const extractLicenseIdentifiersReferredTo = (licenses, entry) => {
             mentions = method()
         }
     })
+    // for (let i=0; mentions.length === 0 && i < methods.length; i++) {
+    //     mentions.push(methods[i]())
+    // }
     return mentions.flat()
 }
 
@@ -240,32 +241,33 @@ const fileIsOlderThan = (oldestAcceptableTimestamp, filePath) => {
     return fs.statSync(filePath).mtime < oldestAcceptableTimestamp
 }
 
-const updateLicenseFileIfOlderThan = async (oldestAcceptableTimestamp, filePath) => {
-    if (!fs.existsSync(filePath) || fileIsOlderThan(oldestAcceptableTimestamp, filePath)) {
-        return await updateLicenseFileAt(filePath)
+async function updateLicenseFileIfOlderThan(oldestAcceptableTimestamp: Date, licenseFilePath: string) {
+    if (!fs.existsSync(licenseFilePath) || fileIsOlderThan(oldestAcceptableTimestamp, licenseFilePath)) {
+        return await updateLicenseFileAt(licenseFilePath)
     } else {
-        console.log(`Not updating ${filePath} (it's recent enough)`)
+        console.log(`Not updating ${licenseFilePath} (it's recent enough)`)
     }
 }
 
-const updateExceptionsFileIfOlderThan = async (oldestAcceptableTimestamp, filePath, licenseFilePath) => {
-    if (!fs.existsSync(filePath) || fileIsOlderThan(oldestAcceptableTimestamp, filePath)) {
-        return await updateExceptionsFileAt(filePath, licenseFilePath)
+async function updateExceptionsFileIfOlderThan(oldestAcceptableTimestamp: Date, exceptionsFilePath: string, licenseFilePath: string) {
+    if (!fs.existsSync(exceptionsFilePath) || fileIsOlderThan(oldestAcceptableTimestamp, exceptionsFilePath)) {
+        return await updateExceptionsFileAt(exceptionsFilePath, licenseFilePath)
     } else {
-        console.log(`Not updating ${filePath} (it's recent enough)`)
+        console.log(`Not updating ${exceptionsFilePath} (it's recent enough)`)
     }
 }
 
-const dateHoursBeforeNow = (hours) => {
+function dateHoursBeforeNow(hours: number): Date {
     const d = new Date()
     const nowInMillis = d.getTime()
     return new Date(nowInMillis - hours * 60 * 60 * 1000)
 }
 
-const main = async (licenseFilePath, exceptionsFilePath) => {
+async function main(licenseFilePath: string, exceptionsFilePath: string) {
     const oldestAcceptableTimestamp = dateHoursBeforeNow(24)
     await updateLicenseFileIfOlderThan(oldestAcceptableTimestamp, licenseFilePath)
     await updateExceptionsFileIfOlderThan(oldestAcceptableTimestamp, exceptionsFilePath, licenseFilePath)
+    console.log('Done.')
 }
 
 (async () => {

@@ -17,4 +17,4 @@ done
 
 license_file="src/codegen/licenses.json"
 exceptions_file="src/codegen/exceptions.json"
-node scripts/codegen-license-update.js "$license_file" "$exceptions_file"
+npx tsx scripts/codegen-license-update.ts "$license_file" "$exceptions_file"
