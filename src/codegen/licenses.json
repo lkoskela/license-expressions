@@ -1,5 +1,5 @@
 {
-  "licenseListVersion": "7f39cae",
+  "licenseListVersion": "21b8e53",
   "licenses": [
     {
       "name": "BSD Zero Clause License",
@@ -323,6 +323,18 @@
       ]
     },
     {
+      "name": "Any OSI License - Perl Modules",
+      "licenseId": "any-OSI-perl-modules",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://metacpan.org/release/JUERD/Exporter-Tidy-0.09/view/Tidy.pm#LICENSE",
+        "https://metacpan.org/pod/Qmail::Deliverable::Client#LICENSE",
+        "https://metacpan.org/pod/Net::MQTT::Simple#LICENSE"
+      ]
+    },
+    {
       "name": "Apache License 1.0",
       "licenseId": "Apache-1.0",
       "isDeprecatedLicenseId": false,
@@ -620,6 +632,16 @@
         "https://fedoraproject.org/wiki/Licensing:MIT#Another_Minimal_variant_(found_in_libatomic_ops)",
         "https://github.com/uim/libgcroots/blob/master/COPYING",
         "https://github.com/ivmai/libatomic_ops/blob/master/LICENSE"
+      ]
+    },
+    {
+      "name": "Boehm-Demers-Weiser GC License (without fee)",
+      "licenseId": "Boehm-GC-without-fee",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/MariaDB/server/blob/11.6/libmysqld/lib_sql.cc"
       ]
     },
     {
@@ -1649,6 +1671,27 @@
       ]
     },
     {
+      "name": "Creative    Commons Public Domain Mark 1.0 Universal",
+      "licenseId": "CC-PDM-1.0",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://creativecommons.org/publicdomain/mark/1.0/",
+        "https://creativecommons.org/share-your-work/cclicenses/"
+      ]
+    },
+    {
+      "name": "Creative Commons Share Alike 1.0 Generic",
+      "licenseId": "CC-SA-1.0",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://creativecommons.org/licenses/sa/1.0/legalcode"
+      ]
+    },
+    {
       "name": "Creative Commons Zero v1.0 Universal",
       "licenseId": "CC0-1.0",
       "isDeprecatedLicenseId": false,
@@ -2179,6 +2222,16 @@
       ]
     },
     {
+      "name": "DocBook Stylesheet License",
+      "licenseId": "DocBook-Stylesheet",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "http://www.docbook.org/xml/5.0/docbook-5.0.zip"
+      ]
+    },
+    {
       "name": "DocBook XML License",
       "licenseId": "DocBook-XML",
       "isDeprecatedLicenseId": false,
@@ -2617,6 +2670,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://libgd.github.io/manuals/2.3.0/files/license-txt.html"
+      ]
+    },
+    {
+      "name": "Generic XTS License",
+      "licenseId": "generic-xts",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/mhogomchungu/zuluCrypt/blob/master/external_libraries/tcplay/generic_xts.c"
       ]
     },
     {
@@ -3393,7 +3456,8 @@
       "isOsiApproved": false,
       "isFsfLibre": false,
       "seeAlso": [
-        "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/net/sunrpc/auth_gss/gss_generic_token.c?h=v4.19"
+        "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/net/sunrpc/auth_gss/gss_generic_token.c?h=v4.19",
+        "https://github.com/kfish/xsel/blob/master/COPYING"
       ]
     },
     {
@@ -3548,6 +3612,16 @@
       "seeAlso": [
         "https://fedoraproject.org/wiki/Licensing/Inner_Net_License",
         "https://sourceware.org/git/?p=glibc.git;a=blob;f=LICENSES;h=530893b1dc9ea00755603c68fb36bd4fc38a7be8;hb=HEAD#l207"
+      ]
+    },
+    {
+      "name": "Inno Setup License",
+      "licenseId": "InnoSetup",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/jrsoftware/issrc/blob/HEAD/license.txt"
       ]
     },
     {
@@ -4264,6 +4338,16 @@
       ]
     },
     {
+      "name": "MIPS License",
+      "licenseId": "MIPS",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://sourceware.org/cgit/binutils-gdb/tree/include/coff/sym.h#n11"
+      ]
+    },
+    {
       "name": "The MirOS Licence",
       "licenseId": "MirOS",
       "isDeprecatedLicenseId": false,
@@ -4303,6 +4387,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://fedoraproject.org/wiki/Licensing/MIT_With_Advertising"
+      ]
+    },
+    {
+      "name": "MIT Click License",
+      "licenseId": "MIT-Click",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/kohler/t1utils/blob/master/LICENSE"
       ]
     },
     {
@@ -5581,7 +5675,8 @@
       "isOsiApproved": false,
       "isFsfLibre": false,
       "seeAlso": [
-        "https://opensource.org/licenses/Python-2.0"
+        "https://opensource.org/licenses/Python-2.0",
+        "https://matplotlib.org/stable/project/license.html"
       ]
     },
     {
@@ -5843,6 +5938,16 @@
       ]
     },
     {
+      "name": "Sendmail Open Source License v1.1",
+      "licenseId": "Sendmail-Open-Source-1.1",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://github.com/trusteddomainproject/OpenDMARC/blob/master/LICENSE.Sendmail"
+      ]
+    },
+    {
       "name": "SGI Free Software License B v1.0",
       "licenseId": "SGI-B-1.0",
       "isDeprecatedLicenseId": false,
@@ -5961,6 +6066,16 @@
       "isFsfLibre": true,
       "seeAlso": [
         "https://opensource.org/licenses/Sleepycat"
+      ]
+    },
+    {
+      "name": "SMAIL General Public License",
+      "licenseId": "SMAIL-GPL",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://sources.debian.org/copyright/license/debianutils/4.11.2/"
       ]
     },
     {
@@ -6251,6 +6366,16 @@
       ]
     },
     {
+      "name": "ThirdEye License",
+      "licenseId": "ThirdEye",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://sourceware.org/cgit/binutils-gdb/tree/include/coff/symconst.h#n11"
+      ]
+    },
+    {
       "name": "threeparttable License",
       "licenseId": "threeparttable",
       "isDeprecatedLicenseId": false,
@@ -6308,6 +6433,16 @@
       "isFsfLibre": false,
       "seeAlso": [
         "https://fedoraproject.org/wiki/Licensing:ThorPublicLicense"
+      ]
+    },
+    {
+      "name": "TrustedQSL License",
+      "licenseId": "TrustedQSL",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "https://sourceforge.net/p/trustedqsl/tqsl/ci/master/tree/LICENSE.txt"
       ]
     },
     {
@@ -6603,6 +6738,16 @@
       ]
     },
     {
+      "name": "WWL License",
+      "licenseId": "wwl",
+      "isDeprecatedLicenseId": false,
+      "isOsiApproved": false,
+      "isFsfLibre": false,
+      "seeAlso": [
+        "http://www.db.net/downloads/wwl+db-1.3.tgz"
+      ]
+    },
+    {
       "name": "wxWindows Library License",
       "licenseId": "wxWindows",
       "isDeprecatedLicenseId": true,
@@ -6877,5 +7022,5 @@
       ]
     }
   ],
-  "releaseDate": "2024-11-05"
+  "releaseDate": "2025-05-12T00:00:00Z"
 }

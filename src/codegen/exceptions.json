@@ -1,5 +1,5 @@
 {
-  "licenseListVersion": "7f39cae",
+  "licenseListVersion": "21b8e53",
   "exceptions": [
     {
       "licenseExceptionId": "389-exception",
@@ -126,6 +126,16 @@
       "name": "Bootloader Distribution Exception",
       "seeAlso": [
         "https://github.com/pyinstaller/pyinstaller/blob/develop/COPYING.txt"
+      ],
+      "relatedLicenses": []
+    },
+    {
+      "licenseExceptionId": "CGAL-linking-exception",
+      "isDeprecatedLicenseId": false,
+      "name": "CGAL Linking Exception",
+      "seeAlso": [
+        "https://github.com/openscad/openscad/blob/openscad-2021.01/COPYING#L3",
+        "https://github.com/floriankirsch/OpenCSG/blob/opencsg-1-4-2-release/license.txt#L3"
       ],
       "relatedLicenses": []
     },
@@ -914,5 +924,5 @@
       "relatedLicenses": []
     }
   ],
-  "releaseDate": "2024-11-05"
+  "releaseDate": "2025-05-12T00:00:00Z"
 }
