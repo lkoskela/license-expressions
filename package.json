@@ -1,6 +1,6 @@
 {
   "name": "license-expressions",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "Pure-JavaScript (TypeScript) parser for SPDX expressions",
   "devDependencies": {
     "@babel/preset-typescript": "^7.16.0",
