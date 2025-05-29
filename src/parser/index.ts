@@ -107,7 +107,7 @@ const prepareLiberalInput = (input: string): string => {
     ]
 
     // Automated, exact-name based mutations to apply, replacing license names with a matching identifier
-    const relevantLicenses = licenses.licenses.filter(license => license.name.includes('(') || license.name.match(/ and /i))
+    const relevantLicenses = licenses.filter(license => license.name.includes('(') || license.name.match(/ and /i))
     relevantLicenses.forEach(license => {
         mutations.push((input: string): string => {
             return input.replace(license.name, license.licenseId)

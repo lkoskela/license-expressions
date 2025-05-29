@@ -3,7 +3,7 @@ import { licenses, findNameBasedMatch, variationsOf } from '../src/licenses'
 describe('Find a name-based match for a license', () => {
 
     describe('all licenses currently in our database', () => {
-        const licenseNames = licenses.licenses.map(license => license.name).sort()
+        const licenseNames = licenses.map(license => license.name).sort()
         licenseNames.forEach(name => {
             it(name, () => expect(findNameBasedMatch(name, true)).not.toBeUndefined())
         })

@@ -1,36 +1,20 @@
-import licenses from '../codegen/licenses.json'
-import exceptions from '../codegen/exceptions.json'
-
+import licenses from "../codegen/licenses.json";
+import exceptions from "../codegen/exceptions.json";
 
 export type Exception = {
-    licenseExceptionId: string,
-    isDeprecatedLicenseId?: boolean,
-    name: string,
-    licenseComments?: string,
-    relatedLicenses?: string[]
-}
+    name: string;
+    licenseExceptionId: string;
+    deprecated: boolean;
+    relatedLicenses: string[];
+};
 
 export type License = {
-    licenseId: string,
-    isDeprecatedLicenseId?: boolean,
-    name: string,
-    isOsiApproved?: boolean,
-    seeAlso: string[]
-}
+    name: string;
+    licenseId: string;
+    deprecated: boolean;
+};
 
-export type Licenses = {
-    licenseListVersion: string,
-    releaseDate: string,
-    licenses: License[]
-}
+const licenseList = licenses as License[];
+const exceptionList = exceptions as Exception[];
 
-export type Exceptions = {
-    licenseListVersion: string,
-    releaseDate: string,
-    exceptions: Exception[]
-}
-
-const licenseList = licenses as Licenses
-const exceptionList = exceptions as Exceptions
-
-export { licenseList as licenses, exceptionList as exceptions }
+export { licenseList as licenses, exceptionList as exceptions };
