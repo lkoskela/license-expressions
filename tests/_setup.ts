@@ -1,3 +1,3 @@
 // add all jest-extended matchers
-const matchers = require('jest-extended')
+import * as matchers from 'jest-extended';
 expect.extend(matchers)
