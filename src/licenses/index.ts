@@ -55,8 +55,8 @@ const createMapOfIds = (ids: string[]): MapOfIds => {
     return { get, list } as MapOfIds
 }
 
-const mapOfKnownLicenses: MapOfIds = createMapOfIds(licenses.licenses.map(lic => lic.licenseId))
-const mapOfKnownExceptions: MapOfIds = createMapOfIds(exceptions.exceptions.map(e => e.licenseExceptionId))
+const mapOfKnownLicenses: MapOfIds = createMapOfIds(licenses.licenses.filter(lic => !!lic.licenseId).map(lic => lic.licenseId))
+const mapOfKnownExceptions: MapOfIds = createMapOfIds(exceptions.exceptions.filter(e => !!e.licenseExceptionId).map(e => e.licenseExceptionId))
 
 const aliasesForLicenseIds: Map<string, string> = ((): Map<string, string> => {
     const mapOfAliases = new Map()
