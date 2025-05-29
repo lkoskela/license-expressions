@@ -729,7 +729,7 @@ describe('Parenthesized scenarios', () => {
             const justShortEnoughPretext = '123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789' // 99 chars
             const slightlyTooLongPretext = '123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 1'  // 101 chars
 
-            const longestLicenseName = licenses.licenses.map(l => l.name.length).sort().reverse()[0]
+            const longestLicenseName = licenses.map(l => l.name.length).sort().reverse()[0]
             assert(THRESHOLD_LENGTH > longestLicenseName, `Our SPDX data contains license names longer than our hardcoded threshold of ${THRESHOLD_LENGTH} - we should probably increase the threshold!`)
             assert(justShortEnoughPretext.length < THRESHOLD_LENGTH, `Our "just short enough" pretext isn't short enough!`)
             assert(slightlyTooLongPretext.length > THRESHOLD_LENGTH, `Our "slightly too long" pretext isn't long enough!`)

@@ -14,7 +14,5 @@ done
 # Update `src/codegen/licenses.json` and `src/codegen/exceptions.json` from SPDX's
 # Github repository if it's older than a day:
 #
-
-license_file="src/codegen/licenses.json"
-exceptions_file="src/codegen/exceptions.json"
-npx tsx scripts/codegen-license-update.ts "$license_file" "$exceptions_file"
+#npx licenses-from-spdx -l src/codegen/licenses.json -e src/codegen/exceptions.json
+npx tsx scripts/codegen-license-update.ts src/codegen/licenses.json src/codegen/exceptions.json
