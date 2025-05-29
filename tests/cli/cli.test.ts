@@ -46,7 +46,7 @@ describe('CLI', () => {
         itif(definedBinScriptExists)('the bin script has a shebang', () => {
             const binScript = readFileSync(packageJson.bin.spdx, { encoding: 'utf-8' })
             const lines = binScript.split('\n')
-            expect(lines).toInclude('#!/usr/bin/env node')
+            expect(lines).toContain('#!/usr/bin/env node')
         })
     })
 
