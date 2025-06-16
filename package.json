@@ -4,11 +4,11 @@
   "description": "Pure-JavaScript (TypeScript) parser for SPDX expressions",
   "devDependencies": {
     "@babel/preset-typescript": "^7.16.0",
-    "@types/jest": "^29.2.6",
+    "@types/jest": "^30.0.0",
     "@types/node": "^22.15.29",
     "@types/spdx-correct": "^3.1.0",
     "@types/tmp": "^0.2.3",
-    "jest": "^29.4.0",
+    "jest": "^30.0.0",
     "jest-extended": "^6.0.0",
     "licenses-from-spdx": "^1.1.2",
     "tmp": "^0.2.1",
