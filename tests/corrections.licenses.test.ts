@@ -545,7 +545,7 @@ describe('Expressions with slight errors', () => {
                     'Apache-2.0 plus MIT', 'CDDL-1.1 plus GPL-2.0-with-classpath-exception', 'CDDL-1.1 plus GPL-2.0 WITH Classpath-exception-2.0'
                 ]
                 examples.forEach(expression => {
-                    it(JSON.stringify(expression), () => expect(() => parse(expression, { strictSyntax: true })).toThrowError())
+                    it(JSON.stringify(expression), () => expect(() => parse(expression, { strictSyntax: true })).toThrow())
                 })
             })
 

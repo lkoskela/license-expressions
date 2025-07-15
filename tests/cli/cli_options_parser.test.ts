@@ -81,10 +81,10 @@ describe('command-specific options', () => {
 
     describe('not supported by the command', () => {
         it('throw an error', () => {
-            expect(() => parseCLIOptions(['-x', 'identifier'])).toThrowError(/Option -x is not supported by the parse command/)
-            expect(() => parseCLIOptions(['-p', '-x', 'identifier'])).toThrowError(/Option -x is not supported by the parse command/)
-            expect(() => parseCLIOptions(['-n', '-x', 'identifier'])).toThrowError(/Option -x is not supported by the normalize command/)
-            expect(() => parseCLIOptions(['-v', '-x', 'identifier'])).toThrowError(/Option -x is not supported by the validate command/)
+            expect(() => parseCLIOptions(['-x', 'identifier'])).toThrow(/Option -x is not supported by the parse command/)
+            expect(() => parseCLIOptions(['-p', '-x', 'identifier'])).toThrow(/Option -x is not supported by the parse command/)
+            expect(() => parseCLIOptions(['-n', '-x', 'identifier'])).toThrow(/Option -x is not supported by the normalize command/)
+            expect(() => parseCLIOptions(['-v', '-x', 'identifier'])).toThrow(/Option -x is not supported by the validate command/)
         })
     })
 })
