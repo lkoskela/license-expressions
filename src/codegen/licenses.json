@@ -1985,7 +1985,7 @@
     "deprecated": false
   },
   {
-    "name": "PNG Reference Library License v1 (for libpng 0.5 through 1.6.35",
+    "name": "PNG Reference Library License v1 (for libpng 0.5 through 1.6.35)",
     "licenseId": "libpng-1.6.35",
     "deprecated": false
   },
@@ -3102,6 +3102,11 @@
   {
     "name": "SugarCRM Public License v1.1.3",
     "licenseId": "SugarCRM-1.1.3",
+    "deprecated": false
+  },
+  {
+    "name": "Sustainable Use License v1.0",
+    "licenseId": "SUL-1.0",
     "deprecated": false
   },
   {

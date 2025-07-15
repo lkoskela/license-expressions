@@ -173,7 +173,7 @@ describe('of "WITH" as "w/"', () => {
 
     it('"w/" is corrected when strictSyntax = false', () => {
         const expression = 'GPL-3.0-only w/ Autoconf-exception-2.0'
-        expect(() => parse(expression, { strictSyntax: true })).toThrowError()
+        expect(() => parse(expression, { strictSyntax: true })).toThrow()
         expect(parse(expression, { strictSyntax: false })).toMatchObject({
             license: 'GPL-3.0-only',
             exception: 'Autoconf-exception-2.0'
@@ -182,7 +182,7 @@ describe('of "WITH" as "w/"', () => {
 
     it('"W/" is corrected when strictSyntax = false', () => {
         const expression = 'GPLv3+ W/ autoconf-exception-2.0'
-        expect(() => parse(expression, { strictSyntax: true })).toThrowError()
+        expect(() => parse(expression, { strictSyntax: true })).toThrow()
         expect(parse(expression, { strictSyntax: false })).toMatchObject({
             license: 'GPL-3.0-or-later',
             exception: 'Autoconf-exception-2.0'
@@ -191,7 +191,7 @@ describe('of "WITH" as "w/"', () => {
 
     it('"w/" is corrected even when there is no whitespace before a valid exception', () => {
         const expression = 'GPL-3.0-only w/autoconf-exception-2.0'
-        expect(() => parse(expression, { strictSyntax: true })).toThrowError()
+        expect(() => parse(expression, { strictSyntax: true })).toThrow()
         expect(parse(expression, { strictSyntax: false })).toMatchObject({
             license: 'GPL-3.0-only',
             exception: 'Autoconf-exception-2.0'
@@ -200,7 +200,7 @@ describe('of "WITH" as "w/"', () => {
 
     it('"w/" is corrected even when there is no whitespace before an unknown exception', () => {
         const expression = 'GPL-3.0-only w/not an exception'
-        expect(() => parse(expression, { strictSyntax: true })).toThrowError()
+        expect(() => parse(expression, { strictSyntax: true })).toThrow()
         expect(parse(expression, { strictSyntax: false })).toMatchObject({
             license: 'GPL-3.0-only',
             exception: 'not an exception'
@@ -209,7 +209,7 @@ describe('of "WITH" as "w/"', () => {
 
     it("BSD 3-clause License w/nuclear disclaimer", () => {
         const expression = "BSD 3-clause License w/nuclear disclaimer"
-        expect(() => parse(expression, { strictSyntax: true })).toThrowError()
+        expect(() => parse(expression, { strictSyntax: true })).toThrow()
         expect(parse(expression, { strictSyntax: false })).toMatchObject({
             license: 'BSD-3-Clause',
             exception: 'nuclear disclaimer'
@@ -217,12 +217,12 @@ describe('of "WITH" as "w/"', () => {
     })
 
     it('"w/" is not corrected even in liberal mode when there is no license identifier before it', () => {
-        expect(() => parse('w/whatever', { strictSyntax: true })).toThrowError()
-        expect(() => parse('w/whatever', { strictSyntax: false })).toThrowError()
-        expect(() => parse(' w/ whatever', { strictSyntax: true })).toThrowError()
-        expect(() => parse(' w/ whatever', { strictSyntax: false })).toThrowError()
-        expect(() => parse('XXXw/whatever', { strictSyntax: true })).toThrowError()
-        expect(() => parse('XXXw/whatever', { strictSyntax: false })).toThrowError()
+        expect(() => parse('w/whatever', { strictSyntax: true })).toThrow()
+        expect(() => parse('w/whatever', { strictSyntax: false })).toThrow()
+        expect(() => parse(' w/ whatever', { strictSyntax: true })).toThrow()
+        expect(() => parse(' w/ whatever', { strictSyntax: false })).toThrow()
+        expect(() => parse('XXXw/whatever', { strictSyntax: true })).toThrow()
+        expect(() => parse('XXXw/whatever', { strictSyntax: false })).toThrow()
     })
 })
 
@@ -250,8 +250,8 @@ describe('common misspellings', () => {
 
         it('fail parsing if strictSyntax = true', () => {
             const expression = 'GPL-3.0-only WITH autoconf exception 2.0'
-            expect(() => parse(expression, { strictSyntax: false })).not.toThrowError()
-            expect(() => parse(expression, { strictSyntax: true })).toThrowError()
+            expect(() => parse(expression, { strictSyntax: false })).not.toThrow()
+            expect(() => parse(expression, { strictSyntax: true })).toThrow()
         })
 
         it('"Qwt License 1.0" is corrected to "Qwt-exception-1.0"', () => {
