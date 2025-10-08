@@ -50,6 +50,11 @@
     "deprecated": false
   },
   {
+    "name": "Advanced Cryptics Dictionary License",
+    "licenseId": "Advanced-Cryptics-Dictionary",
+    "deprecated": false
+  },
+  {
     "name": "Academic Free License v1.1",
     "licenseId": "AFL-1.1",
     "deprecated": false
@@ -450,6 +455,11 @@
     "deprecated": false
   },
   {
+    "name": "BSD 3-Clause Tso variant",
+    "licenseId": "BSD-3-Clause-Tso",
+    "deprecated": false
+  },
+  {
     "name": "BSD 4-Clause \"Original\" or \"Old\" License",
     "licenseId": "BSD-4-Clause",
     "deprecated": false
@@ -487,6 +497,11 @@
   {
     "name": "BSD-Inferno-Nettverk",
     "licenseId": "BSD-Inferno-Nettverk",
+    "deprecated": false
+  },
+  {
+    "name": "BSD Mark Modifications License",
+    "licenseId": "BSD-Mark-Modifications",
     "deprecated": false
   },
   {
@@ -1202,6 +1217,16 @@
   {
     "name": "Erlang Public License v1.1",
     "licenseId": "ErlPL-1.1",
+    "deprecated": false
+  },
+  {
+    "name": "European Space Agency Public License  v2.4  Permissive (Type 3)",
+    "licenseId": "ESA-PL-permissive-2.4",
+    "deprecated": false
+  },
+  {
+    "name": "European Space Agency Public License  v2.4  Weak Copyleft (Type 2)",
+    "licenseId": "ESA-PL-weak-copyleft-2.4",
     "deprecated": false
   },
   {
@@ -3345,8 +3370,18 @@
     "deprecated": false
   },
   {
+    "name": "WordNet License",
+    "licenseId": "WordNet",
+    "deprecated": false
+  },
+  {
     "name": "Wsuipa License",
     "licenseId": "Wsuipa",
+    "deprecated": false
+  },
+  {
+    "name": "Do What The F*ck You Want To But It's Not My Fault Public License",
+    "licenseId": "WTFNMFPL",
     "deprecated": false
   },
   {
