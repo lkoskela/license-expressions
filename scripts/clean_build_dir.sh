@@ -13,8 +13,10 @@ BUILD_DIR_ABS_PATH=$(node -e 'console.log(require("path").resolve(process.argv[1
 COMMON_PART=${BUILD_DIR_ABS_PATH:0:CURR_DIR_LENGTH}
 EXTRA_PART=${BUILD_DIR_ABS_PATH:CURR_DIR_LENGTH}
 if [[ "$COMMON_PART" == "$CURR_DIR" ]] && ([[ "$EXTRA_PART" == "" || "${EXTRA_PART:0:1}" == "/" ]]); then
-    echo "Wiping directory '$BUILD_DIR' to ensure a clean distribution build"
-    rm -r "$BUILD_DIR"
+    if [ -d "$BUILD_DIR" ]; then
+        echo "Wiping directory '$BUILD_DIR' to ensure a clean distribution build"
+        rm -r "$BUILD_DIR"
+    fi
 else
     echo "outDir '$BUILD_DIR' is NOT within current working directory - NOT SAFE TO DELETE!"
     exit 1
