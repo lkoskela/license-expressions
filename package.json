@@ -15,7 +15,8 @@
     "ts-jest": "^29.0.5",
     "ts-node": "^10.4.0",
     "tspeg": "^3.2.0",
-    "typescript": "^5.3.3"
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "spdx-correct": "^3.2.0"
