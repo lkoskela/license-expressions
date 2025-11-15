@@ -7,3 +7,8 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+    cooldown:
+      default-days: 5
+      semver-major-days: 60
+      semver-minor-days: 30
+      semver-patch-days: 10
