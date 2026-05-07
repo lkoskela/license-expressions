@@ -97,6 +97,12 @@
     "deprecated": false
   },
   {
+    "name": "Classpath exception 2.0 - short",
+    "licenseExceptionId": "Classpath-exception-2.0-short",
+    "relatedLicenses": [],
+    "deprecated": false
+  },
+  {
     "name": "CLISP exception 2.0",
     "licenseExceptionId": "CLISP-exception-2.0",
     "relatedLicenses": [
@@ -251,6 +257,12 @@
     "deprecated": false
   },
   {
+    "name": "Google Additional IP Rights Grant (Patents) - WebM",
+    "licenseExceptionId": "Google-Patent-WebM",
+    "relatedLicenses": [],
+    "deprecated": false
+  },
+  {
     "name": "GPL-3.0 389 DS Base Exception",
     "licenseExceptionId": "GPL-3.0-389-ds-base-exception",
     "relatedLicenses": [
@@ -337,6 +349,12 @@
     "relatedLicenses": [
       "CC-BY-SA-4.0"
     ],
+    "deprecated": false
+  },
+  {
+    "name": "kvirc OpenSSL Exception",
+    "licenseExceptionId": "kvirc-openssl-exception",
+    "relatedLicenses": [],
     "deprecated": false
   },
   {
@@ -516,6 +534,14 @@
     "deprecated": false
   },
   {
+    "name": "rsync Linking Exception",
+    "licenseExceptionId": "rsync-linking-exception",
+    "relatedLicenses": [
+      "GPL-3.0"
+    ],
+    "deprecated": false
+  },
+  {
     "name": "SANE Exception",
     "licenseExceptionId": "SANE-exception",
     "relatedLicenses": [],
@@ -535,6 +561,20 @@
     "relatedLicenses": [
       "Apache-2.0"
     ],
+    "deprecated": false
+  },
+  {
+    "name": "Simple Library Usage Exception",
+    "licenseExceptionId": "Simple-Library-Usage-exception",
+    "relatedLicenses": [
+      "LGPL-2.1"
+    ],
+    "deprecated": false
+  },
+  {
+    "name": "sqlitestudio OpenSSL exception",
+    "licenseExceptionId": "sqlitestudio-OpenSSL-exception",
+    "relatedLicenses": [],
     "deprecated": false
   },
   {
